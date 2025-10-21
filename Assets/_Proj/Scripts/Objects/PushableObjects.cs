@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public interface IPushable
 {
@@ -13,9 +14,12 @@ public abstract class PushableObjects : MonoBehaviour, IPushable
 {
     public float tileSize = 1f;
     public float slideSpeed = 8f;
-    public float settleEps = 0.0005f;
+    public float settleEps = 0.0005f; // 오차 허용값
 
-    public bool IsMoving {  get; protected set; }
+    public LayerMask groundLayer;
+
+    [SerializeField] bool isMovingDebug;
+    public bool IsMoving { get => isMovingDebug; protected set { isMovingDebug = value; } }
     public float TileSize => tileSize;
 
     protected Rigidbody rb;
@@ -24,10 +28,10 @@ public abstract class PushableObjects : MonoBehaviour, IPushable
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-
+        
         rb.isKinematic = true;
+        rb.useGravity = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
-
         rb.MovePosition(Snap(transform.position));
     }
 
@@ -45,6 +49,13 @@ public abstract class PushableObjects : MonoBehaviour, IPushable
 
     protected abstract bool CanEnterCell(Vector3 nextCenter, Vector3 axis);
 
+    public virtual bool CheckFloor(Vector3 pos)
+    {
+        Vector3 checkPos = pos + Vector3.down * (tileSize * 0.5f + 0.05f);
+        Vector3 checkExt = new Vector3(tileSize * 0.45f, 0.1f, TileSize * 0.45f);
+        return Physics.CheckBox(checkPos, checkExt, Quaternion.identity, groundLayer, QueryTriggerInteraction.Ignore);
+    }
+
     public virtual bool RequestPush(Vector3 axis)
     {
         if (IsMoving) return false;
@@ -52,7 +63,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushable
         axis.y = 0;
         if (Mathf.Abs(axis.x) > Mathf.Abs(axis.z)) axis = new Vector3(Mathf.Sign(axis.x), 0, 0);
         else
-           axis = new Vector3(0, 0, Mathf.Abs(axis.z));
+           axis = new Vector3(0, 0, Mathf.Sign(axis.z));
 
         Vector3 curr = Snap(transform.position);
         Vector3 next = GetNextCellCenter(curr, axis);
@@ -70,14 +81,20 @@ public abstract class PushableObjects : MonoBehaviour, IPushable
         {
             Vector3 next = Vector3.MoveTowards(rb.position, target, Time.fixedDeltaTime * slideSpeed);
             rb.MovePosition(next);
+            yield return new WaitForFixedUpdate();
         }
-        yield return new WaitForFixedUpdate();
         rb.MovePosition(target);
         IsMoving = false;
+        
+        if (!CheckFloor(target))
+        {
+            rb.isKinematic = false;
+        }
     }
 
     public void SlideOneCell(Vector3 targetCenter)
     {
+        Debug.Log($"[push] Slideonecell호출? {targetCenter}", this);
         StopAllCoroutines();
         StartCoroutine(SlideCoroutine(targetCenter));
     }
