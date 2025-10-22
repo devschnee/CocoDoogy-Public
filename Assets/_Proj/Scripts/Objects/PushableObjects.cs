@@ -14,6 +14,7 @@ public class PushableObjects : MonoBehaviour
 
     private bool isMoving = false;
     private bool isHoling = false;
+    private bool isFalling = false;
     public float requiredHoldtime = 0.5f;
     private float currHold = 0f;
     private Vector2Int holdDir;
@@ -35,9 +36,10 @@ public class PushableObjects : MonoBehaviour
 
     public bool TryPush(Vector2Int dir)
     {
-        if (isMoving) return false;
+        if (isMoving || isFalling) return false;
 
         Vector3 offset = new Vector3(dir.x, 0f, dir.y) * tileSize;
+        // XZ로만 이동할 목표 먼저 계산.
         Vector3 target = transform.position + offset;
 
         // 경사로
@@ -52,21 +54,11 @@ public class PushableObjects : MonoBehaviour
             }
         }
 
-        // 낭떠러지 처리 (여러 칸까지 반복 낙하)
-        if (allowFall)
-        {
-            while (!Physics.Raycast(target + Vector3.up * 0.1f, Vector3.down, 1.5f, groundMask))
-            {
-                target += Vector3.down * tileSize;
-                if (target.y < -100f) return false; // 무한 추락 방지
-            }
-        }
-
         // 목적지에 뭔가 있으면 못 감
         if (Physics.CheckBox(target + Vector3.up * 0.5f, Vector3.one * 0.4f, Quaternion.identity, blockingMask))
             return false;
 
-        StartCoroutine(MoveTo(target));
+        StartCoroutine(MoveAndFall(target));
         return true;
     }
 
@@ -87,9 +79,42 @@ public class PushableObjects : MonoBehaviour
         isMoving = false;
     }
 
+    IEnumerator MoveAndFall(Vector3 target)
+    {
+        yield return StartCoroutine(MoveTo(target));
+
+        // 낙하 조건 확인 및 처리
+        if (allowFall)
+        {
+            yield return StartCoroutine(CheckFall());
+        }
+    }
+
+    IEnumerator CheckFall()
+    {
+        isFalling = true;
+
+        Vector3 currPos = transform.position;
+
+        while(!Physics.Raycast(currPos + Vector3.up * 0.1f, Vector3.down, 1.5f, groundMask))
+        {
+            Vector3 fallTarget = currPos + Vector3.down * tileSize;
+
+            if(fallTarget.y < -100f) // 무한 추락 방지
+            {
+                isFalling = false;
+                yield break;
+            }
+
+            yield return StartCoroutine(MoveTo(fallTarget));
+            currPos = transform.position;
+        }
+        isFalling = false;
+    }
+
     public void StartPushAttempt(Vector2Int dir)
     {
-        if(isMoving) return;
+        if(isMoving || isFalling) return;
         if(isHoling && dir != holdDir)
         {
             currHold = 0f;
