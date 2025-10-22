@@ -1,29 +1,49 @@
 ﻿using UnityEngine;
 
-public class PlayerPushTrigger : MonoBehaviour
+public class PlayerPushTrigger : MonoBehaviour, IMoveStrategy
 {
-    //[SerializeField] float pushThreshold = 0.9f; // 얼마나 강하게 밀어야 푸시?
-    //[SerializeField] Joystick joystick;  // 너의 조이스틱 컴포넌트 할당
+    [Header("Push Settings")]
+    public float tileSize = 1f;
+    public LayerMask pushables;
+    public float frontOffset = 0.4f;
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (!other.CompareTag("Pushable")) return;
+    // DIP. 현재 밀고 있는 대상 추적 위함.
+    private IPushHandler currPushHandler = null;
 
-    //    PushableObjects pushable = other.GetComponent<PushableObjects>();
-    //    if (pushable == null || pushable.IsMoving) return;
+    public (Vector3, Vector3) Execute(Vector3 moveDir, Rigidbody rb, PlayerMovement player)
+    {
+        // 입력 없으면 현재 시도 중인 푸시를 중단, 핸들러 해제
+        if (moveDir.sqrMagnitude < 0.0001f)
+        {
+            // 핸들러 중단 후 참조 해제
+            currPushHandler?.StopPushAttempt();
+            currPushHandler = null;
+            return (moveDir, Vector3.zero);
+        }
 
-    //    Vector2 input = new Vector2(joystick.Horizontal, joystick.Vertical);
-    //    if (input.magnitude < pushThreshold) return;
+        // 방향 벡터 계산 후, 이동 시도한 위치 앞에 푸시 가능한 오브젝트가 존재하면
+        Ray ray = new Ray(rb.position + Vector3.up * 0.5f, moveDir);
 
-    //    Vector2Int dir = Get4Direction(input);
-    //    pushable.Push(dir);
-    //}
+        if (Physics.Raycast(ray, out RaycastHit hit, 1.1f, pushables))
+        {
+            if (hit.collider.TryGetComponent<IPushHandler>(out var handler))
+            {
+                // 감지된 핸들러를 현재 핸들러로 설정 (밀기 대상 추적 시작)
+                currPushHandler = handler;
 
-    //private Vector2Int Get4Direction(Vector2 input)
-    //{
-    //    if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
-    //        return input.x > 0 ? Vector2Int.right : Vector2Int.left;
-    //    else
-    //        return input.y > 0 ? Vector2Int.up : Vector2Int.down;
-    //}
+                Vector2Int dir = player.To4Dir(moveDir);
+                currPushHandler.StartPushAttempt(dir);
+            }
+        }
+        else
+        {
+            // 레이캐스트 실패 시 (밀기 대상에서 벗어남), 핸들러 참조 해제
+            if (currPushHandler != null)
+            {
+                currPushHandler.StopPushAttempt();
+                currPushHandler = null;
+            }
+        }
+        return (moveDir, Vector3.zero);
+    }
 }
