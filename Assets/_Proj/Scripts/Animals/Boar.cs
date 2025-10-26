@@ -117,25 +117,30 @@ public class Boar : PushableObjects, IDashDirection
         isMoving = false;
     }
 
-    private IEnumerator DashCoroutine(Vector3 moveDir, Vector2Int chargeDir)
+    private IEnumerator DashCoroutine(Vector3 moveDir, Vector2Int dashDir)
     {
         isMoving = true;
+        btnGroup.SetActive(false);
 
         while (true) // 끝없이 돌진
         {
             Vector3 currentPos = transform.position;
             Vector3 nextPos = currentPos + moveDir * tileSize;
 
+            // 1. 다음에 고정된 장애물 있는지 체크
             if (CheckBlocking(nextPos))
             {
+                // 밀 수 있는 건지 없는 건지 구별
                 if (Physics.Raycast(currentPos + Vector3.up * 0.5f, moveDir, out RaycastHit hit, tileSize + 0.05f, blockingMask))
                 {
+                    // 밀 수 있는 물체에 충돌
                     if (hit.distance <= tileSize && hit.collider.TryGetComponent<IPushHandler>(out var handler))
                     {
-                        if (dashExecutor.CanChainPush(hit.collider.transform.position, chargeDir))
+                        // 연쇄 밀기 가능?
+                        if (dashExecutor.CanChainPush(hit.collider.transform.position, dashDir))
                         {
-                            // 연쇄 밀어내기 실행 (밀린 박스/구체는 PushableObjects.moveTime으로 느리게 움직임)
-                            dashExecutor.ExecuteChainPush(hit.collider.transform.position, chargeDir);
+                            // 연쇄 밀어내기 실행 (밀린 박스/구체는 PushableObjects.moveTime으로 움직임)
+                            dashExecutor.ExecuteChainPush(hit.collider.transform.position, dashDir);
 
                             // 멧돼지 1칸 이동
                             yield return StartCoroutine(DashMoveTo(nextPos));
@@ -144,11 +149,13 @@ public class Boar : PushableObjects, IDashDirection
                         }
                         else
                         {
+                            // 연쇄 밀기 불가
                             break;
                         }
                     }
                     else
                     {
+                        // 밀 수 없는 장애물
                         break;
                     }
                 }
