@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -315,15 +314,17 @@ public class EditModeController : MonoBehaviour
     {
         if (IsEditMode && startedOnDraggable && CurrentTarget && IsPointerMoving())
         {
+            // 드래그 시작 시
             if (!isDragging)
             {
                 isDragging = true;
                 BlockOrbit = true;
 
-                // 드래그 시작 스냅샷
                 lastBeforeDrag = new Snap { pos = CurrentTarget.position, rot = CurrentTarget.rotation };
 
                 PrepareMovePlane();
+
+                // 드래그 중 툴바 숨김
                 actionToolbar?.Hide();
             }
 
@@ -740,12 +741,13 @@ public class EditModeController : MonoBehaviour
     {
         if (!actionToolbar) return;
 
+        // 인벤/프리뷰 제거: 기본 두 버튼만
         actionToolbar.Show(
             target: t,
             worldCamera: cam,
             onInfo: OnToolbarInfo,
             onRotate: OnToolbarRotate,
-            onInventory: null, // 필요 시 연결
+            onInventory: null,
             onOk: null,
             onCancel: null
         );
@@ -771,9 +773,8 @@ public class EditModeController : MonoBehaviour
             return;
         }
 
-        // ✅ 토글: 열려 있으면 닫고, 아니면 메타 정보로 열기
+        // 토글: 열려 있으면 닫고, 아니면 메타 정보로 열기
         panel.Toggle(meta.DisplayName, meta.Description);
-
     }
 
     private void OnToolbarRotate()
