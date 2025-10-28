@@ -4224,13 +4224,13 @@ GameObject:
   - component: {fileID: 1270208730}
   - component: {fileID: 1270208729}
   - component: {fileID: 1270208728}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: TouchReceiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1270208727
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4972,7 +4972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1439863039}
   - component: {fileID: 1439863040}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7084,7 +7084,7 @@ GameObject:
   - component: {fileID: 1883325019}
   - component: {fileID: 1883325021}
   - component: {fileID: 1883325020}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7818,7 +7818,7 @@ GameObject:
   - component: {fileID: 2007548009}
   - component: {fileID: 2007548011}
   - component: {fileID: 2007548010}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7894,7 +7894,7 @@ GameObject:
   - component: {fileID: 2086675073}
   - component: {fileID: 2086675072}
   - component: {fileID: 2086675071}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7908,7 +7908,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2086675070}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
