@@ -172,6 +172,16 @@ public class Shockwave : MonoBehaviour
             if (cb.max.y < yCentre - halfBand) continue;
             if (cb.min.y > yCentre + halfBand) continue;
 
+            float tsOcc = tile;
+            var pOcc = (Component)hit.collider.GetComponent("PushableObjects")
+                     ?? (Component)hit.collider.GetComponent("PushableBox")
+                     ?? (Component)hit.collider.GetComponent("PushableOrb");
+            if (pOcc != null) tsOcc = GetTileSize(pOcc, tile);
+
+            int hOcc = Mathf.FloorToInt(hit.collider.transform.position.y / tsOcc + 1e-4f);
+            if (hOcc != centerH) continue; // 다른 층이 가리는 건 무시
+
+
             return true; // 밴드 안에서 라인 가림
         }
         return false;

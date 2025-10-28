@@ -201,6 +201,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         StartCoroutine(WaveLiftCoroutine(duration, holdSec));
     }
 
+    // 복귀
     IEnumerator WaveLiftCoroutine(float duration, float holdSec)
     {
         isMoving = true;
@@ -217,11 +218,13 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
             transform.position = Vector3.Lerp(start, target, t / duration);
             yield return null;
         }
+        transform.position = target;
 
         if(holdSec > 0f) 
             yield return new WaitForSeconds(holdSec);
-        transform.position = target;
-         if (allowFall) { yield return StartCoroutine(CheckFall()); }
+        transform.position = start;
+         
+        if (allowFall) { yield return StartCoroutine(CheckFall()); }
         isMoving = false;
     }
 }
