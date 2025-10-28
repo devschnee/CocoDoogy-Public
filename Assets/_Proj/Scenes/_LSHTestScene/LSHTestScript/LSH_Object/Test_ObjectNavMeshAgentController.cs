@@ -14,7 +14,7 @@ public class ObjectNavMeshAgentController
     private float waitTime; // 목표 지점 도달 후 대기 시간
     private float timer;
     private Transform transform;
-    public Transform[] waypoints { private get; set; }
+    public Transform[] waypoints { get; set; }
 
     public ObjectNavMeshAgentController(NavMeshAgent agent, float moveSpeed, float angularSpeed, float acceleration, float moveRadius, float waitTime, float timer, Transform transform)
     {

@@ -34,6 +34,11 @@ public class ObjectScript : MonoBehaviour, IInteractable, IDraggable, ILongPress
         oNMAC = new ObjectNavMeshAgentController(agent, moveSpeed, angularSpeed, acceleration, moveRadius, waitTime, timer, transform);
         mainCam = Camera.main;
         Debug.Log($"Main Cam = {mainCam.name}");
+
+        for (int i = 0; i < Waypoints.Length; i++)
+        {
+            oNMAC.waypoints[i] = Waypoints[i];
+        }
     }
 
     private void OnEnable()

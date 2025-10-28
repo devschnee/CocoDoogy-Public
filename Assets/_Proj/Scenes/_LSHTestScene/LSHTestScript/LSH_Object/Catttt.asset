@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Catttt
   m_EditorClassIdentifier: 
   id: 0
-  displayName: 
-  type: 0
-  prefab: {fileID: 0}
-  isCocoDoogy: 0
+  displayName: Cat
+  type: 1
+  prefab: {fileID: 6647131506220806907, guid: b7190d079fe8b1143b7706cbcde97045, type: 3}
+  isCocoDoogy: 1
   isMaster: 0
