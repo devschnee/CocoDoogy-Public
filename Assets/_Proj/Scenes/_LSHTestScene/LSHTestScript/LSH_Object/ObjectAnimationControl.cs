@@ -30,6 +30,6 @@ public class ObjectAnimationControl
 
     public void StopAnim()
     {
-        anim.Play("Fly");
+        anim.Play("EditMode");
     }
 }

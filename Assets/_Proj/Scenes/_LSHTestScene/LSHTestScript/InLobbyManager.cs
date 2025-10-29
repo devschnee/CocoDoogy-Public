@@ -21,11 +21,12 @@ public class NavMeshObjectData
 
 public class InLobbyManager : MonoBehaviour
 {
-    public TestScriptableObject[] objectDatabase;
+    [SerializeField] TestScriptableObject[] objectDatabase;
     [SerializeField] GameObject plane;
     
     private NavMeshSurface planeSurface;
-    
+
+    public Transform[] waypoints;
     public static InLobbyManager Instance { get; private set; }
 
     private void Awake()
