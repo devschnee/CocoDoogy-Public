@@ -34,12 +34,20 @@ public class PlayerMovement : MonoBehaviour
         moveStrategies = new List<IMoveStrategy>(GetComponents<IMoveStrategy>());
     }
 
+
+
     void FixedUpdate()
     {
         if (joystick == null) return;
         if (camTr == null) camTr = Camera.main?.transform;
 
         Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
+
+        
+        
+        
+
+        
 
         if (input.sqrMagnitude < 0.01f)
         {
