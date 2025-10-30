@@ -7,15 +7,15 @@ using System.IO;
 [Serializable]
 public class DecoData
 {
-    public int id;
-    public string name;
-    public string prefabPath;
-    public string iconPath;
-    public Category category;
-    public string tag; //todo : 향후 enum으로 수정 예정
-    public Acquire acquire;
-    public int stack;
-    public string description;
+    public int deco_id;
+    public string deco_name;
+    public string deco_prefab;
+    public string deco_icon;
+    public Type deco_type;
+    public string deco_tag; //todo : 향후 enum으로 수정 예정
+    public Acquire deco_acquire;
+    public int deco_stack;
+    public string deco_desc;
 
     [NonSerialized] public GameObject prefab;
     [NonSerialized] public Sprite icon;
@@ -25,20 +25,20 @@ public class DecoData
 
     public GameObject GetPrefab()
     {
-        if (prefab == null && !string.IsNullOrEmpty(prefabPath))
-            prefab = Resources.Load<GameObject>(prefabPath);
+        if (prefab == null && !string.IsNullOrEmpty(deco_prefab))
+            prefab = Resources.Load<GameObject>(deco_prefab);
         return prefab;
     }
 
     public Sprite GetIcon()
     {
-        if (icon == null && !string.IsNullOrEmpty(iconPath))
-            icon = Resources.Load<Sprite>(iconPath);
+        if (icon == null && !string.IsNullOrEmpty(deco_icon))
+            icon = Resources.Load<Sprite>(deco_icon);
         return icon;
     }
     //Deco의 prefab과 sprite가 필요할 때 사용할 함수
 }
-public enum Category
+public enum Type
 {
     plant, strucure, furniture, fixtures
 }
