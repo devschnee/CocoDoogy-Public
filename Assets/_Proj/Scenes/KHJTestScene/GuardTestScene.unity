@@ -164,10 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &9264869
@@ -236,10 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &36829590
@@ -308,10 +308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &44312282
@@ -380,10 +380,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &45102757
@@ -452,10 +452,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &66859214
@@ -711,10 +711,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &84851250
@@ -839,10 +839,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &92844338
@@ -911,10 +911,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &104367871
@@ -1091,10 +1091,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &122325311
@@ -1413,10 +1413,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &209340578
@@ -1800,10 +1800,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &251118795
@@ -1872,10 +1872,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &256991790
@@ -1944,10 +1944,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &286747870
@@ -2072,10 +2072,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &298713310
@@ -2361,10 +2361,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &322001824
@@ -2570,10 +2570,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &331622277
@@ -2721,10 +2721,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &356917727
@@ -2849,10 +2849,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &367879399
@@ -2921,10 +2921,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &371546900
@@ -2993,10 +2993,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &379756776
@@ -3186,10 +3186,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &419500497
@@ -3314,10 +3314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &434160532
@@ -3524,10 +3524,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &441472582
@@ -3704,10 +3704,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &447562405
@@ -3888,10 +3888,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &484057702
@@ -4016,10 +4016,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &497141931
@@ -4196,10 +4196,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &552338905
@@ -4233,7 +4233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 562939523}
   m_Layer: 0
-  m_Name: Capybara
+  m_Name: Turtle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4356,10 +4356,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &589730060
@@ -4428,10 +4428,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &590676401
@@ -4717,10 +4717,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &610364818
@@ -4897,10 +4897,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &640990085
@@ -4969,10 +4969,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &665645571
@@ -5118,10 +5118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.662
   castDistance: 0.1
 --- !u!1 &692299246
@@ -5549,10 +5549,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &707439859
@@ -5621,10 +5621,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &750669320
@@ -5801,10 +5801,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &767321922
@@ -6211,10 +6211,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &818553790
@@ -6283,10 +6283,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &825002695
@@ -6513,10 +6513,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &835500018
@@ -6693,10 +6693,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &840033139
@@ -6829,10 +6829,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &843330517
@@ -6976,10 +6976,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &865684089
@@ -7048,10 +7048,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &871699952
@@ -7120,10 +7120,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &879169536
@@ -7192,10 +7192,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &882430813
@@ -7264,10 +7264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &890921110
@@ -7357,10 +7357,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.662
   castDistance: 0.1
 --- !u!1 &919188335
@@ -7408,10 +7408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &919188338
@@ -7536,10 +7536,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &921346290
@@ -7608,10 +7608,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &926446183
@@ -7922,6 +7922,8 @@ MonoBehaviour:
   requiredHoldtime: 0.5
   allowFall: 1
   allowSlope: 1
+  shockwave: {fileID: 0}
+  coolTime: 5
 --- !u!4 &958231360
 Transform:
   m_ObjectHideFlags: 0
@@ -8197,10 +8199,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &998890596
@@ -8269,10 +8271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1015360920
@@ -8341,10 +8343,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1027211424
@@ -8469,10 +8471,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1044077148
@@ -8541,10 +8543,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1045299273
@@ -8613,10 +8615,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1053642484
@@ -8706,10 +8708,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.662
   castDistance: 0.1
 --- !u!1 &1079242232
@@ -8757,10 +8759,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &1079242235
@@ -8829,10 +8831,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1088763469
@@ -9065,10 +9067,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1111170971
@@ -9280,10 +9282,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1128846433
@@ -9460,10 +9462,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1135984457
@@ -9987,10 +9989,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &1190418392
@@ -10246,10 +10248,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1204226023
@@ -10763,10 +10765,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &1255376906
@@ -11000,10 +11002,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.662
   castDistance: 0.1
 --- !u!1 &1273865785
@@ -11051,10 +11053,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1273865788
@@ -11231,10 +11233,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1277576726
@@ -11411,10 +11413,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1282074005
@@ -11561,6 +11563,8 @@ MonoBehaviour:
   requiredHoldtime: 0.5
   allowFall: 1
   allowSlope: 1
+  shockwave: {fileID: 0}
+  coolTime: 5
 --- !u!4 &1287320724
 Transform:
   m_ObjectHideFlags: 0
@@ -11850,10 +11854,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1302088193
@@ -11978,10 +11982,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1354942849
@@ -12050,10 +12054,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1358872912
@@ -12215,6 +12219,8 @@ MonoBehaviour:
   requiredHoldtime: 0.5
   allowFall: 1
   allowSlope: 1
+  shockwave: {fileID: 0}
+  coolTime: 5
 --- !u!1 &1386258478
 GameObject:
   m_ObjectHideFlags: 0
@@ -12260,10 +12266,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1386258481
@@ -12332,10 +12338,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1386392025
@@ -12404,10 +12410,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1412036871
@@ -12476,10 +12482,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1418347010
@@ -12548,10 +12554,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1434920700
@@ -12620,10 +12626,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1435262111
@@ -12781,10 +12787,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1449026783
@@ -12961,10 +12967,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1457832046
@@ -13250,10 +13256,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1490884956
@@ -13499,10 +13505,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1528481194
@@ -13633,10 +13639,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1547045867
@@ -13955,10 +13961,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1561757523
@@ -14027,10 +14033,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1564603073
@@ -14099,10 +14105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1571345583
@@ -14171,10 +14177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &1586412197
@@ -14243,10 +14249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1588120662
@@ -14315,10 +14321,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1594655708
@@ -14387,10 +14393,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1597362088
@@ -14459,10 +14465,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1611271113
@@ -14669,10 +14675,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1636450342
@@ -14849,10 +14855,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1642952186
@@ -15223,10 +15229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &1682446101
@@ -15477,10 +15483,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1692880298
@@ -15549,10 +15555,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1697349800
@@ -15621,10 +15627,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1703407533
@@ -15801,10 +15807,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1731520232
@@ -15873,10 +15879,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1731769345
@@ -16001,10 +16007,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1738147948
@@ -16129,10 +16135,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1767451589
@@ -16201,10 +16207,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1775526291
@@ -16273,10 +16279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1780417730
@@ -16345,10 +16351,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1781285174
@@ -16417,10 +16423,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1789500656
@@ -16489,10 +16495,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1791098042
@@ -16561,10 +16567,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &1806039676
@@ -16633,10 +16639,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1808669030
@@ -16705,10 +16711,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1811210478
@@ -16777,10 +16783,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1827608011
@@ -16849,10 +16855,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1837359477
@@ -16948,10 +16954,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1856169065
@@ -17296,10 +17302,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: -1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1871955346
@@ -17882,10 +17888,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1905224960
@@ -18172,10 +18178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &1940998460
@@ -18265,10 +18271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 264
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.9
   castDistance: 0.5
 --- !u!1 &2007548008
@@ -18391,10 +18397,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2011959675
@@ -18627,10 +18633,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2019231942
@@ -18764,10 +18770,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2050689940
@@ -18836,10 +18842,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2056737050
@@ -18908,10 +18914,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2057077468
@@ -18980,10 +18986,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2060320147
@@ -19052,10 +19058,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2074404388
@@ -19335,10 +19341,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 256
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2093844645
@@ -19515,10 +19521,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2100341931
@@ -19587,10 +19593,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2100451580
@@ -19659,10 +19665,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2113977951
@@ -19731,10 +19737,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.1
 --- !u!65 &2125648731
@@ -19803,10 +19809,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33a4f429845a6f24dbe541fcbab31fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayerMask:
+  targetLayer:
     serializedVersion: 2
-    m_Bits: 1280
-  castDirection: {x: 1, y: 0, z: 0}
+    m_Bits: 0
+  castDir: {x: 0, y: 0, z: 1}
   castSizeMultiplier: 0.66
   castDistance: 0.05
 --- !u!65 &2147042948
