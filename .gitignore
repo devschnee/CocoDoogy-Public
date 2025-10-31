@@ -12,11 +12,6 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
-# 중요!!! 파이어베이스 깃이그노어하기
-[Aa]ssets/[Ff]irebase/
-[Aa]ssets/[Ff]irebase.meta
-
-
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
 *.blend1.meta
@@ -106,7 +101,7 @@ InitTestScene*.unity*
 ====공유 불가 에셋===
 /[Aa]ssets/_Proj/_NotShared
 /[Aa]ssets/_Proj/_NotShared.meta
-Assets/ExternalDependencyManager
-Assets/Firebase
-Assets/ExternalDependencyManager.meta
-Assets/Firebase.meta
+
+==== Firebase 공유 X ====
+[Aa]ssets/[Ff]irebase/
+[Aa]ssets/[Ff]irebase.meta
