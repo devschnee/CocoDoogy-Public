@@ -20,7 +20,7 @@ public class StageManager : MonoBehaviour
     public string mapNameToLoad;
 
     Vector3Int startPoint;
-    Vector3Int endPoint;
+    EndBlock endBlock;
 
     public Dictionary<Vector3Int, List<Block>> placedBlocks = new();
 
@@ -35,16 +35,13 @@ public class StageManager : MonoBehaviour
     async void Start()
     {
         //1. 파이어베이스가 맵 정보를 가져오길 기다림.
+        //TODO: 나중에, 스테이지 들어오기 전에 이미 파이어베이스매니저는 로드할 스테이지 정보를 갖고 들어올 것이기 때문에 Start는 async일 필요 없음.
         await Task.Delay(1000);
         currentMapData = await FirebaseManager_FORTEST.Instance.LoadMapFromFirebase(mapNameToLoad);
+
+
         StartCoroutine(StageStart());
     }
-
-    //TODO: 상호작용 상태 기억시키기
-
-    //TODO: 도착점 도달 시 스테이지 클리어 처리시키기.
-    //스테이지 클리어 시에 
-
     IEnumerator StageStart()
     {
         stageRoot.name = mapNameToLoad;
@@ -57,15 +54,35 @@ public class StageManager : MonoBehaviour
         //TODO: 3. 가져온 맵 정보로 모든 블록이 생성되고 연결까지 끝나면 가리고 있던 부분을 치워줌.
 
         //TODO: 4. 시작점에 코코두기를 생성해줌.
-        playerObject = Instantiate(playerPrefab, startPoint, Quaternion.identity);
+        SpawnPlayer();
+        //yield return null;
+        
         yield return null;
-        var joystick = Instantiate(joystickPrefab, joystickRoot);
-        joystick.GetComponent<RectTransform>().anchoredPosition = new(300, 200);
-        playerObject.GetComponent<PlayerMovement>().joystick = joystick;
         //TODO: 5. 카메라 연출 시작
 
         //6. 연출 종료 시부터 게임 시작.
     }
+
+    //TODO: 상호작용 상태 기억시키기
+
+    //TODO: 도착점 도달 시 스테이지 클리어 처리시키기.
+    //스테이지 클리어를 감지할 객체가 필요함.
+    //초기에 그 객체의 StageManager 필드에 이 객체를 기억시킴.
+    //감지되면, 이 객체가 가진 ClearStage()를 호출함.
+
+    public void ClearStage()
+    {
+        Debug.Log("스테이지 클리어 확인용 로그.");
+    }
+
+    void SpawnPlayer()
+    {
+        playerObject = Instantiate(playerPrefab, startPoint, Quaternion.identity);
+        var joystick = Instantiate(joystickPrefab, joystickRoot);
+        joystick.GetComponent<RectTransform>().anchoredPosition = new(300, 200);
+        playerObject.GetComponent<PlayerMovement>().joystick = joystick;
+    }
+
 
     void LoadStage(MapData loaded)
     {
@@ -80,16 +97,26 @@ public class StageManager : MonoBehaviour
             go.name = block.blockName;
 
             //생성 후 블록의 타입이나 블록의 이름에 따라 적절한 컴포넌트를 붙여 줌.
-                if (block.blockName == "WoodBlockData")
-                    go.AddComponent<WoodBox>();
-               else 
-                    go.AddComponent<GroundBlock>();
-            EnlistBlock(go.GetComponent<Block>());
+            if (block.blockName == "WoodBlockData")
+            {
+                var woodBox = go.AddComponent<WoodBox>();
+                EnlistBlock(woodBox);
+            }
+            else if (block.blockType == BlockType.EndPoint)
+            {
+                endBlock = go.AddComponent<EndBlock>();
+                endBlock.Init(this);
+                EnlistBlock(endBlock);
+            }
+            else
+            {
+                var blockComponent = go.AddComponent<GroundBlock>();
+                EnlistBlock(blockComponent);
+            }
             
             if (block.blockType == BlockType.StartPoint)
                 startPoint = block.position; 
-            if (block.blockType == BlockType.EndPoint) 
-                endPoint = block.position;
+
             
         }
 
