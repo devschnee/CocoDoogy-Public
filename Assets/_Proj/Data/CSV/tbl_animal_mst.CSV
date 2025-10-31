@@ -1,13 +1,9 @@
-home_id,home_name,home_prefab,home_icon,home_tag,home_acquire,home_desc
-40001,[home_sweet_home],Assets/Resources/Prefabs/Home/home_sweet_home.prefab,Assets/Resources/Icons/Home/home_sweet_home.png,basic,ingame,µÎ ÁÖÀÎÀÇ ¼Õ±æ°ú ¿Â±â°¡ ´À²¸Áö´Â ÁıÀÔ´Ï´Ù
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
+animal_id,animal_name,animal_type,animal_tag,animal_prefab,animal_icon,animal_acquire,animal_desc
+30001,[animal_hog],pig,basic,Assets/Resources/Prefabs/Animal/animal_hog.prefab,Assets/Resources/Icons/Animal/animal_hog.png,ingame,ì‚°ì—ì„œ ë§Œë‚œ ëŒì§êµ¬ë¥¼ ì¢‹ì•„í•˜ëŠ” ë©§ë¼ì§€ ì¹œêµ¬ì…ë‹ˆë‹¤
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,

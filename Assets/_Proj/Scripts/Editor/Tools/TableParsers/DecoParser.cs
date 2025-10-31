@@ -59,6 +59,10 @@ public static class DecoParser
             string rawName = v[1];
             string finalName = TextParser.Resolve(rawName, textDict);
 
+            // [key] 포함된 desc 변환
+            string rawDesc = v[8];
+            string finalDesc = TextParser.Resolve(rawDesc, textDict);
+
             db.decoList.Add(new DecoData
             {
                 deco_id = id,
@@ -69,7 +73,7 @@ public static class DecoParser
                 deco_tag = tag,
                 deco_acquire = acquire,
                 deco_stack = stack,
-                deco_desc = v.Length > 8 ? v[8] : ""
+                deco_desc = finalDesc
                 //위에서 분리된 값을 실제 db의 변수들에 넣어줌
             });
         }

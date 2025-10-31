@@ -1,6 +1,6 @@
 stage_id,stage_name,stage_img,stage_desc,map_id,start_cutscene,start_talk,end_talk,end_cutscene,treasure_01_id,treasure_02_id,treasure_03_id,
-stage_1_1,[stage_1_1_name],Asset/Resources/Img/Stage/stage_1_1_main.png,"ÁÖÀÎ´ÔÀÌ ³¯ µÎ°í ¸ÕÀú °¬¾î, »õ·Î¿î ³îÀÌ ½Ã°£ÀÌ¾ß",map_1_1,Asset/Resources/movie/Stage/stage_1_1_start.mp4,talk_1_1_1,talk_1_1_2,Asset/Resources/movie/Stage/stage_1_1_end.mp4,treasure_1_1_1,treasure_1_1_2,treasure_1_1_3,
-stage_1_2,[stage_1_2_name],Asset/Resources/Img/Stage/stage_1_2_main.png,¹Ú½º¸¦ °¡Áö°í ½Å³ª°Ô ³î¾Æº¸ÀÚ,map_1_2,-1,-1,-1,-1,treasure_1_2_1,treasure_1_2_2,treasure_1_2_3,
+stage_1_1,[stage_1_1_name],Asset/Resources/Img/Stage/stage_1_1_main.png,"ì£¼ì¸ë‹˜ì´ ë‚  ë‘ê³  ë¨¼ì € ê°”ì–´, ìƒˆë¡œìš´ ë†€ì´ ì‹œê°„ì´ì•¼",map_1_1,Asset/Resources/movie/Stage/stage_1_1_start.mp4,talk_1_1_1,talk_1_1_2,Asset/Resources/movie/Stage/stage_1_1_end.mp4,treasure_1_1_1,treasure_1_1_2,treasure_1_1_3,
+stage_1_2,[stage_1_2_name],Asset/Resources/Img/Stage/stage_1_2_main.png,ë°•ìŠ¤ë¥¼ ê°€ì§€ê³  ì‹ ë‚˜ê²Œ ë†€ì•„ë³´ì,map_1_2,-1,-1,-1,-1,treasure_1_2_1,treasure_1_2_2,treasure_1_2_3,
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
