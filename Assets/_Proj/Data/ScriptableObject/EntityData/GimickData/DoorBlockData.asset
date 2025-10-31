@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockType: 8
   blockName: Door
-  prefab: {fileID: 0}
+  prefab: {fileID: 2431905018538191131, guid: 7335f40838b093341934b5477644c576, type: 3}

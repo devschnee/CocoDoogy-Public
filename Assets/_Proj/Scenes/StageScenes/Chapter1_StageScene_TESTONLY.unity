@@ -167,9 +167,9 @@ MonoBehaviour:
   playerPrefab: {fileID: 5291992017778968749, guid: c4c522c376ad1b745b54524b0a7cded8, type: 3}
   joystickPrefab: {fileID: 8076522967414642225, guid: e70ee23931c899d429b2f8a615b74827, type: 3}
   joystickRoot: {fileID: 484405798}
-  mapNameToLoad: TerrainTestStage1
-  pbKeys: []
-  pbValues: []
+  mapNameToLoad: LinkTestStage
+  blockPositions: []
+  blocks: []
   factory: {fileID: 1415150933}
 --- !u!1 &326605716
 GameObject:
@@ -590,6 +590,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f50b58bc0d30bc4eaa79ac20c3e588e, type: 2}
   - {fileID: 11400000, guid: 1c8e48103e21be34b96c3da90f373e62, type: 2}
   - {fileID: 11400000, guid: 04bd500d14da0b44ba2c543d56d9eaec, type: 2}
+  - {fileID: 11400000, guid: 5e6ea8221a63f1848af24d0e39d94540, type: 2}
+  - {fileID: 11400000, guid: 904281970c5707747a45afeb94b77404, type: 2}
 --- !u!1 &1499593641
 GameObject:
   m_ObjectHideFlags: 0

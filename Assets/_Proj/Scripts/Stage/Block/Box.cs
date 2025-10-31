@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WoodBox : Block
+public class Box : Block
 {
 
 

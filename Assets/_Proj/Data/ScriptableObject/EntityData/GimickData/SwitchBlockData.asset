@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockType: 5
   blockName: Switch
-  prefab: {fileID: 0}
+  prefab: {fileID: 8789850781793074749, guid: 7930b880dab28d44a9d2a39d6b1b0867, type: 3}

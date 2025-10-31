@@ -30,10 +30,10 @@ public class StageManager : MonoBehaviour
     Vector3Int startPoint;
     EndBlock endBlock;
 
-    public Dictionary<Vector3Int, List<Block>> placedBlocks = new();
+    public Dictionary<Vector3Int, List<Block>> blockDictionary = new();
 
-    public List<Vector3Int> pbKeys = new();
-    public List<Block> pbValues = new();
+    public List<Vector3Int> blockPositions = new();
+    public List<Block> blocks = new();
 
     //맵의 이름으로 찾아온 현재 맵 데이터 객체 (초기상태로의 복귀를 위해 필요)
     private MapData currentMapData; //맵데이터는 늘 기억되고 있을 것임.
@@ -60,6 +60,7 @@ public class StageManager : MonoBehaviour
         LoadStage(currentMapData);
 
         //TODO: 2-2. 블록팩토리가 맵의 오브젝트들 중 서로 연결된 객체를 연결해 줌.
+        LinkSignals();
 
         //TODO: 3. 가져온 맵 정보로 모든 블록이 생성되고 연결까지 끝나면 가리고 있던 부분을 치워줌.
 
@@ -107,43 +108,83 @@ public class StageManager : MonoBehaviour
             go.name = block.blockName;
 
             //생성 후 블록의 타입이나 블록의 이름에 따라 적절한 컴포넌트를 붙여 줌.
-            if (block.blockName == "WoodBlockData")
+            switch (block.blockType)
             {
-                var woodBox = go.AddComponent<WoodBox>();
-                EnlistBlock(woodBox);
-            }
-            else if (block.blockType == BlockType.End)
-            {
-                endBlock = go.AddComponent<EndBlock>();
-                endBlock.Init(this);
-                EnlistBlock(endBlock);
-            }
-            else
-            {
-                var blockComponent = go.AddComponent<GroundBlock>();
-                EnlistBlock(blockComponent);
+                case BlockType.Box:
+                    go.AddComponent<Box>().Init(block);
+                    break;
+                case BlockType.Switch:
+                    go.AddComponent<Switch>().Init(block);
+                    break;
+                case BlockType.Door:
+                    go.AddComponent<Door>().Init(block);
+                    break;
+                case BlockType.End:
+                    go.AddComponent<EndBlock>().Init(block);
+                    endBlock = go.GetComponent<EndBlock>();
+                    endBlock.Init(this);
+                    break;
+                case BlockType.Start:
+                    go.AddComponent<NormalBlock>().Init(block);
+                    startPoint = block.position;
+                    break;
+                case BlockType.Normal:
+                case BlockType.Slope:
+                case BlockType.Water:
+                case BlockType.FlowWater:
+                case BlockType.Turret:
+                case BlockType.Tower:
+                case BlockType.Ironball:
+                case BlockType.Hog:
+                case BlockType.Tortoise:
+                case BlockType.Buffalo:
+                    go.AddComponent<NormalBlock>().Init(block);
+                    break;
             }
             
-            if (block.blockType == BlockType.Start)
-                startPoint = block.position;
 
-            if (loaded.blocks.Find(x => x.blockType == BlockType.Start) == null)
+                    //GetComponent<Block>().Init(block);
+                    EnlistBlock(go.GetComponent<Block>());
+            if (loaded.blocks.Find(x => x.blockType == BlockType.Start) == null) //스타트 없는 스테이지다?
             {
-                startPoint = Vector3Int.up * 50;
+                Debug.Log("스테이지의 시작점이 없음. 원점 + 5y지점에 주인공 생성.");
+                startPoint = Vector3Int.up * 5;
             }
         }
 
-        pbKeys = placedBlocks.Keys.ToList();
+        blockPositions = blockDictionary.Keys.ToList();
 
-        foreach (var kv in placedBlocks)
-            pbValues.AddRange(kv.Value);
+        foreach (var kv in blockDictionary)
+            blocks.AddRange(kv.Value);
+
+
+    }
+
+    void LinkSignals()
+    {
+        foreach (var block in blocks)
+        {
+            if (block is ISignalSender sender)
+            {
+                if (block.origin.property.linkedPos != Vector3Int.one * int.MaxValue)
+                {
+                    ISignalReceiver receiver = blockDictionary[block.origin.property.linkedPos].Find(x => x is ISignalReceiver) as ISignalReceiver;
+                    sender.ConnectReceiver(receiver);
+                    print($"{block.name}:연결함 - {receiver}");
+                }
+                else
+                {
+                    Debug.Log($"{block.name}:{block.origin.position} - 연결된 대상이 없습니다. 확인 바랍니다.");
+                }
+            }
+        }
     }
 
     void EnlistBlock(Block target)
     {
-        if (!placedBlocks.ContainsKey(target.gridPosition))
-            placedBlocks.Add(target.gridPosition, new() { target });
+        if (!blockDictionary.ContainsKey(target.gridPosition))
+            blockDictionary.Add(target.gridPosition, new() { target });
         else
-            placedBlocks[target.gridPosition].Add(target);
+            blockDictionary[target.gridPosition].Add(target);
     }
 }

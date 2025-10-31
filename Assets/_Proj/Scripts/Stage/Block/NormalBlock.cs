@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GroundBlock : Block
+public class NormalBlock : Block
 {
     protected override void OnEnable() 
     {

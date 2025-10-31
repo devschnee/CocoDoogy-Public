@@ -16,7 +16,12 @@ public abstract class Block : MonoBehaviour
     //public bool isOverlapping;
     [Tooltip("그리드 상에서의 포지션(정수)")]
     public Vector3Int gridPosition;
+    public BlockSaveData origin;
 
+    public void Init(BlockSaveData saveData)
+    {
+        this.origin = saveData;
+    }
     protected virtual void OnEnable()
     {
         gridPosition = Vector3Int.RoundToInt(transform.position);

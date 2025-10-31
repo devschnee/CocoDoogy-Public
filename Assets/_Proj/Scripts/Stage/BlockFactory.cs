@@ -26,7 +26,34 @@ public class BlockFactory : MonoBehaviour
         var blockPrefab = data.blockType == BlockType.Normal ? FindBlockPrefab(data.blockType, data.blockName) : FindBlockPrefab(data.blockType);
 
         var obj = Instantiate(blockPrefab, position, rotation);
-        
+        //switch (data.blockType)
+        //{
+        //    case BlockType.Box:
+        //        obj.AddComponent<Box>().Init(data);
+        //        break;
+        //    case BlockType.Switch:
+        //        obj.AddComponent<Switch>();
+        //        break;
+        //    case BlockType.Door:
+        //        obj.AddComponent<Door>();
+        //        break;
+        //    case BlockType.End:
+        //        obj.AddComponent<EndBlock>();
+        //        break;
+        //    case BlockType.Start:
+        //    case BlockType.Normal:
+        //    case BlockType.Slope:
+        //    case BlockType.Water:
+        //    case BlockType.FlowWater:
+        //    case BlockType.Turret:
+        //    case BlockType.Tower:
+        //    case BlockType.Ironball:
+        //    case BlockType.Hog:
+        //    case BlockType.Tortoise:
+        //    case BlockType.Buffalo:
+        //        obj.AddComponent<NormalBlock>();
+        //        break;
+        //}
 
         return obj;
     }
