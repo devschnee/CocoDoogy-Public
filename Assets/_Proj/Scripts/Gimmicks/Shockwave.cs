@@ -63,7 +63,6 @@ public class Shockwave : MonoBehaviour
         long token = 0L
     )
     {
-        Debug.Log($"[DBG] Shockwave.Fire at {transform.position}", this);
         float t = Mathf.Max(0.0001f, tile);
         float radiusWorld = Mathf.Max(0.0001f, radiusTiles) * t;
 
@@ -72,31 +71,30 @@ public class Shockwave : MonoBehaviour
 
         // 반경 내 후보 수집
         var cols = Physics.OverlapSphere(origin, radiusWorld, targetLayer, QueryTriggerInteraction.Ignore); 
-        Debug.Log($"[DBG] OverlapSphere hits={cols?.Length ?? 0} radiusW={radiusWorld}", this);
+        Debug.Log($"[SW] OverlapSphere hits={cols?.Length ?? 0} radiusW={radiusWorld}", this);
         if (cols == null || cols.Length == 0) return;
 
-        var all = new List<(Collider col, Component pushable, IShockSignalReceiver receiver, int h, int gx, int gz, float ts)>();
+        var all = new List<(Collider col, Component pushable, int h, int gx, int gz, float ts)>();
         foreach (var c in cols)
         {
             // PushableObejcts.cs를 찾거나 상속 클래스 컴포넌트 찾음
             var p = (Component)c.GetComponent(typeof(PushableObjects));
-            var r = c.GetComponent<IShockSignalReceiver>();
             float ts = p != null ? GetTileSize(p, tile) : tile; // !pushables는 기본 타일 높이
             int h = Mathf.FloorToInt(c.transform.position.y / ts + 1e-4f);
             int gx = Mathf.FloorToInt((c.transform.position.x + 0.5f * ts) / ts);
             int gz = Mathf.FloorToInt((c.transform.position.z + 0.5f * ts) / ts);
-            all.Add((c, p, r, h, gx, gz, ts));
+            all.Add((c, p, h, gx, gz, ts));
         }
         // 기준층(centerH) 가시성 검사 (pushables도 occlude 가능)
         LayerMask blockMask = occluderMask | targetLayer;
-        var baseHits = new List<(Collider col, Component pushable, IShockSignalReceiver receiver, int gx, int gz, float ts)>();
+        var baseHits = new List<(Collider col, Component pushable, int gx, int gz, float ts)>();
         foreach (var e in all)
         {
             if (e.h != centerH) continue;
 
             if (useOcclusion && IsLineBlocked(origin, e.col, centerH, e.ts, blockMask, this.transform))
                 continue;
-            baseHits.Add((e.col, e.pushable, e.receiver, e.gx, e.gz, e.ts));
+            baseHits.Add((e.col, e.pushable, e.gx, e.gz, e.ts));
         }
 
         // 컬럼 전파: 같은 (gx,gz)에서 h >= centerH 전부 리프트
@@ -118,10 +116,6 @@ public class Shockwave : MonoBehaviour
                 {
                     if (!TryCallLiftAny(e.pushable, rise, hold, fall))
                         StartCoroutine(LiftTransCoroutine(e.col.transform, e.ts, rise, hold, fall));
-                }
-                else if(e.receiver != null)
-                {
-                    e.receiver.ReceiveShockSignal(origin, 1f, token);
                 }
                 else
                 {

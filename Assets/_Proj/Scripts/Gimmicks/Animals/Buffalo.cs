@@ -121,6 +121,7 @@ public class Buffalo : MonoBehaviour
 
         // 충격파
         shockwave.Fire();
+        Debug.Log($"[Buffalo] Shockwave.Fire at {transform.position}", this);
         running = false;
     }
 

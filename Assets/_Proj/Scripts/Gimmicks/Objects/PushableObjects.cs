@@ -134,11 +134,12 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         transform.position = target;
         isMoving = false;
 
-        // 낙하 이벤트 위해 추가
-        if (allowFall)
-        {
-            yield return StartCoroutine(CheckFall());
-        }
+        //// 낙하 이벤트 위해 추가
+        //if (allowFall)
+        //{
+        //    yield return StartCoroutine(CheckFall());
+        //}
+        yield break;
     }
 
     protected IEnumerator MoveAndFall(Vector3 target)
@@ -253,8 +254,9 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         }
         transform.position = start;
          
-        //if (allowFall) { yield return StartCoroutine(CheckFall()); }
         isMoving = false;
-        yield return StartCoroutine(CheckFall());
+        yield break;
+        // NOTE : 혹시나 뭔가 다른 작업을 하다 여기에서 CheckFall()을 할 일이 생긴다면 차라리 다른 스크립트를 작성하는 것을 권장. 원위치 복귀 후 다시 낙하 검사하는 실수 생기면 안 됨.
+        // pushables가 충격파 받은 이후로 적층된 물체들이 원위치 후 다시 낙하 검사를 하게 되면 한 번 더 낙하해서 원위치에서 -y로 더 내려가게 됨
     }
 }

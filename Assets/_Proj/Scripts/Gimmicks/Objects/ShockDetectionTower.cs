@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [DisallowMultipleComponent]
-public class ShockDetectionTower : MonoBehaviour, IShockSignalReceiver
+public class ShockDetectionTower : MonoBehaviour
 {
     [Header("Relay")]
     [Tooltip("이웃한 탑을 찾을 반경(월드 단위)")] public float relayRadius = 4f;
@@ -26,45 +26,40 @@ public class ShockDetectionTower : MonoBehaviour, IShockSignalReceiver
     // token -> last time
     private readonly Dictionary<long, float> seen = new();
 
-     
-    public void ReceiveShockSignal(Vector3 origin, float strength, long token)
-    {
-        ReceiveShock(token, strength, origin, 0);
-    }
-
     //ShockPing 등에서 호출. 같은 token은 쿨다운 내 중복 무시
     public void ReceiveShock(long token, float strength, Vector3 origin, int hop)
     {
-        Debug.Log($"[Tower] ReceiveShock token={token} strength={strength} hop={hop}", this);
+        Debug.Log($"[Tower] 타워 충격파 감지", this);
 
         float now = Time.time;
         if (seen.TryGetValue(token, out float t) && now - t < localCooldown) return;
         seen[token] = now;
 
-        TransmitToDoor(origin, strength, token);
-
-        //여기에 ISignalSender 어댑터를 연결(문 열림)(임시)
+        // 로컬 이벤트
         onShock?.Invoke();
+
+        // 반경 내 ISignalSender 전송(문 트리거는 동료 Sender가 책임)
+        TransmitToDoor();
 
         // 이웃에게 릴레이(전이)
         if (strength < minRelayStrength) return;
-        StartCoroutine(RelayAfterDelay(token, strength, hop + 1));
+        StartCoroutine(RelayAfterDelay(token, strength, hop + 1, origin));
     }
 
-    private void TransmitToDoor(Vector3 origin, float strength, long token)
+    private void TransmitToDoor()
     {
-        Collider[] doorHits = Physics.OverlapSphere(transform.position, relayRadius, doorLayer, QueryTriggerInteraction.Ignore);
+        var cols = Physics.OverlapSphere(transform.position, relayRadius, doorLayer, QueryTriggerInteraction.Ignore);
 
-        foreach(var hit in doorHits)
+        foreach(var c in cols)
         {
-            if(hit.TryGetComponent<IShockSignalReceiver>(out var doorReceiver)) 
-            {
-                doorReceiver.ReceiveShockSignal(transform.position, strength, token);
-            }
+            var sender = c.GetComponentInChildren<ISignalSender>();
+            if (sender == null) continue;
+            try { sender.SendSignal(); }
+            catch { /* sender 구현 쪽에서 처리 */}
         }
     }
 
-    private IEnumerator RelayAfterDelay(long token, float nextStrength, int nextHop)
+    private IEnumerator RelayAfterDelay(long token, float nextStrength, int nextHop, Vector3 origin)
     {
         if (relayDelay > 0f) yield return new WaitForSeconds(relayDelay);
 

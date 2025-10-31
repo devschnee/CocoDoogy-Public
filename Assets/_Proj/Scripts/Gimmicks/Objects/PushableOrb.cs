@@ -11,6 +11,8 @@ public class PushableOrb : PushableObjects
     SphereCollider sph;
 
     [SerializeField] private Shockwave shockwave;
+    [SerializeField] private ShockPing shockPing;
+
     [Tooltip("쿨타임")]
     public float coolTime = 5f;
     private float lastShockwaveTime = -float.MaxValue;
@@ -21,6 +23,7 @@ public class PushableOrb : PushableObjects
         sph = GetComponent<SphereCollider>(); 
         allowSlope = true;
         shockwave = GetComponent<Shockwave>();
+        shockPing = GetComponent<ShockPing>();
 
         // 낙하 완료 이벤트 구독
         OnFallFinished += OnOrbFallFinished;
@@ -48,9 +51,12 @@ public class PushableOrb : PushableObjects
                 riseSeconds: shockwave.riseSec,
                 hangSeconds: shockwave.hangSec,
                 fallSeconds: shockwave.fallSec
-            // 토큰은 내부에서 생성됨
             );
-
+            Debug.Log($"[Orb] Shockwave.Fire at {transform.position}", this);
+            if (shockPing != null)
+            {
+                shockPing.PingTowers(transform.position);
+            }
             lastShockwaveTime = Time.time;
             Debug.Log("구슬 착지 완료. 수평 충격파 발사됨.");
         }

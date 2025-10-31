@@ -12,6 +12,16 @@ public class Door : Block, ISignalReceiver
         StopAllCoroutines();
         IsOn = !IsOn;
         StartCoroutine(OpenCloseCoroutine(IsOn));
+        // 김현지 - 디버깅으로만 테스트 좀 해볼게요
+        if (IsOn)
+        {
+            Debug.Log("문 열림");
+        }
+        else
+        {
+            Debug.Log("문 닫힘");
+        }
+
         //if (IsOn)
         //{
         //    //TODO: 문이 열리는 로직을 여기에 집어넣기
