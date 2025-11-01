@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class PushableObjects : MonoBehaviour, IPushHandler
@@ -31,6 +32,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
 
     public bool allowFall = true;
     public bool allowSlope = false;
+
     #endregion
     // TODO : 슬로프 탈 때 Constraints.FreezeRotation 끄기. 이게 맞나..?
     protected virtual void Awake()
@@ -104,12 +106,12 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
                 // 허용이면 그대로 진행 (낙하 연출로 사라지는/끝층까지 떨어지는 케이스)
             }
         }
-
-
         // 이동 후 낙하여부까지 처리
         StartCoroutine(MoveAndFall(target));
         return true;
     }
+
+
 
     // 모양에 맞는 충돌 검사 구현하도록
     protected abstract bool CheckBlocking(Vector3 target);
@@ -130,6 +132,13 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
 
         transform.position = target;
         isMoving = false;
+
+        //// 낙하 이벤트 위해 추가
+        //if (allowFall)
+        //{
+        //    yield return StartCoroutine(CheckFall());
+        //}
+        yield break;
     }
 
     protected IEnumerator MoveAndFall(Vector3 target)
@@ -143,15 +152,19 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         }
     }
 
+
     // 지면 없으면 아래로 반복 낙하
     protected IEnumerator CheckFall()
     {
         isFalling = true;
 
+        bool startedFalling = false; // 낙하 실제 수행?
+
         Vector3 currPos = transform.position;
 
         while(!Physics.Raycast(currPos + Vector3.up * 0.1f, Vector3.down, 1.5f, groundMask))
         {
+            startedFalling = true;
             Vector3 fallTarget = currPos + Vector3.down * tileSize;
 
             if(fallTarget.y < -100f) // 무한 추락 방지
@@ -164,6 +177,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
             yield return StartCoroutine(MoveTo(fallTarget));
             currPos = transform.position;
         }
+
         isFalling = false;
     }
 
@@ -193,11 +207,17 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         TryPush(dir);
     }
 
+    protected virtual bool IsImmuneToWaveLift()
+    {
+        // 연속 튕김에 기본적으로 면역 없음. 필요 한 물체에 구현 해 줄 것.
+        return false;
+    }
+
     // ========== 공중 띄우기용 ==========
     // 충격파 맞았을 때 y+1 duration 동안 띄우기
     public void WaveLift(float rise, float hold, float fall)
     {
-        if (isMoving || isFalling) return;
+        if (isMoving || isFalling || IsImmuneToWaveLift()) return;
         StartCoroutine(WaveLiftCoroutine(rise, hold, fall));
     }
 
@@ -234,7 +254,10 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         }
         transform.position = start;
          
-        //if (allowFall) { yield return StartCoroutine(CheckFall()); }
         isMoving = false;
+
+        yield break;
+        // NOTE : 혹시나 뭔가 다른 작업을 하다 여기에서 CheckFall()을 할 일이 생긴다면 차라리 다른 스크립트를 작성하는 것을 권장. 원위치 복귀 후 다시 낙하 검사하는 실수 생기면 안 됨.
+        // pushables가 충격파 받은 이후로 적층된 물체들이 원위치 후 다시 낙하 검사를 하게 되면 한 번 더 낙하해서 원위치에서 -y로 더 내려가게 됨
     }
 }

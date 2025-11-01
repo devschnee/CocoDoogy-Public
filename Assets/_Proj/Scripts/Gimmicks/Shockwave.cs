@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -28,8 +29,13 @@ public class Shockwave : MonoBehaviour
     [Tooltip("떨어지는 데 걸리는 시간")]
     [Min(0.01f)] public float fallSec = 1f;
 
+    [Header("Simple Height Filter")]
+    public bool affectSameFloorOnly = false;   // 같은 층만 영향
+    public bool alsoAffectStackedAbove = false; // 위층은 '적층'일 때만 (옵션)
+
     public void Fire()
     {
+        long newToken = DateTime.Now.Ticks;
         Fire(
             origin: transform.position,
             tile: tileHeight,
@@ -39,7 +45,8 @@ public class Shockwave : MonoBehaviour
             occludeMask: occluderMask,
             riseSeconds: riseSec,
             hangSeconds: hangSec,
-            fallSeconds: fallSec
+            fallSeconds: fallSec,
+            token: newToken
          );
     }
 
@@ -52,7 +59,8 @@ public class Shockwave : MonoBehaviour
         LayerMask occludeMask,
         float riseSeconds,
         float hangSeconds,
-        float fallSeconds
+        float fallSeconds,
+        long token = 0L
     )
     {
         float t = Mathf.Max(0.0001f, tile);
@@ -62,7 +70,8 @@ public class Shockwave : MonoBehaviour
         int centerH = Mathf.FloorToInt(origin.y / t + 1e-4f);
 
         // 반경 내 후보 수집
-        var cols = Physics.OverlapSphere(origin, radiusWorld, targetLayer, QueryTriggerInteraction.Ignore);
+        var cols = Physics.OverlapSphere(origin, radiusWorld, targetLayer, QueryTriggerInteraction.Ignore); 
+        Debug.Log($"[SW] OverlapSphere hits={cols?.Length ?? 0} radiusW={radiusWorld}", this);
         if (cols == null || cols.Length == 0) return;
 
         var all = new List<(Collider col, Component pushable, int h, int gx, int gz, float ts)>();
@@ -70,7 +79,6 @@ public class Shockwave : MonoBehaviour
         {
             // PushableObejcts.cs를 찾거나 상속 클래스 컴포넌트 찾음
             var p = (Component)c.GetComponent(typeof(PushableObjects));
-
             float ts = p != null ? GetTileSize(p, tile) : tile; // !pushables는 기본 타일 높이
             int h = Mathf.FloorToInt(c.transform.position.y / ts + 1e-4f);
             int gx = Mathf.FloorToInt((c.transform.position.x + 0.5f * ts) / ts);
