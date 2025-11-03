@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: DecoDatabase
   m_EditorClassIdentifier: 
   decoList:
-  - id: 10001
-    name: deco_maple_tree
-    prefabPath: Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab
-    iconPath: Assets/Resources/Icons/Deco/ico_maple_tree.png
-    category: 0
-    tag: tree
-    acquire: 2
-    stack: 99
-    description: deco_maple_tree_desc
+  - deco_id: 10001
+    deco_name: "\uB2E8\uD48D \uB098\uBB34"
+    deco_prefab: Prefabs/Deco/deco_maple_tree
+    deco_icon: Icons/Deco/icon_maple_tree
+    deco_type: 0
+    deco_tag: 2
+    deco_acquire: 1
+    deco_stack: 99
+    deco_desc: "\uC0DD\uBA85\uB825\uC774 \uAC15\uD55C \uB2E8\uD48D \uB098\uBB34\uC785\uB2C8\uB2E4"

@@ -57,8 +57,47 @@ public class CsvImportManager : EditorWindow
             switch (fileName)
             {
                 //CSV의 type이 "SO"인 경우가 추가될 때마다 case를 추가, 각 CSV에 맞는 Parser클래스 생성
+                case "tbl_animal_mst":
+                    AnimalParser.Import(csvPath);
+                    break;
+                case "tbl_artifact_mst":
+                    ArtifactParser.Import(csvPath);
+                    break;
+                case "tbl_background_mst":
+                    BackgroundParser.Import(csvPath);
+                    break;
+                case "tbl_chapter_mst":
+                    ChapterParser.Import(csvPath);
+                    break;
+                case "tbl_codex_mst":
+                    CodexParser.Import(csvPath);
+                    break;
+                case "tbl_costume_mst":
+                    CostumeParser.Import(csvPath);
+                    break;
                 case "tbl_deco_mst":
                     DecoParser.Import(csvPath);
+                    break;
+                case "tbl_home_mst":
+                    HomeParser.Import(csvPath);
+                    break;
+                case "tbl_profile_icon_mst":
+                    Profile_iconParser.Import(csvPath);
+                    break;
+                case "tbl_quest_mst":
+                    QuestParser.Import(csvPath);
+                    break;
+                case "tbl_shop_item_dtl":
+                    Shop_itemParser.Import(csvPath);
+                    break;
+                case "tbl_shop_mst":
+                    ShopParser.Import(csvPath);
+                    break;
+                case "tbl_stage_mst":
+                    StageParser.Import(csvPath);
+                    break;
+                case "tbl_treasure_mst":
+                    TreasureParser.Import(csvPath);
                     break;
                 default:
                     Debug.LogWarning($"[CSV] {fileName} 변환 로직 없음");

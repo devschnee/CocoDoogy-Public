@@ -1,0 +1,2 @@
+quest_id,quest_name,quest_type,quest_object,quest_obj_desc,quest_value,quest_reward_cap,quest_reward_item,quest_reward_count,quest_desc
+70001,[quest_name_gamelogin],daily,login,하루 1회 접속,1,1000,0,0,하루 1회 접속하십시오

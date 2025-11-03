@@ -1,3 +1,6 @@
-﻿id,name,prefabPath,iconPath,category,tag,acquire,stack,description
-10001,deco_maple_tree,Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab,Assets/Resources/Icons/Deco/ico_maple_tree.png,plant,tree,shop,99,deco_maple_tree_desc
+deco_id,deco_name,deco_prefab,deco_icon,deco_type,deco_tag,deco_acquire,deco_stack,deco_desc
+10001,[deco_maple_tree],Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab,Assets/Resources/Icons/Deco/icon_maple_tree.png,plant,chair,ingame,99,생명력이 강한 [deco_maple_tree]입니다
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
 ,,,,,,,,

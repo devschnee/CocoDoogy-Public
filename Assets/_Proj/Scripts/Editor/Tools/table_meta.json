@@ -1,28 +1,65 @@
 ﻿{
   "entries": [
+
+    {
+      "name": "tbl_animal_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_artifact_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_background_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_chapter_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_codex_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_costume_mst",
+      "type": "SO"
+    },
     {
       "name": "tbl_deco_mst",
       "type": "SO"
     },
     {
-      "name": "tbl_item_mst",
+      "name": "tbl_home_mst",
       "type": "SO"
     },
     {
-      "name": "tbl_character_mst",
+      "name": "tbl_profile_icon_mst",
       "type": "SO"
     },
     {
-      "name": "tbl_ui_text",
+      "name": "tbl_quest_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_shop_item_dtl",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_shop_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_stage_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_text_mst",
       "type": "CSV_ONLY"
     },
     {
-      "name": "tbl_dialogue",
-      "type": "CSV_ONLY"
+      "name": "tbl_treasure_mst",
+      "type": "SO"
     }
   ]
 }
-//실제 json구조
-//todo : 데이터 테이블 추가 될 시 이곳에 name, type 올릴것
-//name은 Assets/_Proj/Data/CSV에 넣은 .csv 파일 이름을 그대로 사용
-//스크립터블오브젝트화 해야 한다면 type 에 "SO", 아닐시 "CSV_ONLY"
