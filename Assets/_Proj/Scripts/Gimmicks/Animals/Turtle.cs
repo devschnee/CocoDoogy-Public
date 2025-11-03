@@ -88,8 +88,8 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
             btnGroup.SetActive(inRange);
             if (inRange)
             {
-                // NOTE : UI 월드 축 고정되게 설정함. 0,0,0 추후 변경.
-                btnGroup.transform.rotation = Quaternion.identity;
+                // NOTE : 추후 각도 변경 가능성 있음.
+                btnGroup.transform.rotation = Quaternion.Euler(90f, 0, 0);
             }
         }
     }
@@ -123,7 +123,8 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         while (true)
         {
             //NOTE: 무한반복 나는 경우 이 부분을 체크할 것. 예) 이 스크립트가 달린 오브젝트가 물과 겹쳐있지 않은 경우, (다음 타일 + /*Vector3.up*/ 부분!!!)
-            bool isBlocking = Physics.CheckBox(nextTile /*+ Vector3.up * (tileSize / 2)*/,
+            bool isBlocking = Physics.CheckBox(
+                nextTile,
                 boxHalfExt,
                 Quaternion.identity,
                 blockLayer,
@@ -155,7 +156,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         float elapsed = 0f;
 
         // 탑승 가능한 오브젝트 감지
-        Vector3 overlapOrigin = transform.position + Vector3.up * (tileSize / 4f);
+        Vector3 overlapOrigin = transform.position + Vector3.up * (tileSize / 2f);
         Collider[] ridables = Physics.OverlapBox(
             overlapOrigin,
             Vector3.one * (tileSize / 2f),
@@ -167,18 +168,36 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         List<Transform> ridableTrans = new List<Transform>();
         List<Vector3> ridableStartPos = new List<Vector3>();
         List<Vector3> ridableTargetPos = new List<Vector3>();
+        List<Rigidbody> ridableRbs = new List<Rigidbody>();
+        List<PlayerMovement> playerMoveScripts = new List<PlayerMovement>();
 
         Vector3 offset = endPos - startPos; // 터틀의 전체 이동 변위
 
         foreach (var col in ridables)
         {
-            // Transform을 직접 이동 대상에 추가
-            if (col.transform != transform)
+            if (col.transform == transform) continue;
+
+            Rigidbody riderRb = col.attachedRigidbody;
+            if(riderRb != null)
             {
+                ridableTargetPos.Add(col.transform.position + offset);
                 ridableTrans.Add(col.transform);
-                ridableStartPos.Add(col.transform.position);
-                ridableTargetPos.Add(col.transform.position + offset); // 터틀의 이동 변위만큼 목표 위치 설정
+                ridableRbs.Add(riderRb);
+
+                riderRb.isKinematic = true;
+
+                // Playermovement 비활
+                PlayerMovement pm = col.GetComponent<PlayerMovement>();
+                if (pm != null)
+                {
+                    pm.enabled = false;
+                    playerMoveScripts.Add(pm);
+                }
+                // 거북이를 부모로 설정
+                col.transform.SetParent(transform);
             }
+            
+                //ridableStartPos.Add(col.transform.position);
         }
 
         // 터틀과 탑승 물체 동시 이동
@@ -189,24 +208,48 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
             // 터틀 이동
             transform.position = Vector3.Lerp(startPos, endPos, t);
-
-            // 탑승 물체 이동
-            for (int i = 0; i < ridableTrans.Count; i++)
+            if (dir.sqrMagnitude > 0.001f)
             {
-                // Transform을 직접 조작하여 동기화
-                ridableTrans[i].position = Vector3.Lerp(ridableStartPos[i], ridableTargetPos[i], t);
+                Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10f);
             }
-
             yield return null;
         }
 
         // 이동 완료 및 상태 정리
         transform.position = endPos;
+
         for (int i = 0; i < ridableTrans.Count; i++)
         {
-            ridableTrans[i].position = ridableTargetPos[i];
-        }
+            if (ridableTrans[i] == null) continue;
 
+            Vector3 finalPos = ridableTargetPos[i];
+
+            // 부모 해제
+            ridableTrans[i].SetParent(null);
+
+            // 하차 후 타깃 위치 설정
+            ridableTrans[i].position = finalPos;
+
+            
+        }
+        yield return null;
+
+        // Rigidbody와 PlayerMovement 복원
+        for (int i = 0; i < ridableTrans.Count; i++)
+        {
+            if (ridableRbs[i] != null)
+            {
+                // Rigidbody를 다시 Kinematic 해제하여 물리 이동 재개
+                ridableRbs[i].isKinematic = false;
+            }
+
+            // PlayerMovement 재활성화
+            if (i < playerMoveScripts.Count && playerMoveScripts[i] != null)
+            {
+                playerMoveScripts[i].enabled = true;
+            }
+        }
         isMoving = false;
     }
 

@@ -70,6 +70,9 @@ MonoBehaviour:
   moveSpeed: 5
   accel: 25
   rotateLerp: 12
+  slopeMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!54 &2751089994372822744
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,17 +133,33 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1693816919275241078, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1693816919444554684, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693816919444554684, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1693816919786645906, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1693816919786645906, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1693816919888243769, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693816919888243769, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1693816920450361188, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -190,9 +209,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1693816920450361209, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 4828338645736489794, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4828338645736489794, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4828338645736489796, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_Layer
