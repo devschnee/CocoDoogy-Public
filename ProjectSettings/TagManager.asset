@@ -9,6 +9,8 @@ TagManager:
   - Master
   - Decoration
   - Animal
+  - pooled
+  - newPooled
   layers:
   - Default
   - TransparentFX

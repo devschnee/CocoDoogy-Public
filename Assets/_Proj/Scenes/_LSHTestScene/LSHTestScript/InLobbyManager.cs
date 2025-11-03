@@ -4,20 +4,20 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using System.Collections.Generic;
 // Surface���� : ������ ���⿡ �� ���� �ְ����� ���߿� �����ϰڽ���.
-[Serializable]
-public class  NavMeshSaveData
-{
-    public List<NavMeshObjectData> nObj = new List<NavMeshObjectData>();
-}
-[Serializable]
-public class NavMeshObjectData
-{
-    public string prefabName;
-    public Vector3 position;
-    public Quaternion rotation;
-    public Vector3 scale;
-}
-//
+// [Serializable]
+// public class  NavMeshSaveData
+// {
+//     public List<NavMeshObjectData> nObj = new List<NavMeshObjectData>();
+// }
+// [Serializable]
+// public class NavMeshObjectData
+// {
+//     public string prefabName;
+//     public Vector3 position;
+//     public Quaternion rotation;
+//     public Vector3 scale;
+// }
+// //
 
 public class InLobbyManager : MonoBehaviour
 {

@@ -26,9 +26,8 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     protected Vector3 originalPos; // 드래그 시 시작 포지션 저장
     protected bool isDragging = false;
 
-    //protected int originalLayer; // 평상 시 레이어
-    //protected int editableLayer; // 편집모드 시 레이어
-    
+    //protected int originalLayer; // 평상 시 레이어, 로비매니저로
+    //protected int editableLayer; // 편집모드 시 레이어, 로비매니저로
     //protected bool isEditMode; // 상태전환을 이걸로 퉁치나?, 로비매니저로
     protected float yValue; // 생성 시 y축 얻고 드래그 시 해당 값 고정
     protected bool yCaptured = false; // yValue가 값을 얻었는지 판단
@@ -46,8 +45,8 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         mainCam = Camera.main;
         //if (editController == null) editController = FindFirstObjectByType<EditController>(); // 로비매니저로
 
-        //originalLayer = LayerMask.NameToLayer("InLobbyObject");
-        //editableLayer = LayerMask.NameToLayer("Editable");
+        //originalLayer = LayerMask.NameToLayer("InLobbyObject"); // 로비매니저로
+        //editableLayer = LayerMask.NameToLayer("Editable"); // 로비매니저로
         mainPlaneMask = LayerMask.NameToLayer("MainPlaneLayer");
         //isEditMode = false; // 상태패턴 전환 시 수정, 로비매니저로
 
@@ -81,7 +80,18 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
     }
 
+    // 애니메이션 시 에이전트 제어 근데 이곳에 쓰는게 맞나.
+    public void StopAgentBeginAnim()
+    {
+        agent.isStopped = true;
+
+    }
     
+    public void StartAgentEndAnim()
+    {
+        agent.isStopped = false;
+    }
+
 
     // 인터페이스 영역
     /// <summary>

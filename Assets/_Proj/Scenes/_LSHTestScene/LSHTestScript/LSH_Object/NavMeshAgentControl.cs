@@ -62,7 +62,7 @@ public class NavMeshAgentControl
     public void MoveToPoint(Transform point)
     {
         Vector3 pos = point.position;
-        float speed = Random.Range(3f, 7f);
+        float speed = Random.Range(2f, 4f);
         agent.SetDestination(pos);
         agent.speed = speed;
         //agent.acceleration = Random.Range(speed, 20f);
@@ -73,7 +73,7 @@ public class NavMeshAgentControl
     {
         Vector3 lastPos = point.position;
         agent.SetDestination(lastPos);
-        agent.speed = 3f;
+        agent.speed = 2f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 0f;
     }
