@@ -122,7 +122,8 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         // Block Layer를 만날 때까지 계속 이동 (빙판 로직)
         while (true)
         {
-            bool isBlocking = Physics.CheckBox(nextTile + Vector3.up * (tileSize / 2),
+            //NOTE: 무한반복 나는 경우 이 부분을 체크할 것. 예) 이 스크립트가 달린 오브젝트가 물과 겹쳐있지 않은 경우, (다음 타일 + /*Vector3.up*/ 부분!!!)
+            bool isBlocking = Physics.CheckBox(nextTile /*+ Vector3.up * (tileSize / 2)*/,
                 boxHalfExt,
                 Quaternion.identity,
                 blockLayer,
