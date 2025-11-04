@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class StageClearInfo
@@ -16,7 +17,8 @@ public class StageManager : MonoBehaviour
 {
     //이 클래스가 해야 할 일: 스테이지 구성 요청(블록팩토리), 스테이지 내 각종 상호작용 상태 기억, 시작점에 주인공 생성, 주인공이 도착점에 도달 시 스테이지 클리어 처리.
 
-
+    [Header("IS TEST MODE??????????????????")]
+    public bool isTest;
 
 
     public Transform stageRoot;
@@ -25,6 +27,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] Transform joystickRoot;
     GameObject playerObject;
     //불러올 맵의 이름
+    [Header("PLEASE USE ONLY WHEN TEST MODE")]
     public string mapNameToLoad;
 
     Vector3Int startPoint;
@@ -38,23 +41,34 @@ public class StageManager : MonoBehaviour
     //맵의 이름으로 찾아온 현재 맵 데이터 객체 (초기상태로의 복귀를 위해 필요)
     private MapData currentMapData; //맵데이터는 늘 기억되고 있을 것임.
 
-
+    private List<IPlayerFinder> finders = new();
      
     [SerializeField] BlockFactory factory;
 
+
+    void Awake()
+    {
+        if (!isTest)
+        {
+            currentMapData = FirebaseManager_FORTEST.Instance.currentMapData;
+        }
+    }
     async void Start()
     {
         //1. 파이어베이스가 맵 정보를 가져오길 기다림.
         //TODO: 나중에, 스테이지 들어오기 전에 이미 파이어베이스매니저는 로드할 스테이지 정보를 갖고 들어올 것이기 때문에 Start는 async일 필요 없음.
-        await Task.Delay(1000);
-        currentMapData = await FirebaseManager_FORTEST.Instance.LoadMapFromFirebase(mapNameToLoad);
+        if (isTest)
+        {
+            await Task.Delay(200); //이거 왜 하냐면 파이어베이스매니저가 아직 초기화가 안된 상황일 가능성이 높기 때문임
+            currentMapData = await FirebaseManager_FORTEST.Instance.LoadMapFromFirebase(mapNameToLoad);
+        }
 
 
         StartCoroutine(StageStart());
     }
     IEnumerator StageStart()
     {
-        stageRoot.name = mapNameToLoad;
+        //stageRoot.name = mapNameToLoad;
         //2. 가져온 맵 정보로 이 씬의 블록팩토리가 맵을 생성하도록 함.
         //2-1. 블록팩토리가 맵을 생성
         LoadStage(currentMapData);
@@ -84,6 +98,7 @@ public class StageManager : MonoBehaviour
     public void ClearStage()
     {
         Debug.Log("스테이지 클리어 확인용 로그.");
+        SceneManager.LoadScene("Lobby");
     }
 
     void SpawnPlayer()
@@ -92,6 +107,14 @@ public class StageManager : MonoBehaviour
         var joystick = Instantiate(joystickPrefab, joystickRoot);
         joystick.GetComponent<RectTransform>().anchoredPosition = new(300, 200);
         playerObject.GetComponent<PlayerMovement>().joystick = joystick;
+
+
+        //TODO: 나중에 꼭 지울 것.
+        Camera.main.GetComponent<CamControl_Temp>().playerObj = playerObject;
+        foreach (var finder in finders)
+        {
+            finder.SetPlayerTransform(playerObject);
+        }
     }
 
 
@@ -103,53 +126,20 @@ public class StageManager : MonoBehaviour
             print($"[StageManager] {block.blockName}: {block.blockType} [{block.position.x}],[{block.position.y}],[{block.position.z}]");
             //여기서 팩토리가 들고 있는 프리팹으로 인스턴시에이트.
             
+            //생성 후 블록의 타입으로 컴포넌트 붙여주는 처리는 BlockFactory에서 담당.
             GameObject go = factory.CreateBlock(block);
             go.transform.SetParent(stageRoot, true);
             go.name = block.blockName;
 
-            //생성 후 블록의 타입이나 블록의 이름에 따라 적절한 컴포넌트를 붙여 줌.
-            switch (block.blockType)
-            {
-                case BlockType.Box:
-                    go.AddComponent<Box>().Init(block);
-                    break;
-                case BlockType.Switch:
-                    go.AddComponent<Switch>().Init(block);
-                    break;
-                case BlockType.Door:
-                    go.AddComponent<Door>().Init(block);
-                    break;
-                case BlockType.End:
-                    go.AddComponent<EndBlock>().Init(block);
-                    endBlock = go.GetComponent<EndBlock>();
-                    endBlock.Init(this);
-                    break;
-                case BlockType.Start:
-                    go.AddComponent<NormalBlock>().Init(block);
-                    startPoint = block.position;
-                    break;
-                case BlockType.Normal:
-                case BlockType.Slope:
-                case BlockType.Water:
-                case BlockType.FlowWater:
-                case BlockType.Turret:
-                    go.AddComponent<Turret>().Init(block);
-                    break;
-                case BlockType.Tower:
-                    go.AddComponent<Tower>().Init(block);
-                    break;
-                case BlockType.Ironball:
-                    //go.AddComponent<Ironball>().Init(block);
-                case BlockType.Hog:
-                case BlockType.Tortoise:
-                case BlockType.Buffalo:
-                    go.AddComponent<NormalBlock>().Init(block);
-                    break;
-            }
-            
-
-                    //GetComponent<Block>().Init(block);
-                    EnlistBlock(go.GetComponent<Block>());
+                    
+            if (block.blockType == BlockType.Start)
+                startPoint = block.position;
+            if (block.blockType == BlockType.End)
+                go.GetComponent<EndBlock>().Init(this);
+            if (BlockType.Hog <= block.blockType && block.blockType <= BlockType.Buffalo)
+                finders.Add(go.GetComponent<IPlayerFinder>());
+            //GetComponent<Block>().Init(block);
+            EnlistBlock(go.GetComponent<Block>());
             if (loaded.blocks.Find(x => x.blockType == BlockType.Start) == null) //스타트 없는 스테이지다?
             {
                 Debug.Log("스테이지의 시작점이 없음. 원점 + 5y지점에 주인공 생성.");

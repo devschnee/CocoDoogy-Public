@@ -10,7 +10,7 @@ using UnityEngine.UI;
 // 움직이는 동안은 팝업X
 // 물길 영향 X
 [RequireComponent(typeof(Rigidbody))]
-public class Turtle : MonoBehaviour, IDashDirection
+public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 {
     [Header("Movement Settgins")]
     public float tileSize = 1f;
@@ -39,6 +39,8 @@ public class Turtle : MonoBehaviour, IDashDirection
     [SerializeField] Image typeIcon;
 
     public bool CanInteract => !isMoving; // 이동 중이 아닐 때만 상호작용 가능
+
+    Transform IPlayerFinder.Player { get => playerTrans; set => playerTrans = value; }
 
     void Awake()
     {
@@ -120,7 +122,8 @@ public class Turtle : MonoBehaviour, IDashDirection
         // Block Layer를 만날 때까지 계속 이동 (빙판 로직)
         while (true)
         {
-            bool isBlocking = Physics.CheckBox(nextTile + Vector3.up * (tileSize / 2),
+            //NOTE: 무한반복 나는 경우 이 부분을 체크할 것. 예) 이 스크립트가 달린 오브젝트가 물과 겹쳐있지 않은 경우, (다음 타일 + /*Vector3.up*/ 부분!!!)
+            bool isBlocking = Physics.CheckBox(nextTile /*+ Vector3.up * (tileSize / 2)*/,
                 boxHalfExt,
                 Quaternion.identity,
                 blockLayer,
