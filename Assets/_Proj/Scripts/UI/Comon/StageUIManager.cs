@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StageUIManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class StageUIManager : MonoBehaviour
 
     [Header("OptionObject")]
     public GameObject OptionImg;
+
+    private string map_id;
 
     void Awake()
     {
@@ -35,12 +38,13 @@ public class StageUIManager : MonoBehaviour
 
     void Retry()
     {
-        print("다시하지롱");
-        //
+        //Todo : 챕터에 따라 분기
+        SceneManager.LoadScene("Chapter1_StageScene_TESTONLY");
     }
 
     void Quit()
     {
-        print("나가지롱");
+        //Todo : 챕터에 따라 스테이지 선택화면 분기
+        SceneManager.LoadScene("Lobby");
     }
 }
