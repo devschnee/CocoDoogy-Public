@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
 
             Ray mainRay = new(offsetRbPos, input45Below);
 
-            RaycastHit[] mainRayHits = Physics.RaycastAll(mainRay, .73f, LayerMask.GetMask("Ground", "Wall", "Slope"));
+            RaycastHit[] mainRayHits = Physics.RaycastAll(mainRay, .71f, LayerMask.GetMask("Ground", "Wall", "Slope"));
             
             for (int i = 0; i < mainRayHits.Length; i++)
             {
@@ -68,16 +68,17 @@ public class PlayerMovement : MonoBehaviour
 
             if (mainRayHits. Length < 1)
             {
-                input = Vector2.zero;
+                input *= -.01f;
+               
             }
             else
             {
                 Ray subRayL = new(offsetRbPos, rotatedL);
                 Ray subRayR = new(offsetRbPos, rotatedR);
-                if (!Physics.Raycast(subRayL, .73f, LayerMask.GetMask("Ground", "Wall", "Slope")) &&
-                !Physics.Raycast(subRayR, .73f, LayerMask.GetMask("Ground", "Wall", "Slope")))
+                if (!Physics.Raycast(subRayL, .71f, LayerMask.GetMask("Ground", "Wall", "Slope")) &&
+                !Physics.Raycast(subRayR, .71f, LayerMask.GetMask("Ground", "Wall", "Slope")))
                 {
-                    input = Vector2.zero;
+                    input *= -.01f;
                 }
             }
             
@@ -147,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
                 // 입력 없음 상태도 전략이 받아야 함. 그래서 zero로라도 실행.
             }
 
-            return;
+            //return;
         }
 
         Vector3 fwd = camTr ? camTr.forward : Vector3.forward;
@@ -206,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(nextPos);
 
         // 회전 처리
-        Quaternion targetRot = Quaternion.LookRotation(new Vector3(finalDir.x, 0, finalDir.z), Vector3.up);
+        Quaternion targetRot = Quaternion.LookRotation(new Vector3(joystick.InputDir.x, 0, joystick.InputDir.z), Vector3.up);
         Quaternion smoothRot = Quaternion.Slerp(rb.rotation, targetRot, rotateLerp * Time.fixedDeltaTime);
         rb.MoveRotation(smoothRot);
 
