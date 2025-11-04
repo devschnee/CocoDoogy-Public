@@ -14,7 +14,10 @@ public class FirebaseManager_FORTEST : MonoBehaviour
     private DatabaseReference MapDataRef => DB.RootReference.Child($"mapData");
     private DatabaseReference MapMetaRef => DB.RootReference.Child($"mapMeta");
 
+    public StageManager stageManager;
+
     public bool IsInitialized { get; private set; }
+    public MapData currentMapData;
     async void Start()
     {
         DependencyStatus status = await FirebaseApp.CheckAndFixDependenciesAsync();
@@ -119,5 +122,10 @@ public class FirebaseManager_FORTEST : MonoBehaviour
             Debug.LogError(ee.Message);
             return null;
         }
+    }
+
+    public async Task Temp(string id)
+    {
+        currentMapData =  await LoadMapFromFirebase(id);
     }
 }
