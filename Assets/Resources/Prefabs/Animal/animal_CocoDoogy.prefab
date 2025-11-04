@@ -412,9 +412,9 @@ GameObject:
   - component: {fileID: 1693816920450361211}
   - component: {fileID: 1693816920450361210}
   - component: {fileID: 1693816920450361189}
-  m_Layer: 31
-  m_Name: Dog 1
-  m_TagString: CocoDoogy
+  m_Layer: 0
+  m_Name: animal_CocoDoogy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
