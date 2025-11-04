@@ -81,10 +81,11 @@ MonoBehaviour:
     m_Bits: 0
   throughLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16
   requiredHoldtime: 0.9
   allowFall: 1
   allowSlope: 1
+  immuneTime: 5
 --- !u!114 &-6961232074567143049
 MonoBehaviour:
   m_ObjectHideFlags: 0

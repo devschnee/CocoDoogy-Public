@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using static UnityEngine.UI.Image;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -44,22 +45,59 @@ public class PlayerMovement : MonoBehaviour
         if (camTr == null) camTr = Camera.main?.transform;
 
         Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
+        if (input.magnitude > 0)
+        {
+            Vector3 input45Below = new(joystick.InputDir.x, -1, joystick.InputDir.z);
 
-        Vector3 inputOffset = new(joystick.InputDir.x, 0, joystick.InputDir.z);
-        Ray ray = new(transform.position + (inputOffset * .3f), inputOffset);
-        RaycastHit[] results = new RaycastHit[10];
+            Vector3 offsetRbPos = transform.position + (Vector3.up * .5f);
 
-        int hitnums = Physics.BoxCastNonAlloc(transform.position - Vector3.up * .3f + new Vector3(input.x, 0, input.y) * .2f, Vector3.one * .1f, Vector3.down, results);
-        print(hitnums);
-
-        if (hitnums < 2)
-
-
-
+            Quaternion rotR = Quaternion.Euler(0, 45f, 0);
+            Quaternion rotL = Quaternion.Euler(0, -45f, 0);
+            Vector3 rotatedR = rotR * input45Below;
+            Vector3 rotatedL = rotL * input45Below;
 
 
+            Ray mainRay = new(offsetRbPos, input45Below);
 
-            input = Vector2.zero;
+            RaycastHit[] mainRayHits = Physics.RaycastAll(mainRay, .71f, LayerMask.GetMask("Ground", "Wall", "Slope"));
+            
+            for (int i = 0; i < mainRayHits.Length; i++)
+            {
+                print($"PlayerMovement: [{i}]: {mainRayHits[i].collider.name}");
+            }
+
+            if (mainRayHits. Length < 1)
+            {
+                input *= -.01f;
+               
+            }
+            else
+            {
+                Ray subRayL = new(offsetRbPos, rotatedL);
+                Ray subRayR = new(offsetRbPos, rotatedR);
+                if (!Physics.Raycast(subRayL, .71f, LayerMask.GetMask("Ground", "Wall", "Slope")) &&
+                !Physics.Raycast(subRayR, .71f, LayerMask.GetMask("Ground", "Wall", "Slope")))
+                {
+                    input *= -.01f;
+                }
+            }
+            
+        }
+        //Vector3 inputOffset = new(joystick.InputDir.x, 0, joystick.InputDir.z);
+        //Ray ray = new(transform.position + (inputOffset * .3f), inputOffset);
+        //RaycastHit[] results = new RaycastHit[10];
+
+        //int hitnums = Physics.BoxCastNonAlloc(transform.position - Vector3.up * .3f + new Vector3(input.x, 0, input.y) * .2f, Vector3.one * .1f, Vector3.down, results);
+        //print(hitnums);
+
+        //if (hitnums < 2)
+
+
+
+
+
+
+        //    input = Vector2.zero;
 
         //생각을 해봅시다...
         //내가 갈 곳에 땅바닥이 있는가? 를 판단하려면
@@ -110,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
                 // 입력 없음 상태도 전략이 받아야 함. 그래서 zero로라도 실행.
             }
 
-            return;
+            //return;
         }
 
         Vector3 fwd = camTr ? camTr.forward : Vector3.forward;
@@ -169,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(nextPos);
 
         // 회전 처리
-        Quaternion targetRot = Quaternion.LookRotation(new Vector3(finalDir.x, 0, finalDir.z), Vector3.up);
+        Quaternion targetRot = Quaternion.LookRotation(new Vector3(joystick.InputDir.x, 0, joystick.InputDir.z), Vector3.up);
         Quaternion smoothRot = Quaternion.Slerp(rb.rotation, targetRot, rotateLerp * Time.fixedDeltaTime);
         rb.MoveRotation(smoothRot);
 
