@@ -62,15 +62,15 @@ public class InLobbyManager : MonoBehaviour
         gObj.tag = "CocoDoogy";
         gObj.layer = LayerMask.NameToLayer("InLobbyObject");
 
-        GameObject gObj2 = Instantiate(DataManager.Instance.Animal.GetPrefab(30001), cocoWaypoints[5].position, Quaternion.identity);
-        gObj2.AddComponent<AnimalBehaviour>();
-        gObj2.tag = "Animal";
-        gObj2.layer = LayerMask.NameToLayer("InLobbyObject");
+        // GameObject gObj2 = Instantiate(DataManager.Instance.Animal.GetPrefab(30001), cocoWaypoints[5].position, Quaternion.identity);
+        // gObj2.AddComponent<AnimalBehaviour>();
+        // gObj2.tag = "Animal";
+        // gObj2.layer = LayerMask.NameToLayer("InLobbyObject");
 
-        GameObject gObj3 = Instantiate(DataManager.Instance.Animal.GetPrefab(30003), cocoWaypoints[6].position, Quaternion.identity);
-        gObj3.AddComponent<MasterBehaviour>();
-        gObj3.tag = "Master";
-        gObj3.layer = LayerMask.NameToLayer("InLobbyObject");
+        // GameObject gObj3 = Instantiate(DataManager.Instance.Animal.GetPrefab(30003), cocoWaypoints[6].position, Quaternion.identity);
+        // gObj3.AddComponent<MasterBehaviour>();
+        // gObj3.tag = "Master";
+        // gObj3.layer = LayerMask.NameToLayer("InLobbyObject");
 
         foreach (var lC in lobbyCharacter)
         {
@@ -124,14 +124,14 @@ public class InLobbyManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (var lC in lobbyCharacter)
-        {
-            if (lC != null)
-            {
-                lC.ExitScene();
-                Debug.Log($"{lC} ExitScene 호출");
-            }
-        }
+        // foreach (var lC in lobbyCharacter)
+        // {
+        //     if (lC != null)
+        //     {
+        //         lC.ExitScene();
+        //         Debug.Log($"{lC} ExitScene 호출");
+        //     }
+        // }
     }
 
     // 등록 및 삭제

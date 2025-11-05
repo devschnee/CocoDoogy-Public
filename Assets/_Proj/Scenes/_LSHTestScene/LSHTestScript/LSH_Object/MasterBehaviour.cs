@@ -36,6 +36,8 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
             yield return waitU;
         }
     }
+
+
     // 인터페이스 영역
     public override void OnCocoAnimalEmotion()
     {
@@ -62,15 +64,47 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
         base.InNormal();
         StartCoroutine(Move());
     }
-    public override void InUpdate()
-    {
-        
-    }
     public override void StartScene()
     {
-        StartCoroutine(Move());
+        throw new System.NotImplementedException();
     }
-    public override void ExitScene()
+    protected override void HandleIdle()
     {
+        throw new System.NotImplementedException();
     }
+
+    protected override void HandleMove()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void HandleStuck()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void HandleInteraction()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void HandleAnimation()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void HandleCocoOther()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void ChangeState(LobbyCharacterState newState)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    // public override void ExitScene()
+    // {
+
+    // }
 }

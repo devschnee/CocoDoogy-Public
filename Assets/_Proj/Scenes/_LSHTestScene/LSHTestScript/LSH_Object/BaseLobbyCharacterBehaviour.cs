@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 // NavMeshAgent 이용 시 고려해야할 것 isStopped, pathPending, hasPath 
+
 [RequireComponent(typeof(GameObjectData), typeof(UserInteractionHandler), typeof(Draggable))]
 [RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
 public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInteractable, ILobbyDraggable, ILobbyPressable, ILobbyCharactersEmotion, ILobbyState
@@ -14,7 +16,6 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     [Header("Move")]
     [SerializeField] protected float moveRadius = 8f; // 웨이포인트에서 범위
     [SerializeField] protected float waitTime = 2f; // 대기 시간
-    //[SerializeField] protected EditController editController; // 편집모드, 로비매니저로
 
 
     protected NavMeshAgent agent;
@@ -25,49 +26,57 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     protected Camera mainCam;
     protected Vector3 originalPos; // 드래그 시 시작 포지션 저장
     protected bool isDragging = false;
-
-    //protected int originalLayer; // 평상 시 레이어, 로비매니저로
-    //protected int editableLayer; // 편집모드 시 레이어, 로비매니저로
-    //protected bool isEditMode; // 상태전환을 이걸로 퉁치나?, 로비매니저로
     protected float yValue; // 생성 시 y축 얻고 드래그 시 해당 값 고정
-    protected bool yCaptured = false; // yValue가 값을 얻었는지 판단
+    //protected bool yCaptured = false; // yValue가 값을 얻었는지 판단
     protected int mainPlaneMask;
 
     protected bool isMoving;
     protected WaitUntil waitU;
     protected WaitForSeconds waitFS;
+    protected LobbyCharacterState currentState;
+    protected int interactionState;
+
+    // Stuck
+    protected float stuckTimeA;
+    protected float stuckTimeB = 2;
 
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         agent.height = 1f;
-
         // agent
         charAgent = new NavMeshAgentControl(agent, moveSpeed, angularSpeed, acceleration, moveRadius, trans);
         // charAnim
         charAnim = new LobbyCharacterAnim(anim);
         mainCam = Camera.main;
-        //if (editController == null) editController = FindFirstObjectByType<EditController>(); // 로비매니저로
-
-        //originalLayer = LayerMask.NameToLayer("InLobbyObject"); // 로비매니저로
-        //editableLayer = LayerMask.NameToLayer("Editable"); // 로비매니저로
         mainPlaneMask = LayerMask.NameToLayer("MainPlaneLayer");
         waitU = new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= 0.5f);
         waitFS = new WaitForSeconds(waitTime);
-        //isEditMode = false; // 상태패턴 전환 시 수정, 로비매니저로
-
     }
 
     protected virtual void OnEnable()
     {
         Register();
-        if (!yCaptured)
+        // if (!yCaptured)
+        // {
+        //     yValue = transform.position.y;
+        //     Debug.Log($"yValue : {yValue}");
+        //     yCaptured = true;
+        //     return;
+        // }
+    }
+
+    protected void Start()
+    {
+        currentState = LobbyCharacterState.Idle;
+        if (gameObject.CompareTag("Animal"))
         {
-            yValue = transform.position.y;
-            Debug.Log($"yValue : {yValue}");
-            yCaptured = true;
-            return;
+            ChangeState(LobbyCharacterState.Move);
+        }
+        else
+        {
+            ChangeState(currentState);
         }
     }
 
@@ -78,6 +87,29 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         else if (agent.pathStatus == NavMeshPathStatus.PathInvalid) Debug.Log($"{gameObject.name} Invalid path");
         else if (agent.isStopped) Debug.Log($"{gameObject.name} Agent is stopped");
         else if (agent.enabled == false) Debug.Log($"{gameObject.name} Agent doesn't enable");
+        switch (currentState)
+        {
+            case LobbyCharacterState.Idle:
+                HandleIdle();
+                break;
+            case LobbyCharacterState.Move:
+                HandleMove();
+                break;
+            case LobbyCharacterState.Stuck:
+                HandleStuck();
+                break;
+            case LobbyCharacterState.Recovering:
+                break;
+            case LobbyCharacterState.Dragging:
+                HandleInteraction();
+                break;
+            case LobbyCharacterState.Animation:
+                HandleAnimation();
+                break;
+            case LobbyCharacterState.CocoOther:
+                HandleCocoOther();
+                break;
+        }
         //charAgent.MoveValueChanged();
     }
 
@@ -88,18 +120,20 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         {
             case "CocoDoogy":
                 StopMoving();
+                ChangeState(LobbyCharacterState.Idle);
                 break;
             case "Master":
                 StopMoving();
+                ChangeState(LobbyCharacterState.Idle);
                 break;
             case "Animal":
                 Unregister();
                 StopMoving();
+                ChangeState(LobbyCharacterState.Idle);
                 break;
             default: throw new Exception("누구세요?");
         }
     }
-
     protected void StopMoving()
     {
         if (isMoving == true)
@@ -107,27 +141,35 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             isMoving = false;
             StopAllCoroutines();
             if (agent != null && agent.isActiveAndEnabled) agent.ResetPath();
-        } 
+        }
     }
 
-    // 애니메이션 시 에이전트 제어 근데 이곳에 쓰는게 맞나.
-    public void StopAgent()
-    {
-        agent.isStopped = true;
+    protected abstract void HandleIdle();
 
-    }
+    protected abstract void HandleMove();
+
+    protected abstract void HandleStuck();
+
+    protected abstract void HandleInteraction();
+
+    protected abstract void HandleAnimation();
     
-    public void StartAgent()
-    {
-        agent.isStopped = false;
-    }
+    protected abstract void HandleCocoOther();
 
+    protected abstract void ChangeState(LobbyCharacterState newState);
+    
+    // 애니메이션 시 에이전트 제어 근데 이곳에 쓰는게 맞나.
+    public void FromAToB()
+    {
+        ChangeState(LobbyCharacterState.Move);
+    }
 
     // 인터페이스 영역
     /// <summary>
     /// 코코두기와 동물들 상호작용
     /// </summary>
     public abstract void OnCocoAnimalEmotion();
+
     /// <summary>
     /// 코코두기와 마스터 상호작용
     /// </summary>
@@ -139,22 +181,23 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// <param name="position"></param>
     public void OnLobbyBeginDrag(Vector3 position)
     {
-        if (InLobbyManager.Instance == null) return;
-        if (InLobbyManager.Instance.isEditMode) return;
+        ChangeState(LobbyCharacterState.Dragging);
 
         originalPos = transform.position;
-        StopMoving();
+        //StopMoving();
         isDragging = true;
         charAnim.StopAnim();
-        agent.isStopped = true;
+        if (agent.enabled && !agent.isStopped) agent.isStopped = true;
         agent.enabled = false;
     }
+
     /// <summary>
     /// ILobbyDraggable, 드래그 중
     /// </summary>
     /// <param name="position"></param>
     public void OnLobbyDrag(Vector3 position)
     {
+        interactionState = 1;
         if (!isDragging) return;
         Ray ray = mainCam.ScreenPointToRay(position);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, mainPlaneMask))
@@ -166,6 +209,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             transform.position = pos;
         }
     }
+
     /// <summary>
     /// ILobbyDraggable, 드래그 끝
     /// </summary>
@@ -187,60 +231,64 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
         agent.enabled = true;
         agent.Warp(transform.position);
-        
+        interactionState = 0;
+        Debug.Log($"iState : {interactionState}");
+        ChangeState(LobbyCharacterState.Move);
+
     }
+
     /// <summary>
     /// ILobbyInteractable, 터치 시 상호작용
     /// </summary>
     public virtual void OnLobbyInteract()
     {
-        if (InLobbyManager.Instance == null) return;
-        if (InLobbyManager.Instance.isEditMode) return;
+        ChangeState(LobbyCharacterState.Animation);
         Debug.Log($"Click");
     }
+
     /// <summary>
     /// ILobbyPressable, 누를 시 상호작용
     /// </summary>
     public void OnLobbyPress()
     {
-        if (InLobbyManager.Instance == null) return;
-        if (InLobbyManager.Instance.isEditMode) return;
+        ChangeState(LobbyCharacterState.Dragging);
 
         Debug.Log($"Press");
-        agent.isStopped = true;
+        if (agent.enabled && !agent.isStopped) agent.isStopped = true;
         charAnim.StopAnim();
     }
+
     /// <summary>
     /// ILobbyState, 일반모드 진입 시
     /// </summary>
     public virtual void InNormal()
     {
         if (!agent.enabled) agent.enabled = true;
-        if (agent.isStopped) agent.isStopped = false;
+        if (agent.enabled && agent.isStopped) agent.isStopped = false;
         agent.Warp(transform.position);
     }
+
     /// <summary>
     /// ILobbyState, 편집모드 진입 시
     /// </summary>
     public void InEdit()
     {
         charAnim.StopAnim();
-        StopMoving();
-        if (!agent.isStopped) agent.isStopped = true;
-        agent.enabled = false;
+        //StopMoving();
+        if (agent.enabled && !agent.isStopped) agent.isStopped = true;
+        if (!agent.enabled) agent.enabled = false;
     }
-    /// <summary>
-    /// ILobbyState, 업데이트 진입 시
-    /// </summary>
-    public abstract void InUpdate();
+
     /// <summary>
     /// ILobbyState, 로비 씬 스타트 시
     /// </summary>
     public abstract void StartScene();
+
     /// <summary>
     /// ILobbyState, 로비 씬 나갈 시
     /// </summary>
-    public abstract void ExitScene();
+    //public abstract void ExitScene();
+
     /// <summary>
     /// ILobbyState, 오브젝트 생성 시 등록
     /// </summary>
@@ -254,6 +302,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         InLobbyManager.Instance.RegisterLobbyChar(this);
         Debug.Log($"{this} 등록");
     }
+    
     /// <summary>
     /// ILobbyState, 오브젝트 삭제 시 취소
     /// </summary>

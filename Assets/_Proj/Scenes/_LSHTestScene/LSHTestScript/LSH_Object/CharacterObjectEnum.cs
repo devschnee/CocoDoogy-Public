@@ -9,11 +9,13 @@ public enum CharacterType
     Animal
 }
 
-public enum LobbyObjectState
+public enum LobbyCharacterState
 {
     Idle = 0,
-    Interact,
-    Patrol,
-    ReturnHome,
-    CocoAndMaster
+    Move,
+    Stuck,
+    Recovering,
+    Dragging,
+    Animation,
+    CocoOther,
 }
