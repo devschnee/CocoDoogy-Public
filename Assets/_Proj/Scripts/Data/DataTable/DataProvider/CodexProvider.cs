@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CodexProvider : IDataProvider<string, CodexData>
 {
@@ -20,11 +20,5 @@ public class CodexProvider : IDataProvider<string, CodexData>
     {
         var data = GetData(id);
         return data?.GetCodexDisplay(loader);
-    }
-
-    public Sprite GetCodexIcon(string id)
-    {
-        var data = GetData(id);
-        return data?.GetCodexIcon(loader);
     }
 }

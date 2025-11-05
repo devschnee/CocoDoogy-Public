@@ -9,30 +9,42 @@ public class ProfileItemSelector : MonoBehaviour
 {
     [SerializeField] private GameObject root;
     [SerializeField] private Transform slotParent;
-    [SerializeField] private ProfileItemSlot slotPrefab;
+    [SerializeField] private ProfileSlot slotPrefab;
     [SerializeField] private Button applyButton;
     [SerializeField] private Button closeButton;
     [SerializeField] private TMP_Text titleText;
 
     private string currentCategory;
     private int selectedItemId = -1;
+
     private ProfileFavoriteIcon currentTargetIcon;
     private ProfilePanelController parentController;
 
     private void Awake()
     {
-        if (root) root.SetActive(false);
-        if (applyButton) applyButton.onClick.AddListener(Apply);
-        if (closeButton) closeButton.onClick.AddListener(Close);
+        if (root != null)
+            root.SetActive(false);
+
+        if (applyButton != null)
+            applyButton.onClick.AddListener(Apply);
+
+        if (closeButton != null)
+            closeButton.onClick.AddListener(Close);
+
     }
 
     public void Open(string category, ProfileFavoriteIcon targetIcon, ProfilePanelController parent)
     {
-        root.SetActive(true);
+        if (root != null)
+            root.SetActive(true);
+
         currentCategory = category;
         currentTargetIcon = targetIcon;
         parentController = parent;
-        if (titleText) titleText.text = $"{category} 보유 아이템";
+
+        if (titleText != null)
+            titleText.text = $"{category}";
+
         BuildList();
     }
 
@@ -41,32 +53,51 @@ public class ProfileItemSelector : MonoBehaviour
         foreach (Transform t in slotParent)
             Destroy(t.gameObject);
 
-        //List<int> owned = CodexUnlockManager.Instance.GetUnlockedIdsByCategory(currentCategory);
-        //foreach (int id in owned)
+        List<ProfilePanelController.ProfileOwnedItemData> ownedList =
+            parentController != null
+            ? parentController.GetOwnedItemsByCategory(currentCategory)
+            : null;
+
+        if (ownedList == null || ownedList.Count == 0)
+        {
+            selectedItemId = -1;
+            return;
+        }
+
+        foreach (var item in ownedList)
         {
             var slot = Instantiate(slotPrefab, slotParent);
-            //var sprite = YourGameIconLoader.GetIconById(id);
-            //slot.Bind(id, sprite, OnSlotSelected);
+            // 여기서 DB의 itemId를 넘겨줌
+            slot.Bind(item.itemId, item.icon, OnSlotSelected);
         }
+
+        selectedItemId = -1;
     }
 
-    private void OnSlotSelected(int id, ProfileItemSlot slot)
+    private void OnSlotSelected(int id, ProfileSlot slot)
     {
         selectedItemId = id;
+
         foreach (Transform t in slotParent)
         {
-            var s = t.GetComponent<ProfileItemSlot>();
-            s?.SetSelected(s == slot);
+            var s = t.GetComponent<ProfileSlot>();
+            if (s != null)
+                s.SetSelected(s == slot);
         }
     }
 
     private void Apply()
     {
-        if (selectedItemId < 0) return;
+        if (selectedItemId < 0)
+            return;
 
-        //Sprite newSprite = YourGameIconLoader.GetIconById(selectedItemId);
-        //currentTargetIcon.UpdateIcon(newSprite);
+        Sprite equippedSprite = parentController?.EquipItem(currentCategory, selectedItemId);
 
+        // 아이콘 + id 둘 다 넘겨야 DB id가 안 꼬임
+        if (equippedSprite != null && currentTargetIcon != null)
+            currentTargetIcon.UpdateIcon(equippedSprite, selectedItemId);
+
+        // Firebase 저장 그대로 유지
         var user = FirebaseAuth.DefaultInstance.CurrentUser;
         if (user != null)
         {
@@ -78,5 +109,14 @@ public class ProfileItemSelector : MonoBehaviour
         Close();
     }
 
-    public void Close() => root.SetActive(false);
+    public void Close()
+    {
+        if (root != null)
+            root.SetActive(false);
+
+        currentCategory = null;
+        currentTargetIcon = null;
+        parentController = null;
+        selectedItemId = -1;
+    }
 }

@@ -1,13 +1,4 @@
-kr_text_id,kr_text
-string,string
-[chapter_1_name],새로운 모험의 시작
-[stage_1_1_name],숲에서 하룻밤!
-[stage_1_2_name],신나는 박스 놀이!
-[deco_maple_tree],단풍 나무
-[costume_cute_hat],귀여운 모자
-[animal_hog],호기
 [home_sweet_home],따뜻한 우리의 집
-[artifact_teapot],오래된 차 주전자
 [background_basic],기본 배경
 [deco_white_fence],흰색 울타리
 [deco_fence],나무 울타리
@@ -42,3 +33,25 @@ string,string
 [icon_09],챕터 1 아이콘
 [icon_10],챕터 2 아이콘
 [icon_11],챕터 3 아이콘
+[coin],동전
+[cap],병뚜껑
+[coco_get_coin],반짝이는 동전이야!
+[coco_get_cap],병뚜껑 재밌겠다!
+[chapter_1_name],불안
+[chapter_2_name],힐링
+[chapter_3_name],위로
+[stage_1_1_name],숲에서 하룻밤!
+[stage_1_2_name],신나는 박스 놀이!
+[costume_cowboy],카우보이 모자
+[costume_crown],왕관
+[costume_magician],마법사 모자
+[animal_hog],멧돼지
+[animal_tortoise],거북이
+[animal_buffalo],버팔로
+[animal_donkey],당나귀
+[animal_chick],닭
+[artifact_travelbag],여행 가방
+[artifact_leafcrown],나뭇잎 왕관
+[artifact_smallmetal],작은 금속 조각
+[artifact_toyrobot],로봇 장난감
+[artifact_familypic],누군가의 가족사진

@@ -13,12 +13,29 @@ MonoBehaviour:
   m_Name: AnimalDatabase
   m_EditorClassIdentifier: 
   animalList:
-  - animal_id: 30001
-    animal_name: "\uD638\uAE30"
+  - animal_id: 30003
+    animal_name: "\uBC84\uD314\uB85C"
     animal_type: 0
     animal_tag: 0
-    animal_prefab: Prefabs/Animal/animal_hog
-    animal_icon: Icons/Animal/animal_hog
+    animal_prefab: Prefabs/Animal/Buffalo
+    animal_icon: Icons/Animal/animal_buffalo
     animal_acquire: 1
-    animal_desc: "\uC0B0\uC5D0\uC11C \uB9CC\uB09C \uB3CC\uC9C1\uAD6C\uB97C \uC88B\uC544\uD558\uB294
-      \uBA67\uB3FC\uC9C0 \uCE5C\uAD6C\uC785\uB2C8\uB2E4"
+    animal_desc: "\uC4F0\uB808\uAE30 \uC0B0\uC5D0\uC11C \uB9CC\uB09C \uC790\uC2E0\uAC10
+      \uB118\uCE58\uB294 \uBC84\uD314\uB85C \uCE5C\uAD6C\uC785\uB2C8\uB2E4."
+  - animal_id: 30004
+    animal_name: "\uB2F9\uB098\uADC0"
+    animal_type: 0
+    animal_tag: 0
+    animal_prefab: Prefabs/Animal/Donkey
+    animal_icon: Icons/Animal/animal_donkey
+    animal_acquire: 2
+    animal_desc: "\uBB34\uC2A8 \uC0DD\uAC01\uC744 \uD558\uB294\uC9C0"
+  - animal_id: 30005
+    animal_name: "\uB2ED"
+    animal_type: 0
+    animal_tag: 0
+    animal_prefab: Prefabs/Animal/Rooster
+    animal_icon: Icons/Animal/animal_chick
+    animal_acquire: 2
+    animal_desc: "\uB9DB\uC788\uC5B4 \uBCF4\uC774\uB294 \uCE58\uD0A4\u2026\uC774
+      \uC544\uB2CC"

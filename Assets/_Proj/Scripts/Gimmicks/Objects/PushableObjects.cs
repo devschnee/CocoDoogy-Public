@@ -34,16 +34,18 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     public bool allowFall = true;
     public bool allowSlope = false;
+    private BoxCollider boxCol;
 
     private static Dictionary<int, float> gloablShockImmunity = new();
     [Tooltip("충격파 맞은 오브젝트가 다시 반응하기까지 쿨타임")]
     public float immuneTime = 5f;
+
     #endregion
-    // TODO : 슬로프 탈 때 Constraints.FreezeRotation 끄기. 이게 맞나..?
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        boxCol = GetComponent<BoxCollider>();
     }
     void Update()
     {
@@ -118,11 +120,51 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     }
 
     // 모양에 맞는 충돌 검사 구현하도록
-    protected abstract bool CheckBlocking(Vector3 target);
+    //protected abstract bool CheckBlocking(Vector3 target);
+    // NOTE : 11/5 Orb가 BoxCollider를 갖게 되면서 PuhsableObjects에 통합됨.
+    protected virtual bool CheckBlocking(Vector3 target)
+    {
+        var b = boxCol.bounds;
+        Vector3 half = b.extents - Vector3.one * 0.005f;
+        Vector3 center = new Vector3(target.x, target.y + b.extents.y, target.z);
+
+        // 규칙상 차단 (blocking)
+        if (Physics.CheckBox(center, half, transform.rotation, blockingMask, QueryTriggerInteraction.Ignore))
+            return true;
+
+        // 점유 차단(허용 레이어 제외)
+        var hits = Physics.OverlapBox(center, half, transform.rotation, ~throughLayer, QueryTriggerInteraction.Ignore);
+        foreach (var c in hits)
+        {
+            //if ((groundMask.value & (1 << c.gameObject.layer)) != 0) continue;
+            if (rb && c.attachedRigidbody == rb) continue; // 자기 자신
+            if (c.transform.IsChildOf(transform)) continue; // 자식
+            return true;
+        }
+
+        return false;
+    }
 
     // 단순 이동(1칸 Lerp 이동)
     protected IEnumerator MoveTo(Vector3 target)
     {
+        //이동 시작 전 내 주변 사방에 있는 타일들에게서 IEdgeColliderHandler 검출하여 캐싱
+        List<IEdgeColliderHandler> cache = new();
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
+            Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
+            var result = Physics.RaycastAll(ray, 1.4f, groundMask);
+            foreach (var hit in result)
+            {
+                Debug.Log($"PushableObj: {name} moving start. hitted {hit.collider.name}");
+                if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
+                {
+                    cache.Add(targetHandler);
+                }
+            }
+        }
+
         isMoving = true;
         Vector3 start = transform.position;
         float elapsed = 0f;
@@ -135,8 +177,45 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         }
 
         transform.position = target;
+
         isMoving = false;
 
+        //중요: 한 프레임만 뒤에 실행시키기.
+        yield return null;
+
+        if (gameObject.TryGetComponent<IEdgeColliderHandler>(out var handler))
+            //만약 내가 머리 위에 투명벽이 달린 객체라면??
+        {
+            handler.Inspect();
+        }
+
+        //이동이 끝나고 나서 곧바로 내 주변 사방에 있는 타일에서 IEdgeColliderHandler 검출
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
+            Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
+            var result = Physics.RaycastAll(ray, 1.4f, groundMask);
+            foreach(var hit in result)
+            {
+                Debug.Log($"PushableObj: {name} moved. hitted {hit.collider.name}");
+                if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
+                {
+                    targetHandler.Inspect();
+                }
+            }
+        }
+
+        //이동이 끝나고 나서 캐싱해놨던 핸들러들도 Inspect(); 호출.
+        foreach(var cached in cache)
+        {
+            cached.Inspect();
+        }
+
+        //// 낙하 이벤트 위해 추가
+        //if (allowFall)
+        //{
+        //    yield return StartCoroutine(CheckFall());
+        //}
         yield break;
     }
 
@@ -151,28 +230,23 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         }
     }
 
-
-    // 지면 없으면 아래로 반복 낙하
-    protected IEnumerator CheckFall()
+    public IEnumerator CheckFall()
     {
         isFalling = true;
-
-        bool startedFalling = false; // 낙하 실제 수행?
-
         Vector3 currPos = transform.position;
 
-        while(!Physics.Raycast(currPos + Vector3.up * 0.1f, Vector3.down, 1.5f, groundMask))
+        // Pushable도 땅으로 인식
+
+        while (!Physics.BoxCast(
+            currPos + Vector3.up * 0.3f,
+            new Vector3(0.4f, 0.05f, 0.4f),
+            Vector3.down,
+            out _,
+            Quaternion.identity,
+            tileSize * 1.2f,
+            groundMask))
         {
-            startedFalling = true;
             Vector3 fallTarget = currPos + Vector3.down * tileSize;
-
-            if(fallTarget.y < -100f) // 무한 추락 방지
-            {
-                isFalling = false;
-                yield break;
-            }
-
-            // 한 칸 아래로
             yield return StartCoroutine(MoveTo(fallTarget));
             currPos = transform.position;
         }
@@ -180,6 +254,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         isFalling = false;
         OnLanded();
     }
+
 
     // Push 시도 시작(방향 기억, 시간 누적)
     public void StartPushAttempt(Vector2Int dir)
