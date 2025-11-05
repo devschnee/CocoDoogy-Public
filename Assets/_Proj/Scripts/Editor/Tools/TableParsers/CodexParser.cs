@@ -24,7 +24,7 @@ public static class CodexParser
 
             var v = System.Text.RegularExpressions.Regex.Split(line, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-            if (v.Length < 6)
+            if (v.Length < 5)
             {
                 Debug.LogWarning($"[CodexParser] {i}행 데이터 부족 → 스킵");
                 continue;
@@ -48,7 +48,6 @@ public static class CodexParser
                 item_id = item_id,
                 codex_lore = v[3],
                 codex_display = v[4],
-                codex_icon = v[5],
             });
         }
 

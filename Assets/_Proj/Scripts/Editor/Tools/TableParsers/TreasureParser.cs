@@ -22,9 +22,9 @@ public static class TreasureParser
 
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            var v = line.Split(',');
+            var v = System.Text.RegularExpressions.Regex.Split(line, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-            if (v.Length < 4)
+            if (v.Length < 5)
             {
                 Debug.LogWarning($"[TreasureParser] {i}행 데이터 부족 → 스킵");
                 continue;
@@ -33,7 +33,7 @@ public static class TreasureParser
             string id = v[0].Trim('\uFEFF');
             if (string.IsNullOrEmpty(id))
             {
-                Debug.LogWarning($"[ChapterParser] ID 누락 → {i}행");
+                Debug.LogWarning($"[TreasureParser] ID 누락 → {i}행");
                 continue;
             }
 
@@ -48,6 +48,7 @@ public static class TreasureParser
                 treasureType = type,
                 reward_id = reward_id,
                 count = count,
+                coco_coment = v[4],
             });
         }
 

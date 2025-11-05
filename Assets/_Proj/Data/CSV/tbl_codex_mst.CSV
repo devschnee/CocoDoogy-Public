@@ -1,2 +1,18 @@
-codex_id,codex_type,item_id,codex_lore,codex_display,codex_icon
-codex_deco_maple_tree,deco,10001,과거에는 이 나무가 도시 곳곳을 차지했다고합니다. 끈질긴 생명력으로 다시 한번 세상을 아름답게 꾸밀 준비가 되었습니다.,Codex_display/Deco/codex_display_maple_tree,Icons/Codex/codex_icon_maple_tree
+codex_deco_tree_lime,deco,10001,ㅂ,Img/Codex_display/Deco/codex_display_tree_lime
+codex_deco_tree_dead,deco,10002,ㅈ,Img/Codex_display/Deco/codex_display_tree_dead
+codex_deco_grass,deco,10003,ㄷ,Img/Codex_display/Deco/codex_display_grass
+codex_deco_fence,deco,10004,ㄱ,Img/Codex_display/Deco/codex_display_fence
+codex_costume_cowboy,costume,20001,ㅅ,Img/Codex_display/Costume/codex_display_cowboy
+codex_costume_crown,costume,20002,ㅛ,Img/Codex_display/Costume/codex_display_crown
+codex_costume_magician,costume,20003,ㅕ,Img/Codex_display/Costume/codex_display_magician
+codex_animal_hog,animal,30001,ㅑ,Img/Codex_display/Animal/codex_display_hog
+codex_animal_tortoise,animal,30002,ㅐ,Img/Codex_display/Animal/codex_display_tortoise
+codex_animal_buffalo,animal,30003,ㅔ,Img/Codex_display/Animal/codex_display_buffalo
+codex_animal_donkey,animal,30004,ㅁ,Img/Codex_display/Animal/codex_display_donkey
+codex_animal_chick,animal,30005,ㄴ,Img/Codex_display/Animal/codex_display_chick
+codex_home_homesweathome,home,40001,ㅇ,Img/Codex_display/Home/codex_display_homesweathome
+codex_artifact_travelbag,artifact,50001,ㄹ,Img/Codex_display/Artifact/codex_display_travelbag
+codex_artifact_leafcrown,artifact,50002,ㅎ,Img/Codex_display/Artifact/codex_display_leafcrown
+codex_artifact_smallmetal,artifact,50003,ㅗ,Img/Codex_display/Artifact/codex_display_smallmetal
+codex_artifact_toyrobot,artifact,50004,ㅓ,Img/Codex_display/Artifact/codex_display_toyrobot
+codex_artifact_familypic,artifact,50005,ㅏ,Img/Codex_display/Artifact/codex_display_familypic
