@@ -34,16 +34,18 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     public bool allowFall = true;
     public bool allowSlope = false;
+    private BoxCollider boxCol;
 
     private static Dictionary<int, float> gloablShockImmunity = new();
     [Tooltip("충격파 맞은 오브젝트가 다시 반응하기까지 쿨타임")]
     public float immuneTime = 5f;
+
     #endregion
-    // TODO : 슬로프 탈 때 Constraints.FreezeRotation 끄기. 이게 맞나..?
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        boxCol = GetComponent<BoxCollider>();
     }
     void Update()
     {
@@ -118,7 +120,30 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     }
 
     // 모양에 맞는 충돌 검사 구현하도록
-    protected abstract bool CheckBlocking(Vector3 target);
+    //protected abstract bool CheckBlocking(Vector3 target);
+    // NOTE : 11/5 Orb가 BoxCollider를 갖게 되면서 PuhsableObjects에 통합됨.
+    protected virtual bool CheckBlocking(Vector3 target)
+    {
+        var b = boxCol.bounds;
+        Vector3 half = b.extents - Vector3.one * 0.005f;
+        Vector3 center = new Vector3(target.x, target.y + b.extents.y, target.z);
+
+        // 규칙상 차단 (blocking)
+        if (Physics.CheckBox(center, half, transform.rotation, blockingMask, QueryTriggerInteraction.Ignore))
+            return true;
+
+        // 점유 차단(허용 레이어 제외)
+        var hits = Physics.OverlapBox(center, half, transform.rotation, ~throughLayer, QueryTriggerInteraction.Ignore);
+        foreach (var c in hits)
+        {
+            //if ((groundMask.value & (1 << c.gameObject.layer)) != 0) continue;
+            if (rb && c.attachedRigidbody == rb) continue; // 자기 자신
+            if (c.transform.IsChildOf(transform)) continue; // 자식
+            return true;
+        }
+
+        return false;
+    }
 
     // 단순 이동(1칸 Lerp 이동)
     protected IEnumerator MoveTo(Vector3 target)
@@ -152,8 +177,8 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     }
 
 
-    // 지면 없으면 아래로 반복 낙하
-    protected IEnumerator CheckFall()
+    // 지면 없으면 아래로 반복 낙하. Boar에서 참조하므로 public
+    public IEnumerator CheckFall()
     {
         isFalling = true;
 
