@@ -124,6 +124,10 @@ public class StageManager : MonoBehaviour
         
         foreach (var block in loaded.blocks)
         {
+            //TODO: 트레져블록은 무시.
+            if (block.blockType == BlockType.Treasure) continue;
+
+
             print($"[StageManager] {block.blockName}: {block.blockType} [{block.position.x}],[{block.position.y}],[{block.position.z}]");
             //여기서 팩토리가 들고 있는 프리팹으로 인스턴시에이트.
             

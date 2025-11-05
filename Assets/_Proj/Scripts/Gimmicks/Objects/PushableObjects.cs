@@ -136,7 +136,33 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         }
 
         transform.position = target;
+
         isMoving = false;
+
+        //중요: 한 프레임만 뒤에 실행시키기.
+        yield return null;
+
+        if (gameObject.TryGetComponent<IEdgeColliderHandler>(out var handler))
+            //만약 내가 머리 위에 투명벽이 달린 객체라면??
+        {
+            handler.Inspect();
+        }
+
+        //이동이 끝나고 나서 곧바로 내 주변 사방에 있는 타일에서 IEdgeColliderHandler 검출
+        for (int i = 0; i < 4; i++)
+        {
+            Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
+            Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
+            var result = Physics.RaycastAll(ray, 1.4f, groundMask);
+            foreach(var hit in result)
+            {
+                Debug.Log($"PushableObj: {name} falled. hitted {hit.collider.name}");
+                if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
+                {
+                    targetHandler.Inspect();
+                }
+            }
+        }
 
         //// 낙하 이벤트 위해 추가
         //if (allowFall)

@@ -22,7 +22,7 @@ public class NormalBlock : Block, IEdgeColliderHandler
 
     void Awake()
     {
-        groundLayer = LayerMask.GetMask("Ground", "Slope", "Pushable", "Wall");
+        //groundLayer = LayerMask.GetMask("Ground", "Slope", "Pushables", "Wall");
     }
     public void Inject()
     {
@@ -30,6 +30,7 @@ public class NormalBlock : Block, IEdgeColliderHandler
 
     public void Inspect()
     {
+        
         for (int i = 0; i < 4; i++)
         {
             Vector3 rayOrigin = transform.position - (Vector3.up * .49f);
@@ -42,15 +43,22 @@ public class NormalBlock : Block, IEdgeColliderHandler
             {
                 print(hit.collider.gameObject.layer);
             }
-            if (results.Length < 1)
-            //그라운드레이어로 취급되는 오브젝트가 아무것도 검출되지 않았다는 뜻.
-            {
-                transparentColliders[i].gameObject.SetActive(true);
-            }
-            else
-            {
-                transparentColliders[i].gameObject.SetActive(false);
-            }
+            
+                if (results.Length < 1)
+                //그라운드레이어로 취급되는 오브젝트가 아무것도 검출되지 않았다는 뜻.
+                {
+                    
+                    transparentColliders[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    
+                    transparentColliders[i].gameObject.SetActive(false);
+                    
+                }
+            
+
+            
         }
     }
     protected override void OnEnable() 

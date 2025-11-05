@@ -2,6 +2,7 @@
 using UnityEngine;
 
 public enum FourDir
+
 {
     Forward, Left, Backward, Right
 }

@@ -24,7 +24,7 @@ public class BlockFactory : MonoBehaviour
         
         //블록 프리팹 찾기 => 블록타입이 노멀이면 이름으로 찾고, 아니면 타입으로 찾기.
         var blockPrefab = block.blockType == BlockType.Normal ? FindBlockPrefab(block.blockType, block.blockName) : FindBlockPrefab(block.blockType);
-
+        
         var go = Instantiate(blockPrefab, position, rotation);
 
         go.GetComponent<Block>().Init(block);
