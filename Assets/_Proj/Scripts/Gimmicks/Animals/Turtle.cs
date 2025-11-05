@@ -233,7 +233,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
             if (dir.sqrMagnitude > 0.001f)
             {
                 Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10f);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 30f);
             }
             yield return null;
         }

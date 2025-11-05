@@ -230,28 +230,23 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         }
     }
 
-
-    // 지면 없으면 아래로 반복 낙하. Boar에서 참조하므로 public
     public IEnumerator CheckFall()
     {
         isFalling = true;
-
-        bool startedFalling = false; // 낙하 실제 수행?
-
         Vector3 currPos = transform.position;
 
-        while(!Physics.Raycast(currPos + Vector3.up * 0.1f, Vector3.down, 1.5f, groundMask))
+        // Pushable도 땅으로 인식
+
+        while (!Physics.BoxCast(
+            currPos + Vector3.up * 0.3f,
+            new Vector3(0.4f, 0.05f, 0.4f),
+            Vector3.down,
+            out _,
+            Quaternion.identity,
+            tileSize * 1.2f,
+            groundMask))
         {
-            startedFalling = true;
             Vector3 fallTarget = currPos + Vector3.down * tileSize;
-
-            if(fallTarget.y < -100f) // 무한 추락 방지
-            {
-                isFalling = false;
-                yield break;
-            }
-
-            // 한 칸 아래로
             yield return StartCoroutine(MoveTo(fallTarget));
             currPos = transform.position;
         }
@@ -259,6 +254,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         isFalling = false;
         OnLanded();
     }
+
 
     // Push 시도 시작(방향 기억, 시간 누적)
     public void StartPushAttempt(Vector2Int dir)
