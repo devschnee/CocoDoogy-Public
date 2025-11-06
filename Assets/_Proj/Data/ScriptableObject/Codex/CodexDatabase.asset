@@ -13,93 +13,139 @@ MonoBehaviour:
   m_Name: CodexDatabase
   m_EditorClassIdentifier: 
   codexList:
+  - codex_id: codex_deco_tree_large
+    codex_type: 0
+    item_id: 10000
+    codex_lore: "\uACFC\uAC70\uC5D0\uB294 \uC774 \uB098\uBB34\uAC00 \uB3C4\uC2DC
+      \uACF3\uACF3\uC744 \uCC28\uC9C0\uD588\uB2E4\uACE0\uD569\uB2C8\uB2E4. \uB048\uC9C8\uAE34
+      \uC0DD\uBA85\uB825\uC73C\uB85C \uB2E4\uC2DC \uD55C\uBC88 \uC138\uC0C1\uC744
+      \uC544\uB984\uB2F5\uAC8C \uAFB8\uBC00 \uC900\uBE44\uAC00 \uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+    codex_display: Img/Codex_display/Deco/codex_display_tree_large
+    codex_icon: Icons/Deco/icon_deco_tree_large
+    codex_name: "\uD070 \uB098\uBB34"
   - codex_id: codex_deco_tree_lime
     codex_type: 0
     item_id: 10001
     codex_lore: "\u3142"
     codex_display: Img/Codex_display/Deco/codex_display_tree_lime
+    codex_icon: Icons/Deco/icon_deco_tree_lime
+    codex_name: "\uB77C\uC784 \uB098\uBB34"
   - codex_id: codex_deco_tree_dead
     codex_type: 0
     item_id: 10002
     codex_lore: "\u3148"
     codex_display: Img/Codex_display/Deco/codex_display_tree_dead
+    codex_icon: Icons/Deco/icon_deco_tree_dead
+    codex_name: "\uACE0\uBAA9 \uB098\uBB34"
   - codex_id: codex_deco_grass
     codex_type: 0
     item_id: 10003
     codex_lore: "\u3137"
     codex_display: Img/Codex_display/Deco/codex_display_grass
+    codex_icon: Icons/Deco/icon_deco_grass
+    codex_name: "\uC7A1\uCD08"
   - codex_id: codex_deco_fence
     codex_type: 0
     item_id: 10004
     codex_lore: "\u3131"
     codex_display: Img/Codex_display/Deco/codex_display_fence
+    codex_icon: Icons/Deco/icon_deco_fence
+    codex_name: "\uB098\uBB34 \uC6B8\uD0C0\uB9AC"
   - codex_id: codex_costume_cowboy
     codex_type: 1
     item_id: 20001
     codex_lore: "\u3145"
     codex_display: Img/Codex_display/Costume/codex_display_cowboy
+    codex_icon: Icons/Costume/icon_cowboy_hat
+    codex_name: "\uCE74\uC6B0\uBCF4\uC774 \uBAA8\uC790"
   - codex_id: codex_costume_crown
     codex_type: 1
     item_id: 20002
     codex_lore: "\u315B"
     codex_display: Img/Codex_display/Costume/codex_display_crown
+    codex_icon: Icons/Costume/icon_crown_hat
+    codex_name: "\uC655\uAD00"
   - codex_id: codex_costume_magician
     codex_type: 1
     item_id: 20003
     codex_lore: "\u3155"
     codex_display: Img/Codex_display/Costume/codex_display_magician
+    codex_icon: Icons/Costume/icon_magician_hat
+    codex_name: "\uB9C8\uBC95\uC0AC \uBAA8\uC790"
   - codex_id: codex_animal_hog
     codex_type: 2
     item_id: 30001
     codex_lore: "\u3151"
     codex_display: Img/Codex_display/Animal/codex_display_hog
+    codex_icon: Icons/Animal/animal_hog
+    codex_name: "\uBA67\uB3FC\uC9C0"
   - codex_id: codex_animal_tortoise
     codex_type: 2
     item_id: 30002
     codex_lore: "\u3150"
     codex_display: Img/Codex_display/Animal/codex_display_tortoise
+    codex_icon: Icons/Animal/animal_tortoise
+    codex_name: "\uAC70\uBD81\uC774"
   - codex_id: codex_animal_buffalo
     codex_type: 2
     item_id: 30003
     codex_lore: "\u3154"
     codex_display: Img/Codex_display/Animal/codex_display_buffalo
+    codex_icon: Icons/Animal/animal_buffalo
+    codex_name: "\uBC84\uD314\uB85C"
   - codex_id: codex_animal_donkey
     codex_type: 2
     item_id: 30004
     codex_lore: "\u3141"
     codex_display: Img/Codex_display/Animal/codex_display_donkey
+    codex_icon: Icons/Animal/animal_donkey
+    codex_name: "\uB2F9\uB098\uADC0"
   - codex_id: codex_animal_chick
     codex_type: 2
     item_id: 30005
     codex_lore: "\u3134"
     codex_display: Img/Codex_display/Animal/codex_display_chick
+    codex_icon: Icons/Animal/animal_chick
+    codex_name: "\uB2ED"
   - codex_id: codex_home_homesweathome
     codex_type: 3
     item_id: 40001
     codex_lore: "\u3147"
     codex_display: Img/Codex_display/Home/codex_display_homesweathome
+    codex_icon: Icons/Home/home_sweet_home
+    codex_name: "\uB530\uB73B\uD55C \uC6B0\uB9AC\uC758 \uC9D1"
   - codex_id: codex_artifact_travelbag
     codex_type: 4
     item_id: 50001
     codex_lore: "\u3139"
     codex_display: Img/Codex_display/Artifact/codex_display_travelbag
+    codex_icon: Icons/Artifact/artifact_travelbag
+    codex_name: "\uC5EC\uD589 \uAC00\uBC29"
   - codex_id: codex_artifact_leafcrown
     codex_type: 4
     item_id: 50002
     codex_lore: "\u314E"
     codex_display: Img/Codex_display/Artifact/codex_display_leafcrown
+    codex_icon: Icons/Artifact/artifact_leafcrown
+    codex_name: "\uB098\uBB47\uC78E \uC655\uAD00"
   - codex_id: codex_artifact_smallmetal
     codex_type: 4
     item_id: 50003
     codex_lore: "\u3157"
     codex_display: Img/Codex_display/Artifact/codex_display_smallmetal
+    codex_icon: Icons/Artifact/artifact_smallmetal
+    codex_name: "\uC791\uC740 \uAE08\uC18D \uC870\uAC01"
   - codex_id: codex_artifact_toyrobot
     codex_type: 4
     item_id: 50004
     codex_lore: "\u3153"
     codex_display: Img/Codex_display/Artifact/codex_display_toyrobot
+    codex_icon: Icons/Artifact/artifact_toyrobot
+    codex_name: "\uB85C\uBD07 \uC7A5\uB09C\uAC10"
   - codex_id: codex_artifact_familypic
     codex_type: 4
     item_id: 50005
     codex_lore: "\u314F"
     codex_display: Img/Codex_display/Artifact/codex_display_familypic
+    codex_icon: Icons/Artifact/artifact_familypic
+    codex_name: "\uB204\uAD70\uAC00\uC758 \uAC00\uC871\uC0AC\uC9C4"

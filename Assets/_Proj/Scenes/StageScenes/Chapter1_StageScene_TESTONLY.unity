@@ -190,7 +190,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 5291992017778968749, guid: c4c522c376ad1b745b54524b0a7cded8, type: 3}
   joystickPrefab: {fileID: 8076522967414642225, guid: e70ee23931c899d429b2f8a615b74827, type: 3}
   joystickRoot: {fileID: 484405798}
-  mapNameToLoad: SampleStage1
+  mapNameToLoad: map_1_1
   blockPositions: []
   blocks: []
   currentStageId: 
@@ -1279,6 +1279,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 695767b0c49016240be248159dd38724, type: 2}
   - {fileID: 11400000, guid: 81b18c51fcd312e42881098e9fc2f2cf, type: 2}
   - {fileID: 11400000, guid: a1c6d05e3bc446c45819a5676c1cd62f, type: 2}
+  - {fileID: 11400000, guid: 0430b553c82111a4b93e4ba61ddb3b75, type: 2}
+  - {fileID: 11400000, guid: e08eac3b9548b1c47969937bd53ffefb, type: 2}
+  - {fileID: 11400000, guid: 281c3fd2628b5da488a709c636d7a10c, type: 2}
 --- !u!114 &1477821227 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4299389359643487108, guid: 675d10cc836f01f4aa4629eb9530edfe, type: 3}

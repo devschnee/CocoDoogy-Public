@@ -1,3 +1,4 @@
+artifact_id,artifact_name,artifact_icon,artifact_type
 -1,[coin],Icons/Artifact/artifact_coin,money
 -2,[cap],Icons/Artifact/artifact_cap,money
 50001,[artifact_travelbag],Icons/Artifact/artifact_travelbag,oldstuff

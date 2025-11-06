@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: AnimalDatabase
   m_EditorClassIdentifier: 
   animalList:
+  - animal_id: 30001
+    animal_name: "\uBA67\uB3FC\uC9C0"
+    animal_type: 0
+    animal_tag: 0
+    animal_prefab: Prefabs/Animal/Hog
+    animal_icon: Icons/Animal/animal_hog
+    animal_acquire: 1
+    animal_desc: "\uC0B0\uC5D0\uC11C \uB9CC\uB09C \uB3CC\uC9C1\uAD6C\uB97C \uC88B\uC544\uD558\uB294
+      \uBA67\uB3FC\uC9C0 \uCE5C\uAD6C\uC785\uB2C8\uB2E4."
   - animal_id: 30002
     animal_name: "\uAC70\uBD81\uC774"
     animal_type: 0

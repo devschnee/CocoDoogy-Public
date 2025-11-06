@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: ChapterDatabase
   m_EditorClassIdentifier: 
   chapterList:
+  - chapter_id: chapter_1
+    chapter_name: "\uBD88\uC548"
+    chapter_desc: "\uACE0\uC18D\uB3C4\uB85C\uC5D0\uC11C \uC8FC\uC778\uACFC \uC774\uBCC4\uD55C
+      \uCF54\uCF54\uB450\uAE30"
+    chapter_img: " \uC0C8\uB85C\uC6B4 \uCE5C\uAD6C \uBA67\uB3FC\uC9C0\uC640 \uB9CC\uB09C\uB2E4.
+      \"\uC9D1\uC5D0 \uAC00\uC9C0 \uC54A\uACE0, \uB098\uB791 \uACC4\uC18D \uB180\uC790!\" "
+    chapter_staglist:
+    - Img/Chapter/chapter_1_main
+    chapter_bg: stage_1_1
   - chapter_id: chapter_2
     chapter_name: "\uD790\uB9C1"
     chapter_desc: "\uB2EC\uBE5B \uC544\uB798 \uCF54\uCF54\uB450\uAE30\uB294 \uAC15\uAC00\uC5D0\uC11C
