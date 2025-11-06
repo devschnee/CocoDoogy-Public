@@ -28,7 +28,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     public bool allowFall = true;
     public bool allowSlope = false;
     private BoxCollider boxCol;
-    
+
     [Header("For Flow Water")]
     public bool IsMoving => isMoving;
     public bool IsFalling => isFalling;
@@ -48,11 +48,11 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     void Update()
     {
         if (!isHoling || isMoving || isRiding) return;
-        
+
         // 밀고 있는 시간 누적
         currHold += Time.deltaTime;
         // 민 시간이 조건 이상이면 Push 시도
-        if(currHold >= requiredHoldtime)
+        if (currHold >= requiredHoldtime)
         {
             TryPush(holdDir);
             currHold = 0f;
@@ -167,6 +167,32 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         Vector3 start = transform.position;
         float elapsed = 0f;
 
+        // 탑승 리스트(적층형)
+        List<PushableObjects> riders = new List<PushableObjects>();
+
+        Vector3 center = transform.position + Vector3.up * tileSize * 0.5f;
+        Vector3 halfExtents = boxCol.size * 0.5f;
+
+        // throughLayer는 제외하고 검사
+        LayerMask riderMask = blockingMask & ~throughLayer;
+
+        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize, halfExtents * 0.9f, transform.rotation, riderMask);
+
+        foreach (var hit in riderHits)
+        {
+            if (hit.gameObject != gameObject && hit.TryGetComponent<PushableObjects>(out var rider))
+            {
+                // Y좌표 검사: 바로 위에 있는 오브젝트인지 확인 (탑승 중인 오브젝트는 y + tileSize 위치)
+                if (Mathf.Abs(rider.transform.position.y - (transform.position.y + tileSize)) < 0.01f)
+                {
+                    // 탑승자 감지 시 자식으로 설정
+                    rider.transform.SetParent(this.transform);
+                    rider.OnStartRiding();
+                    riders.Add(rider);
+                }
+            }
+        }
+
         while (elapsed < moveTime)
         {
             transform.position = Vector3.Lerp(start, target, elapsed / moveTime);
@@ -178,11 +204,22 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
         isMoving = false;
 
+        // 탑승 해제
+        foreach (var rider in riders)
+        {
+            if (rider != null)
+            {
+                rider.transform.SetParent(null);
+                rider.OnStopRiding(); // OnStopRiding 내부에서 CheckFall()을 호출함
+            }
+        }
+        riders.Clear();
+
         //중요: 한 프레임만 뒤에 실행시키기.
         yield return null;
 
         if (gameObject.TryGetComponent<IEdgeColliderHandler>(out var handler))
-            //만약 내가 머리 위에 투명벽이 달린 객체라면??
+        //만약 내가 머리 위에 투명벽이 달린 객체라면??
         {
             handler.DetectAndApplyFourEdge();
         }
@@ -193,7 +230,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
             Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
             var result = Physics.RaycastAll(ray, 1.4f, groundMask);
-            foreach(var hit in result)
+            foreach (var hit in result)
             {
                 Debug.Log($"PushableObj: {name} moved. hitted {hit.collider.name}");
                 if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
@@ -204,7 +241,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         }
 
         //이동이 끝나고 나서 캐싱해놨던 핸들러들도 Inspect(); 호출.
-        foreach(var cached in cache)
+        foreach (var cached in cache)
         {
             cached.DetectAndApplyFourEdge();
         }
@@ -257,8 +294,8 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     // Push 시도 시작(방향 기억, 시간 누적)
     public void StartPushAttempt(Vector2Int dir)
     {
-        if(isRiding || isMoving || isFalling) return;
-        if(isHoling && dir != holdDir)
+        if (isRiding || isMoving || isFalling) return;
+        if (isHoling && dir != holdDir)
         {
             currHold = 0f;
         }
@@ -309,9 +346,9 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     {
         int id = GetInstanceID();
         float now = Time.time;
-        if(gloablShockImmunity.TryGetValue(id, out var lastTime))
+        if (gloablShockImmunity.TryGetValue(id, out var lastTime))
         {
-            if(now - lastTime < immuneTime)
+            if (now - lastTime < immuneTime)
             {
                 return;
             }
@@ -329,7 +366,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
         Vector3 start = transform.position;
         Vector3 target = start + Vector3.up * tileSize;
-        
+
         rise = Mathf.Max(0.01f, rise);
         holdSec = Mathf.Max(0f, holdSec);
         fall = Mathf.Max(0.01f, fall);
@@ -343,18 +380,18 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         }
         transform.position = target;
 
-        if(holdSec > 0f) 
+        if (holdSec > 0f)
             yield return new WaitForSeconds(holdSec);
 
         t = 0f;
-        while(t < fall)
+        while (t < fall)
         {
             t += Time.deltaTime;
             transform.position = Vector3.Lerp(target, start, t / fall);
             yield return null;
         }
         transform.position = start;
-         
+
         isMoving = false;
         Debug.Log($"{name} 충격파 영향 받음");
         yield break;
