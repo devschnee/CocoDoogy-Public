@@ -26,11 +26,6 @@ public class Turret : MonoBehaviour, ISignalSender
     private const float heightTolerance = 0.4f; // 층 오차 허용
     private bool doorShouldBeClosed; // 현재 문이 닫혀 있어야 하는지
 
-    void Awake()
-    {
-
-    }
-
     void Start()
     {
         myYLevel = Mathf.Round(transform.position.y / 1f); // tileHeight 1기준
@@ -42,6 +37,8 @@ public class Turret : MonoBehaviour, ISignalSender
             ring.SetRadius(detectRadius);
             ring.fillColor = idleColor;
             ring.lineColor = idleColor;
+            ring.RebuildAll();
+            ring.lr.material.color = idleColor;
         }
     }
     void AutoConnectReceiver()

@@ -422,15 +422,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  innerGap: 0.203
+  innerGap: 0.139
   segments: 96
+  visibleAngle: 360
+  forwardDir: {x: 0, y: 0, z: 1}
   lineWidth: 0.05
   lineColor: {r: 1, g: 1, b: 1, a: 0}
-  fillColor: {r: 0.19999999, g: 0.34691733, b: 1, a: 0.39607844}
+  fillColor: {r: 0.19999999, g: 0.34691733, b: 1, a: 0.6156863}
   softEdge: 0.12
   rippleOnShock: 1
   rippleWidthMul: 2.2
   rippleDuration: 0.22
+  lr: {fileID: 0}
 --- !u!23 &7784038285785498510
 MeshRenderer:
   m_ObjectHideFlags: 0
