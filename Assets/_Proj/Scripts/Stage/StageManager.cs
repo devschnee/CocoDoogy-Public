@@ -145,6 +145,8 @@ public class StageManager : MonoBehaviour
     {
         currentStageId = FirebaseManager_FORTEST.Instance.selectStageID;
 
+        var data = DataManager.Instance.Stage.GetMapNameData(currentStageId);
+
         foreach (var block in loaded.blocks)
         {
 
@@ -170,15 +172,15 @@ public class StageManager : MonoBehaviour
             {
                 var treasure = go.GetComponent<Treasure>();
 
-                //// blockName으로 구분
-                //if (block.blockName.Contains("1"))
-                //    treasure.Init(stageData.treasure_01_id);
-                //else if (block.blockName.Contains("2"))
-                //    treasure.Init(stageData.treasure_02_id);
-                //else if (block.blockName.Contains("3"))
-                //    treasure.Init(stageData.treasure_03_id);
-                //else
-                //    Debug.LogWarning($"Treasure 블록 이름 인식 실패: {block.blockName}");
+                // blockName으로 구분
+                if (block.blockName.Contains("1"))
+                    treasure.Init(data.treasure_01_id);
+                else if (block.blockName.Contains("2"))
+                    treasure.Init(data.treasure_02_id);
+                else if (block.blockName.Contains("3"))
+                    treasure.Init(data.treasure_03_id);
+                else
+                    Debug.LogWarning($"Treasure 블록 이름 인식 실패: {block.blockName}");
             }
             //GetComponent<Block>().Init(block);
             EnlistBlock(go.GetComponent<Block>());
