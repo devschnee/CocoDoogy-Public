@@ -60,7 +60,6 @@ public class StageDetailInfo : MonoBehaviour
     {
         // StageManager.Instance가 실행 중인 스테이지에서만 접근 가능
         // 로비 씬에서는 Firebase 데이터 기반으로도 가능
-
         if (StageUIManager.Instance.stageManager != null)
         {
             treasureIcons[0].sprite = StageUIManager.Instance.stageManager.IsTreasureCollected(data.treasure_01_id) ? collectedSprite : notCollectedSprite;

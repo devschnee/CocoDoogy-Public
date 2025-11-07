@@ -22,6 +22,37 @@ public class Treasure : MonoBehaviour
             StageUIManager.Instance.TreasurePanel.SetActive(true);
             StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
 
+            var data = DataManager.Instance.Treasure.GetData(treasureId);
+
+            switch(data.treasureType)
+            {
+                case TreasureType.deco:
+                    var deco = DataManager.Instance.Deco.GetData(data.reward_id);
+                    StageUIManager.Instance.TreasureName.text = deco.deco_name;
+                    StageUIManager.Instance.TreasureDesc.text = deco.deco_desc;
+                    TreasureUI(data);
+                    break;
+                case TreasureType.costume:
+                    var costume = DataManager.Instance.Costume.GetData(data.reward_id);
+                    StageUIManager.Instance.TreasureName.text = costume.costume_name;
+                    StageUIManager.Instance.TreasureDesc.text = costume.costume_desc;
+                    TreasureUI(data);
+                    break;
+                case TreasureType.artifact:
+                    var artifact = DataManager.Instance.Artifact.GetData(data.reward_id);
+                    StageUIManager.Instance.TreasureName.text = artifact.artifact_name;
+                    StageUIManager.Instance.TreasureDesc.text = artifact.artifact_name;
+                    TreasureUI(data);
+                    break;
+                case TreasureType.coin:
+                case TreasureType.cap:
+                    StageUIManager.Instance.TreasureName.text = "보물이지롱";
+                    StageUIManager.Instance.TreasureDesc.text = "사실아니지롱";
+                    TreasureUI(data);
+                    break;
+            }
+
+
             // 플레이어 이동 막기
             other.GetComponent<PlayerMovement>().enabled = false;
 
@@ -39,6 +70,14 @@ public class Treasure : MonoBehaviour
                 other.GetComponent<PlayerMovement>().enabled = true;
             });
         }
+    }
+
+    private static void TreasureUI(TreasureData data)
+    {
+        StageUIManager.Instance.TreasureImage.sprite = DataManager.Instance.Deco.GetIcon(data.reward_id);
+        StageUIManager.Instance.TreasureType.text = data.treasureType.ToString();
+        StageUIManager.Instance.TreasureCount.text = data.count.ToString();
+        StageUIManager.Instance.CocoDoogyDesc.text = data.coco_coment;
     }
 
     public void OnQuitAction(Action action)

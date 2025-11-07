@@ -521,9 +521,12 @@ MonoBehaviour:
   stageDesc: {fileID: 4223858278661141756}
   rewardGroup: {fileID: 6292097758809912797}
   enterButton: {fileID: 1980833829064646297}
-  treasureIcons: []
-  collectedSprite: {fileID: 0}
-  notCollectedSprite: {fileID: 0}
+  treasureIcons:
+  - {fileID: 8717406764379467160}
+  - {fileID: 5532177928432657403}
+  - {fileID: 2328932647912346344}
+  collectedSprite: {fileID: 21300000, guid: 072e279b9e7d849d4b14c61cc96cd90d, type: 3}
+  notCollectedSprite: {fileID: 21300000, guid: 741065579880b4e1c929ab49bd185620, type: 3}
 --- !u!1 &4131257640129259912
 GameObject:
   m_ObjectHideFlags: 0
