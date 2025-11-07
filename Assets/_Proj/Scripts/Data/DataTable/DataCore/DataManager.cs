@@ -68,5 +68,9 @@ public class DataManager : MonoBehaviour
         Stage = new StageProvider(dataRegistry.stageDB, loader);
 
         Treasure = new TreasureProvider(dataRegistry.treasureDB, loader);
+
+        //Dialogue = new DialogueProvider(dataRegistry.dialogueDB, loader);
+
+        //Speaker = new SpeakerProvider(dataRegistry.speakerDB, loader);
     }
 }
