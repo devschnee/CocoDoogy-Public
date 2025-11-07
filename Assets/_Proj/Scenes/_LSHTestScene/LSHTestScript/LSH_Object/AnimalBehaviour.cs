@@ -6,24 +6,11 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
     [SerializeField] float decoDetectRadius = 20f; // 데코 오브젝트 탐색 범위
     private Transform targetDeco;
 
-    public override LobbyCharacterBaseState InitialState()
-    {
-        throw new System.NotImplementedException();
-    }
-    public override LobbyCharacterBaseState StopState()
+    protected override void InitStates()
     {
         throw new System.NotImplementedException();
     }
 
-    public override LobbyCharacterBaseState MoveState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override LobbyCharacterBaseState InteractState()
-    {
-        throw new System.NotImplementedException();
-    }
     
     protected override void Awake()
     {
@@ -37,25 +24,25 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
         targetDeco = null;
     }
 
-    private IEnumerator Move()
-    {
-        isMoving = true;
-        while (isMoving)
-        {
-            FindNearestDeco();
-            if (targetDeco != null)
-            {
-                charAgent.MoveToRandomTransPoint(targetDeco);
-            }
-            else
-            {
-                charAgent.MoveToRandomTransPoint(transform);
-            }
+    // private IEnumerator Move()
+    // {
+    //     isMoving = true;
+    //     while (isMoving)
+    //     {
+    //         FindNearestDeco();
+    //         if (targetDeco != null)
+    //         {
+    //             charAgent.MoveToRandomTransPoint(targetDeco);
+    //         }
+    //         else
+    //         {
+    //             charAgent.MoveToRandomTransPoint(transform);
+    //         }
 
-            if (!agent.hasPath) charAgent.MoveToRandomTransPoint(transform);
-            yield return waitU;
-        }
-    }
+    //         if (!agent.hasPath) charAgent.MoveToRandomTransPoint(transform);
+    //         yield return waitU;
+    //     }
+    // }
 
     private void FindNearestDeco()
     {
@@ -91,7 +78,6 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
     public override void OnLobbyEndDrag(Vector3 position)
     {
         base.OnLobbyEndDrag(position);
-        StartCoroutine(Move());
     }
     public override void OnLobbyClick()
     {
@@ -102,14 +88,10 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
     public override void InNormal()
     {
         base.InNormal();
-        StartCoroutine(Move());
-    }
-    public override void StartScene()
-    {
-        throw new System.NotImplementedException();
     }
 
     
+
     // public override void ExitScene()
     // {
 

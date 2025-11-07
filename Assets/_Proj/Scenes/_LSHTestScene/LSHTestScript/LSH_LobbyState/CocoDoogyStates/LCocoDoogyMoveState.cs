@@ -9,12 +9,11 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
     private int currentIndex = 0;
     //private int savedIndex = -1;
 
-    public LCocoDoogyMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, NavMeshAgent agent, Transform[] waypoints, int currentIndex) : base(owner, fsm)
+    public LCocoDoogyMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, ref Transform[] waypoints, ref int currentIndex) : base(owner, fsm)
     {
         this.waypoints = waypoints;
         this.currentIndex = currentIndex;
-        //agent = owner.GetComponent<NavMeshAgent>();
-        this.agent = agent;
+        agent = owner.GetComponent<NavMeshAgent>();
         //AgentControl = owner.GetComponent<NavMeshAgentControl>();
     }
 
@@ -33,7 +32,7 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
         //     savedIndex = -1;
         // }
         // else agent.SetDestination(waypoints[currentIndex].position);
-        agent.SetDestination(waypoints[currentIndex].position);
+        //agent.SetDestination(waypoints[currentIndex].position);
 
         //owner.EndRoutine();
     }
@@ -50,7 +49,10 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             //fsm.ChangeState(new LCocoDoogyInteractState(owner, fsm, waypoints));
-            fsm.ChangeState(owner.InteractState());
+            //fsm.ChangeState();
         }
+        var trans = owner.GetComponent<Transform>();
+        Vector3 randomDir = trans.position + Random.insideUnitSphere * 1f;
+        agent.SetDestination(trans.position + randomDir);
     }
 }

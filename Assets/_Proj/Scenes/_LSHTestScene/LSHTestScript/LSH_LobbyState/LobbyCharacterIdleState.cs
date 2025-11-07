@@ -11,22 +11,24 @@ public class LCocoDoogyIdleState : LobbyCharacterBaseState
     private NavMeshAgent agent;
     private int currentIndex;
 
-    public LCocoDoogyIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, Transform[] waypoints, int currentIndex) : base(owner, fsm)
+    public LCocoDoogyIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
-        this.waypoints = waypoints;
-        this.currentIndex = currentIndex;
         agent = owner.GetComponent<NavMeshAgent>();
     }
 
     public override void OnStateEnter()
     {
         if (!agent.enabled) agent.enabled = true;
-        if (agent.enabled && agent.isStopped) agent.isStopped = false;
+        var trans = owner.GetComponent<Transform>();
+        agent.Warp(trans.position);
         Debug.Log("코코두기 Idle 진입");
         owner.StartCoroutine(WaitThenMove());
     }
 
-    public override void OnStateExit() { }
+    public override void OnStateExit()
+    {
+        owner.StopAllCoroutines();
+    }
 
     public override void OnStateUpdate() { }
     
@@ -34,7 +36,7 @@ public class LCocoDoogyIdleState : LobbyCharacterBaseState
     {
         yield return new WaitForSeconds(Random.Range(2f, 4f));
         //fsm.ChangeState(new LCocoDoogyMoveState(owner, fsm, waypoints, currentIndex));
-        fsm.ChangeState(new LCocoDoogyMoveState(owner, fsm, agent, waypoints, currentIndex));
+        fsm.ChangeState(owner.MoveState);
         //yield break;
     }
 }
@@ -44,11 +46,9 @@ public class LCocoDoogyIdleState : LobbyCharacterBaseState
 /// </summary>
 public class LMasterIdleState : LobbyCharacterBaseState
 {
-    private Transform[] waypoints;
 
-    public LMasterIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, Transform[] waypoints) : base(owner, fsm)
+    public LMasterIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
-        this.waypoints = waypoints;
     }
 
     public override void OnStateEnter()
@@ -72,11 +72,9 @@ public class LMasterIdleState : LobbyCharacterBaseState
 /// </summary>
 public class LAnimalIdleState : LobbyCharacterBaseState
 {
-    private Transform[] waypoints;
 
-    public LAnimalIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, Transform[] waypoints) : base(owner, fsm)
+    public LAnimalIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
-        this.waypoints = waypoints;
     }
 
     public override void OnStateEnter()

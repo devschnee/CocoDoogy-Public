@@ -4,16 +4,10 @@ using UnityEngine.AI;
 
 public class LCocoDoogyInteractState : LobbyCharacterBaseState
 {
-    // 0 이면 일반 클릭시 상호작용
-    // 1 이면 코코두기와 마스터 상호작용
-    // 2 이면 코코두기와 동물들 상호작용
-    private Transform[] waypoints;
     private NavMeshAgent agent;
 
-    public LCocoDoogyInteractState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm,
-    Transform[] waypoints) : base(owner, fsm)
+    public LCocoDoogyInteractState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
-        this.waypoints = waypoints;
         agent = owner.GetComponent<NavMeshAgent>();
     }
 
@@ -24,16 +18,18 @@ public class LCocoDoogyInteractState : LobbyCharacterBaseState
         Debug.Log("코코두기 Interact 진입");
         owner.StartCoroutine(WaitAndFinish());
     }
-
-    public override void OnStateExit() { }
-
     public override void OnStateUpdate() { }
+    public override void OnStateExit()
+    {
+        owner.StopAllCoroutines();
+        agent.isStopped = false;
+    }
 
     private IEnumerator WaitAndFinish()
     {
         yield return new WaitForSeconds(3f);
         owner.EndInteract(0);
-        fsm.ChangeState(owner.InitialState());
+        fsm.ChangeState(owner.IdleState);
         yield break;
     }
 }

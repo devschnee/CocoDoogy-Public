@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -19,7 +19,6 @@ using System.Collections;
 //     public Vector3 scale;
 // }
 // //
-
 public class InLobbyManager : MonoBehaviour
 {
     [SerializeField] GameObject plane;
@@ -36,7 +35,7 @@ public class InLobbyManager : MonoBehaviour
     public bool isEditMode { get; private set; } // 에딧컨트롤러에서 받아오기
     private int originalLayer; // 평상 시 레이어
     private int editableLayer; // 편집모드 시 레이어
-    
+
 
     public static InLobbyManager Instance { get; private set; }
     private List<ILobbyState> lobbyCharacter = new(); // 맵에 활성화 된 캐릭터들 모음
@@ -64,10 +63,10 @@ public class InLobbyManager : MonoBehaviour
     {
         planeSurface.BuildNavMesh();
 
-        GameObject gObj = Instantiate(DataManager.Instance.mainChar.GetPrefab(99999), cocoWaypoints[0].position, Quaternion.identity);
-        gObj.AddComponent<CocoDoogyBehaviour>();
-        gObj.tag = "CocoDoogy";
-        gObj.layer = LayerMask.NameToLayer("InLobbyObject");
+        // GameObject gObj = Instantiate(DataManager.Instance.mainChar.GetPrefab(99999), cocoWaypoints[0].position, Quaternion.identity);
+        // gObj.tag = "CocoDoogy";
+        // gObj.layer = LayerMask.NameToLayer("InLobbyObject");
+        // gObj.AddComponent<CocoDoogyBehaviour>();
         //coco = gObj.GetComponent<CocoDoogyBehaviour>();
         //coco.gameObject.SetActive(false);
 
@@ -207,7 +206,7 @@ public class InLobbyManager : MonoBehaviour
             master.ResetInteract(0);
         }
     }
-    
+
 
     // 등록 및 삭제
     public void RegisterLobbyChar(ILobbyState gObj)

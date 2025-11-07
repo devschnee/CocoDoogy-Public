@@ -8,55 +8,39 @@ using UnityEngine;
 
 public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
 {
-    //private LCocoDoogyIdleState idle;
-    private LCocoDoogyInteractState interact;
-    private LCocoDoogyMoveState move;
-    private LCocoDoogyStopState stop;
-    private Transform currentDestination;
     private int currentWaypointIndex; // 웨이포인트 이동 인덱스
 
-    public override LobbyCharacterBaseState InitialState()
+    protected override void InitStates()
     {
-        return new LCocoDoogyIdleState(this, fsm, waypoints, currentWaypointIndex);
-        //return idle;
-    }    public override LobbyCharacterBaseState InteractState()
-    {
-        return interact;
-    }
-    public override LobbyCharacterBaseState MoveState()
-    {
-        return move;
-    }
-    public override LobbyCharacterBaseState StopState()
-    {
-        return stop;
+        IdleState = new LCocoDoogyIdleState(this, fsm);
+        MoveState = new LCocoDoogyMoveState(this, fsm, ref waypoints, ref currentWaypointIndex);
+        InteractState = new LCocoDoogyInteractState(this, fsm);
+        ClickSate = new LCocoDoogyClickState(this, fsm, charAnim);
+        DragState = new LCocoDoogyDragState(this, fsm);
+        EditState = new LCocoDoogyEditState(this, fsm);
     }
 
     protected override void Awake()
     {
         base.Awake();
         agent.avoidancePriority = 99;
-        //idle = new LCocoDoogyIdleState(this, fsm, waypoints, currentWaypointIndex);
-        interact = new LCocoDoogyInteractState(this, fsm, waypoints);
-        move = new LCocoDoogyMoveState(this, fsm, agent, waypoints, currentWaypointIndex);
-        stop = new LCocoDoogyStopState(this, fsm, agent);
-        for (int i = 0; i < InLobbyManager.Instance.cocoWaypoints.Length; i++)
-        {
-            waypoints[i] = InLobbyManager.Instance.cocoWaypoints[i];
-        }
+        
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         currentWaypointIndex = 0;
+        // for (int i = 0; i < InLobbyManager.Instance.cocoWaypoints.Length; i++)
+        // {
+        //     waypoints[i] = InLobbyManager.Instance.cocoWaypoints[i];
+        // }
 
     }
 
     protected override void Start()
     {
         base.Start();
-        fsm.ChangeState(InitialState());
     }
 
     protected override void Update()
@@ -176,40 +160,50 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
 
     public override void OnCocoMasterEmotion()
     {
-        
+
+    }
+
+    public override void OnLobbyBeginDrag(Vector3 position)
+    {
+        base.OnLobbyBeginDrag(position);
+    }
+
+    public override void OnLobbyDrag(Vector3 position)
+    {
+        base.OnLobbyDrag(position);
     }
 
     public override void OnLobbyEndDrag(Vector3 position)
     {
-        currentWaypointIndex = GetClosestWaypointIndex();
         base.OnLobbyEndDrag(position);
+        currentWaypointIndex = GetClosestWaypointIndex();
         //StartCoroutine(LetsGoCoco(InLobbyManager.Instance.cocoWaypoints));
     }
     public override void OnLobbyClick()
     {
         base.OnLobbyClick();
-        charAnim.InteractionAnim();
-        AudioEvents.Raise(SFXKey.CocodoogyFootstep, pooled: true, pos: transform.position);
+    }
+    public override void OnLobbyPress()
+    {
+        base.OnLobbyPress();
     }
     public override void InNormal()
     {
         currentWaypointIndex = GetClosestWaypointIndex();
         base.InNormal();
-        fsm.ChangeState(InitialState());
         //StartCoroutine(LetsGoCoco(InLobbyManager.Instance.cocoWaypoints));
     }
-    public override void StartScene()
+    public override void InEdit()
     {
-        Debug.Log("시작");
-        Debug.Log($"지금 인덱스 값: {currentWaypointIndex}");
+        base.InEdit();
     }
-
-    
-
-
-    // public override void ExitScene()
-    // {
-
-    // }
+    public override void Register()
+    {
+        base.Register();
+    }
+    public override void Unregister()
+    {
+        base.Unregister();
+    }
 
 }
