@@ -13,5 +13,5 @@ public class TreasureData
 }
 public enum TreasureType 
 {
-    coin, cap, deco, costune, artifact
+    coin, cap, deco, costume, artifact
 }
