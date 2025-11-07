@@ -29,12 +29,12 @@ public class Turret : MonoBehaviour, ISignalSender
     void Awake()
     {
 
-        myYLevel = Mathf.Round(transform.position.y / 1f); // tileHeight 1기준
-        AutoConnectReceiver();
     }
 
     void Start()
     {
+        myYLevel = Mathf.Round(transform.position.y / 1f); // tileHeight 1기준
+        AutoConnectReceiver();
         if (ring)
         {
             ring.visibleAngle = fov;

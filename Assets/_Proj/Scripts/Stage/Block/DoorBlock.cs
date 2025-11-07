@@ -18,6 +18,10 @@ public class DoorBlock : Block, ISignalReceiver
     private GimmickType connectedType;
     private bool initialized;
 
+    private Vector3 leftClosedPos, leftOpenPos;
+    private Vector3 rightClosedPos, rightOpenPos;
+    private Coroutine doorRoutine;
+
     public void ReceiveSignal()
     {
         if (!initialized) return;
@@ -34,7 +38,7 @@ public class DoorBlock : Block, ISignalReceiver
         {
             // 터렛은 감지 -> 닫힘 / 감지 해제 -> 열림
             IsOn = !IsOn;
-            ToggleDoor(!IsOn); // 반대로
+            ToggleDoor(IsOn);
             Debug.Log($"[Door] (Turret) 문{(!IsOn ? "닫힘" : "열림")}");
         }
         else
@@ -51,6 +55,15 @@ public class DoorBlock : Block, ISignalReceiver
             left = transform.GetChild(0).GetChild(1);
         if (!right)
             right = transform.GetChild(0).GetChild(2);
+
+        // 기준 위치 기록
+        leftClosedPos = left.localPosition;
+        rightClosedPos = right.localPosition;
+
+        // 열릴 때 이동할 방향 (로컬 기준)
+        float offset = 0.75f;
+        leftOpenPos = leftClosedPos + Vector3.right * offset;
+        rightOpenPos = rightClosedPos + Vector3.left * offset;
     }
 
     void Start()
@@ -105,11 +118,40 @@ public class DoorBlock : Block, ISignalReceiver
         Debug.Log($"[Door] 초기세팅 : {(open ? "열림" : "닫힘")} ({connectedType})");
     }
 
-    void ToggleDoor(bool isOn)
+    //void ToggleDoor(bool isOn)
+    //{
+    //    float xOffset = .75f;
+    //    left.Translate(isOn ? new(xOffset, 0, 0) : new(-xOffset, 0, 0));
+    //    right.Translate(isOn ? new(-xOffset, 0, 0) : new(xOffset, 0, 0));
+    //}
+
+    void ToggleDoor(bool open)
     {
-        float xOffset = .75f;
-        left.Translate(isOn ? new(xOffset, 0, 0) : new(-xOffset, 0, 0));
-        right.Translate(isOn ? new(-xOffset, 0, 0) : new(xOffset, 0, 0));
+        if (doorRoutine != null)
+            StopCoroutine(doorRoutine);
+        doorRoutine = StartCoroutine(AnimateDoor(open));
+    }
+
+    IEnumerator AnimateDoor(bool open)
+    {
+        float t = 0f;
+        Vector3 lStart = left.localPosition;
+        Vector3 rStart = right.localPosition;
+        Vector3 lTarget = open ? leftOpenPos : leftClosedPos;
+        Vector3 rTarget = open ? rightOpenPos : rightClosedPos;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime * openSpeed;
+            float smooth = Mathf.SmoothStep(0, 1, t);
+
+            left.localPosition = Vector3.Lerp(lStart, lTarget, smooth);
+            right.localPosition = Vector3.Lerp(rStart, rTarget, smooth);
+            yield return null;
+        }
+
+        left.localPosition = lTarget;
+        right.localPosition = rTarget;
     }
 
     // KHJ - ShockDetectionTower를 위한 영구적으로 문 열기 메서드
