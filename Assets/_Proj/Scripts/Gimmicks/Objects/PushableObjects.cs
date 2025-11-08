@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
@@ -25,6 +26,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     protected float currHold = 0f;
     protected Vector2Int holdDir;
 
+    
     public bool allowFall = true;
     public bool allowSlope = false;
     private BoxCollider boxCol;
@@ -33,7 +35,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     public bool IsMoving => isMoving;
     public bool IsFalling => isFalling;
 
-
+    
     private static Dictionary<int, float> gloablShockImmunity = new();
     [Tooltip("충격파 맞은 오브젝트가 다시 반응하기까지 쿨타임")]
     public float immuneTime = 5f;
@@ -44,6 +46,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     {
         rb = GetComponent<Rigidbody>();
         boxCol = GetComponent<BoxCollider>();
+        
     }
     void Update()
     {
@@ -149,58 +152,103 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         //이동 시작 순간 내 머리 위에 있는 콜라이더, 주변 콜라이더 전부 켜주기
 
         //이동 시작 전 내 주변 사방에 있는 타일들에게서 IEdgeColliderHandler 검출하여 캐싱
-        List<IEdgeColliderHandler> startCache = new();
+
+        List<IEdgeColliderHandler> startCache = null;
         if (TryGetComponent<IEdgeColliderHandler>(out var handler))
         {
             startCache = handler.DetectGrounds();
             handler.SetAllCollider();
             startCache.ForEach((x) => x.SetAllCollider());
         }
-        for (int i = 0; i < 4; i++)
-        {
-            Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
-            Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
-            var result = Physics.RaycastAll(ray, 1.4f, groundMask);
-            foreach (var hit in result)
-            {
-                Debug.Log($"PushableObj: {name} moving start. hitted {hit.collider.name}");
-                if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
-                {
-                    startCache.Add(targetHandler);
-                }
-            }
-        }
+        //아래 부분은 필요없음(이미 앞에서 startCache 찾아옴)
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
+        //    Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
+        //    var result = Physics.RaycastAll(ray, 1.4f, groundMask);
+        //    foreach (var hit in result)
+        //    {
+        //        Debug.Log($"PushableObj: {name} moving start. hitted {hit.collider.name}");
+        //        if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
+        //        {
+        //            startCache.Add(targetHandler);
+        //        }
+        //    }
+        //}
 
         isMoving = true;
         Vector3 start = transform.position;
         float elapsed = 0f;
 
-        // 탑승 리스트(적층형)
-        List<PushableObjects> riders = new List<PushableObjects>();
+        
+        
+        //HACK: 강욱 - 1108: 탑승 중인 물체 검출 로직과 작용부 조금 변경하겠습니다...
+        //이론상 박스 위에 박스는 무한정 쌓을 수 있음.
+        //박스 위치를 기준으로 위쪽으로 infinity만큼 ray 발사. 이때 레이어마스크는 pushableMask와 blockingMask, player까지 검출.
+        Ray upperInfRay = new Ray(transform.position, transform.up);
+        LayerMask targetLayer = LayerMask.GetMask("Pushables", "Player") | groundMask;
+        RaycastHit[] upperBlocks = Physics.RaycastAll(upperInfRay, Mathf.Infinity, targetLayer,QueryTriggerInteraction.Ignore);
+        List<IRider> riders = new();
 
-        Vector3 center = transform.position + Vector3.up * tileSize * 0.5f;
-        Vector3 halfExtents = boxCol.size * 0.5f;
-
-        // throughLayer는 제외하고 검사
-        LayerMask riderMask = blockingMask & ~throughLayer;
-
-        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize, halfExtents * 0.9f, transform.rotation, riderMask);
-
-        foreach (var hit in riderHits)
+        
+        System.Array.Sort(upperBlocks, (x, y) => x.distance.CompareTo(y.distance)); //거리순으로 정렬해줌.
+        int num = 0;
+        foreach (var h in upperBlocks)
         {
-            if (hit.gameObject != gameObject && hit.TryGetComponent<PushableObjects>(out var rider))
+
+            Debug.Log($"박스 밀림: 머리 위의 {++num}번째 블록: 거리 {h.distance} ");
+            if (h.collider.gameObject == gameObject) continue; //일단 자기자신은 무시하는 게 맞음
+            if (h.collider.TryGetComponent<IRider>(out var stacked))
             {
-                // Y좌표 검사: 바로 위에 있는 오브젝트인지 확인 (탑승 중인 오브젝트는 y + tileSize 위치)
-                if (Mathf.Abs(rider.transform.position.y - (transform.position.y + tileSize)) < 0.01f)
-                {
-                    // 탑승자 감지 시 자식으로 설정
-                    rider.transform.SetParent(this.transform);
-                    rider.OnStartRiding();
-                    riders.Add(rider);
-                }
+                //IRider를 구현한 객체(현재까지) - PushableObjects, 플레이어.
+                riders.Add(stacked);
+            }
+            else
+            {
+                //위쪽으로 놓여있는 모든 콜라이더를 검출하되 IRider를 구현하지 않으면 탈 수 없는 객체란 뜻임. 따라서 아무것도 하지 않고 break;
+                break;
             }
         }
 
+        
+
+        riders.ForEach((x) => {
+            //여기서 각 라이더는 자기 원래의 부모를 기억함.
+            x.OnStartRiding();
+            x.gameObject.transform.SetParent(transform);
+        }); 
+        
+
+        #region 적층 시 위쪽의 블록도 같이 이동시키는 코드(원본)
+
+        //// 탑승 리스트(적층형)
+        //List<PushableObjects> riders = new List<PushableObjects>();
+        //Vector3 center = transform.position + Vector3.up * tileSize * 0.5f;
+        //Vector3 halfExtents = boxCol.size * 0.5f;
+
+
+
+        //// throughLayer는 제외하고 검사
+        //LayerMask riderMask = blockingMask & ~throughLayer;
+
+
+        //Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize, halfExtents * 0.9f, transform.rotation, riderMask);
+
+        //foreach (var hit in riderHits)
+        //{
+        //    if (hit.gameObject != gameObject && hit.TryGetComponent<PushableObjects>(out var rider))
+        //    {
+        //        // Y좌표 검사: 바로 위에 있는 오브젝트인지 확인 (탑승 중인 오브젝트는 y + tileSize 위치)
+        //        if (Mathf.Abs(rider.transform.position.y - (transform.position.y + tileSize)) < 0.01f)
+        //        {
+        //            // 탑승자 감지 시 자식으로 설정
+        //            rider.transform.SetParent(this.transform);
+        //            rider.OnStartRiding();
+        //            riders.Add(rider);
+        //        }
+        //    }
+        //}
+        #endregion
         while (elapsed < moveTime)
         {
             transform.position = Vector3.Lerp(start, target, elapsed / moveTime);
@@ -211,21 +259,27 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         transform.position = target;
 
         isMoving = false;
+        #region 적층 시 위쪽의 블록도 같이 이동시키는 코드(원본) - 탑승 해제 부분
+        //// 탑승 해제
+        //foreach (var rider in riders)
+        //{
+        //    if (rider != null)
+        //    {
+        //        rider.transform.SetParent(null);
+        //        rider.OnStopRiding(); // OnStopRiding 내부에서 CheckFall()을 호출함
+        //    }
+        //}
+        //riders.Clear();
+        #endregion
 
-        // 탑승 해제
-        foreach (var rider in riders)
-        {
-            if (rider != null)
-            {
-                rider.transform.SetParent(null);
-                rider.OnStopRiding(); // OnStopRiding 내부에서 CheckFall()을 호출함
-            }
-        }
-        riders.Clear();
 
         //중요: 한 프레임만 뒤에 실행시키기.
-        
+
         yield return null;
+        foreach (var r in riders)
+        {
+            r.OnStopRiding();
+        }
 
         if (handler != null)
             //만약 내가 머리 위에 투명벽이 달린 객체라면?? 바꿔 말해, 내가 올라탈 수 있는 객체라면?

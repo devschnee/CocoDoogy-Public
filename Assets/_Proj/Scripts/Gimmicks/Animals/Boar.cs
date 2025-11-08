@@ -208,13 +208,13 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 PushableObjects headPush = hit.collider?.GetComponent<PushableObjects>();
 
                 // 같은 층 기준 스택 수집
-                List<PushableObjects> vstack = CollectVerticalStack(headPush.transform.position, baseY);
+                //List<PushableObjects> vstack = CollectVerticalStack(headPush.transform.position, baseY);
 
                 // 연속된 Pushable 체인 전체 수집. 체인 뒤에 blocking 없는지 확인
                 if (!CollectChain(headPush.transform.position, dashDir, baseY, out var chainStacks, out Vector3 tailNextWorld))
                 {
                     // 막히면 정지
-                    HitStop(vstack[0].gameObject);
+                    //HitStop(vstack[0].gameObject);
                     isMoving = false;
                     break;
                 }
@@ -230,7 +230,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 if (tailBlocked)
                 {
                     // 막히면 정지
-                    HitStop(vstack[0].gameObject);
+                    //HitStop(vstack[0].gameObject);
                     isMoving = false;
                     break;
                 }
@@ -242,7 +242,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 var posAfterPush = transform.position + new Vector3(dashDir.x, 0, dashDir.y);
                 yield return StartCoroutine(DashMoveTo(posAfterPush, new Vector3(dashDir.x, 0, dashDir.y)));
 
-                HitStop(vstack[0].gameObject);
+                //HitStop(vstack[0].gameObject);
 
                 // 낙하 처리 (꼬리부터)
                 for (int i = chainStacks.Count - 1; i >= 0; i--)
@@ -269,50 +269,50 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
     #region Stack Chain
     // 수펑 위치 기준으로 수직으로 쌓인 PushableObjects 수집
-    List<PushableObjects> CollectVerticalStack(Vector3 baseWorldPos, float yFloor)
-    {
-        List<PushableObjects> stack = new List<PushableObjects>();
-        Vector3 cursor = baseWorldPos;
+    //List<PushableObjects> CollectVerticalStack(Vector3 baseWorldPos, float yFloor)
+    //{
+    //    List<PushableObjects> stack = new List<PushableObjects>();
+    //    Vector3 cursor = baseWorldPos;
 
-        // 최대 높이(일단 10층)까지 탐색
-        for (int i = 0; i < 10; i++)
-        {
-            Vector3 checkPos = cursor + Vector3.up * (0.5f + i * tileSize);
+    //    // 최대 높이(일단 10층)까지 탐색
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        Vector3 checkPos = cursor + Vector3.up * (0.5f + i * tileSize);
 
-            var cols = Physics.OverlapBox(
-                checkPos,
-                new Vector3(0.45f, 0.5f, 0.45f),
-                Quaternion.identity,
-                pushableLayer,
-                QueryTriggerInteraction.Collide
-            );
+    //        var cols = Physics.OverlapBox(
+    //            checkPos,
+    //            new Vector3(0.45f, 0.5f, 0.45f),
+    //            Quaternion.identity,
+    //            pushableLayer,
+    //            QueryTriggerInteraction.Collide
+    //        );
 
-            PushableObjects push = null;
-            foreach (var c in cols)
-            {
-                if (c == null || c.isTrigger) continue;
-                if (!c.TryGetComponent(out PushableObjects p)) continue;
+    //        PushableObjects push = null;
+    //        foreach (var c in cols)
+    //        {
+    //            if (c == null || c.isTrigger) continue;
+    //            if (!c.TryGetComponent(out PushableObjects p)) continue;
 
-                // 층 비교
-                float pushY = Mathf.Floor(p.transform.position.y / tileSize + 1e-4f);
-                if (pushY < yFloor) continue; // 보어 아래층이면 무시
+    //            // 층 비교
+    //            float pushY = Mathf.Floor(p.transform.position.y / tileSize + 1e-4f);
+    //            if (pushY < yFloor) continue; // 보어 아래층이면 무시
 
-                push = p;
-                break;
-            }
+    //            push = p;
+    //            break;
+    //        }
 
-            if (push != null)
-            {
-                stack.Add(push);
-            }
-            else
-            {
-                // 현재 칸에 Pushable이 없으면 더 이상 위에도 없을 것으로 가정하고 종료
-                break;
-            }
-        }
-        return stack;
-    }
+    //        if (push != null)
+    //        {
+    //            stack.Add(push);
+    //        }
+    //        else
+    //        {
+    //            // 현재 칸에 Pushable이 없으면 더 이상 위에도 없을 것으로 가정하고 종료
+    //            break;
+    //        }
+    //    }
+    //    return stack;
+    //}
 
 
     // 연속된 PushableObjects 체인 수평 방향 수집, 체인 중간에 blocking 없는지 검사
@@ -327,23 +327,23 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         while (true)
         {
             // CollectVerticalStack을 사용하여 현재 칸의 수직 스택을 가져옴
-            List<PushableObjects> verticalStack = CollectVerticalStack(new Vector3(cursor.x, 0, cursor.z), yFloor);
+            //List<PushableObjects> verticalStack = CollectVerticalStack(new Vector3(cursor.x, 0, cursor.z), yFloor);
 
-            if (verticalStack.Count == 0)
-            {
-                // 현재 칸이 비었거나 Pushable이 없다면
-                if (chainOfStacks.Count == 0)
-                {
-                    // headWorldPos에서부터 Pushable을 못 찾으면 실패
-                    return false;
-                }
-                else
-                {
-                    // 체인 끝. 꼬리 뒤 칸은 cursor가 됨
-                    tailNextWorld = cursor;
-                    return true;
-                }
-            }
+            //if (verticalStack.Count == 0)
+            //{
+            //    // 현재 칸이 비었거나 Pushable이 없다면
+            //    if (chainOfStacks.Count == 0)
+            //    {
+            //        // headWorldPos에서부터 Pushable을 못 찾으면 실패
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        // 체인 끝. 꼬리 뒤 칸은 cursor가 됨
+            //        tailNextWorld = cursor;
+            //        return true;
+            //    }
+            //}
 
             // Pushable이 아닌 충돌체(blocking)를 검사
             bool nonPushBlocking = false;
@@ -373,7 +373,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             }
 
             // pushable 체인에 수직 스택 누적
-            chainOfStacks.Add(verticalStack);
+            //chainOfStacks.Add(verticalStack);
             // 다음 칸으로 이동
             cursor += step;
         }

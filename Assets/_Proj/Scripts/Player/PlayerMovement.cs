@@ -233,6 +233,8 @@ public class PlayerMovement : MonoBehaviour, IRider
     public void OnStopRiding()
     {
         joystick.gameObject.SetActive(true);
+
+        //이 컴포넌트가 붙은 오브젝트의 경우 원래 부모가 null이므로 부모를 null로 할당하는 것으로 충분함.
         transform.SetParent(null);
     }
 }
