@@ -277,11 +277,13 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     public IEnumerator CheckFall()
     {
+        if (isFalling) yield break; // .
+
         isFalling = true;
         Vector3 currPos = transform.position;
+        bool fell = false; //.
 
         // Pushable도 땅으로 인식
-
         while (!Physics.BoxCast(
             currPos + Vector3.up * 0.3f,
             new Vector3(0.4f, 0.05f, 0.4f),
@@ -294,10 +296,12 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             Vector3 fallTarget = currPos + Vector3.down * tileSize;
             yield return StartCoroutine(MoveTo(fallTarget));
             currPos = transform.position;
+            fell = true; //.
         }
 
         isFalling = false;
-        OnLanded();
+        if (fell) //.
+            OnLanded();
     }
 
 
@@ -403,6 +407,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     // 복귀
     IEnumerator WaveLiftCoroutine(float rise, float holdSec, float fall)
     {
+        isFalling = true; //.
         isMoving = true;
 
         Vector3 start = transform.position;
@@ -434,9 +439,21 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         transform.position = start;
 
         isMoving = false;
+        isFalling = false; //.
         Debug.Log($"{name} 충격파 영향 받음");
-        yield break;
+        //yield break;
         // NOTE : 혹시나 뭔가 다른 작업을 하다 여기에서 CheckFall()을 할 일이 생긴다면 차라리 다른 스크립트를 작성하는 것을 권장. 원위치 복귀 후 다시 낙하 검사하는 실수 생기면 안 됨.
         // pushables가 충격파 받은 이후로 적층된 물체들이 원위치 후 다시 낙하 검사를 하게 되면 한 번 더 낙하해서 원위치에서 -y로 더 내려가게 됨
+        StartCoroutine(CallFallCheck()); //.
+    }
+
+    //. 직접적인 대기 연결 고리 끊기 위해 WaveLiftCoroutine에서 분리
+    IEnumerator CallFallCheck()
+    {
+        yield return null;
+        if (allowFall)
+        {
+            yield return StartCoroutine(CheckFall());
+        }
     }
 }
