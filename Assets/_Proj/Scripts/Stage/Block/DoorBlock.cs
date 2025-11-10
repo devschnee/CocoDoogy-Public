@@ -61,7 +61,7 @@ public class DoorBlock : Block, ISignalReceiver
         rightClosedPos = right.localPosition;
 
         // 열릴 때 이동할 방향 (로컬 기준)
-        float offset = 0.75f;
+        float offset = 0.95f;
         leftOpenPos = leftClosedPos + Vector3.right * offset;
         rightOpenPos = rightClosedPos + Vector3.left * offset;
     }
