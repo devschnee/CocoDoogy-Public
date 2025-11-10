@@ -158,12 +158,12 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         // === 돌진 ===
         while (true)
         {
-            if (++stepGuard > 10)
-            {
-                Debug.LogWarning("[Boar] 무한 루프 강제 종료");
-                isMoving = false;
-                yield break;
-            }
+            //if (++stepGuard > 30)
+            //{
+            //    Debug.LogWarning("[Boar] 무한 루프 강제 종료");
+            //    isMoving = false;
+            //    yield break;
+            //}
 
             Vector3 currentPos = transform.position;
             Vector3 nextPos = currentPos + moveDir * tileSize;

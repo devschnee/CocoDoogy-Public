@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour, IRider
     public float rotateLerp = 10f;
     public LayerMask slopeMask; // 경사로에서만 올라타기는 허용시키기 위해. PlayerSlope.cs와 역할이 다름.
                                 // 살짝 겹치는 내용 있을 수 있어서 전체적으로 리팩터링 하면 좋긴 함.
+
+    private Vector3 lastValidPos;
     #endregion
 
     void Awake()
@@ -235,4 +237,8 @@ public class PlayerMovement : MonoBehaviour, IRider
         joystick.gameObject.SetActive(true);
         transform.SetParent(null);
     }
+
+
+
+    
 }
