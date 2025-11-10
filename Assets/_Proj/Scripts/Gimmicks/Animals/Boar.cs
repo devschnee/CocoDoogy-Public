@@ -395,6 +395,19 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         foreach (var stack in chainOfStacks)
             allChainObjects.AddRange(stack);
 
+        //HACK: 강욱 - 1110: 모인 모든 PushableObject 에서 IEdgeColliderHandler를 한곳에 모아 보관, 그리고 그 인접 블록도 보관.
+        List<IEdgeColliderHandler> startingIEdgeColliderHandlers = new();
+        foreach (var po in allChainObjects)
+        {
+            //if (e is IEdgeColliderHandler startingHandler) //이러면 좋겠지만 따로 TryGetComponent<>해야 함.
+            if (po.TryGetComponent<IEdgeColliderHandler>(out IEdgeColliderHandler startingHandler))
+            {
+                //startingIEdgeColliderHandlers.Add(startingHandler); //검출된 핸들러를 넣고,
+                startingIEdgeColliderHandlers.AddRange(startingHandler.DetectGrounds()); //검출된 핸들러 사방의 핸들러를 추가로 넣음
+            }
+           
+        }
+
         int n = allChainObjects.Count;
         var collLists = new List<Collider[]>(n);
         for (int i = 0; i < n; ++i)
@@ -437,6 +450,23 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 foreach (var a in collLists[i])
                     foreach (var b in collLists[j])
                         if (a && b) Physics.IgnoreCollision(a, b, false);
+
+        //이동이 끝났으므로 저장해놨던 IEdgeColliderHandlers가 각각 검사.
+        foreach(var handler in startingIEdgeColliderHandlers)
+        {
+            //이 핸들러는 시작 시점에 저장되어있던 모든 투명벽을 가진 블록들을 의미함.
+            handler.DetectAndApplyFourEdge();
+            
+        }
+        foreach (var po in allChainObjects)
+            if (po.TryGetComponent<IEdgeColliderHandler>(out var handler))
+            {
+                //이 핸들러는 체인된 오브젝트(함께 밀린 모든 오브젝트)에서 검출한 투명벽 핸들러를 의미함.
+                //해당 핸들러의 투명벽 재설정
+                handler.DetectAndApplyFourEdge();
+                //해당 핸들러 사방의 객체의 투명벽도 재설정
+                handler.DetectGrounds().ForEach(x => x.DetectAndApplyFourEdge());
+            }
 
         // NOTE: 낙하 검사는 DashCoroutine에서 한 번에 처리
     }
