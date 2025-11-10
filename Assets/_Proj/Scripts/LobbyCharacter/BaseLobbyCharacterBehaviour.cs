@@ -109,7 +109,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
 
     protected void StopMoving()
     {
-        fsm.ChangeState(IdleState);
+        //fsm.ChangeState(IdleState);
         StopAllCoroutines();
         if (agent != null && agent.isActiveAndEnabled) agent.ResetPath();
     }
