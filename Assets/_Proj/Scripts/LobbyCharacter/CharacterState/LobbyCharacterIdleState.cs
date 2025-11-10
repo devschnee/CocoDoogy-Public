@@ -23,7 +23,10 @@ public class LCocoDoogyIdleState : LobbyCharacterBaseState
         owner.StartCoroutine(WaitThenMove());
     }
 
-    public override void OnStateUpdate() { }
+    public override void OnStateUpdate()
+    {
+        if (owner.IsDestroyed()) owner.StopAllCoroutines();
+    }
 
     public override void OnStateExit()
     {
@@ -58,7 +61,10 @@ public class LMasterIdleState : LobbyCharacterBaseState
         owner.StartCoroutine(WaitThenMove());
     }
 
-    public override void OnStateUpdate() { }
+    public override void OnStateUpdate()
+    {
+        if (owner.IsDestroyed()) owner.StopAllCoroutines();
+    }
 
     public override void OnStateExit()
     {
@@ -93,7 +99,10 @@ public class LAnimalIdleState : LobbyCharacterBaseState
         owner.StartCoroutine(WaitThenMove());
     }
 
-    public override void OnStateUpdate() { }
+    public override void OnStateUpdate()
+    {
+        if (owner.IsDestroyed()) owner.StopAllCoroutines();
+    }
 
     public override void OnStateExit()
     {
