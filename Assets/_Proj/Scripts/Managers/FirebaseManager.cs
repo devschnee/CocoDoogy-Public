@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class FirebaseManager_FORTEST : MonoBehaviour
+public class FirebaseManager : MonoBehaviour
 {
-    public static FirebaseManager_FORTEST Instance { get; private set; }
+    public static FirebaseManager Instance { get; private set; }
     private FirebaseApp App { get; set; }
     private FirebaseDatabase DB { get; set; }
+
+    private FirebaseAuth Auth { get; set; }
     private DatabaseReference MapDataRef => DB.RootReference.Child($"mapData");
     private DatabaseReference MapMetaRef => DB.RootReference.Child($"mapMeta");
 
@@ -46,9 +48,13 @@ public class FirebaseManager_FORTEST : MonoBehaviour
             App = FirebaseApp.DefaultInstance;
             DB = FirebaseDatabase.GetInstance(App);
             DB.SetPersistenceEnabled(false);
+
+            //추가: 파이어베이스 인증 기능 활용을 위해 현재 App에서 Firebase Authentication 어플리케이션을 가져옵니다.
+            Auth = FirebaseAuth.GetAuth(App);
         }
         else
         {
+            
             Debug.LogWarning($"파이어베이스 초기화 실패, 파이어베이스 앱 상태: {status}");
         }
     }
@@ -163,9 +169,15 @@ public class FirebaseManager_FORTEST : MonoBehaviour
         #endregion
     }
 
-    public async Task Temp(string id)
+    public async Task FindMapDataByID(string id)
     {
-        currentMapData =  await LoadMapFromFirebase(id);
+        currentMapData = await LoadMapFromFirebase(id);
         selectStageID = id;
     }
+
+
+
+
+    //Firebase Auth 관련 기능.
+
 }

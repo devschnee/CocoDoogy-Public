@@ -89,6 +89,7 @@ public class DoorBlock : Block, ISignalReceiver
         foreach (var c in cols)
         {
             var sender = c.GetComponentInParent<ISignalSender>();
+
             if (sender == null) continue;
             //if (sender.Receiver != this) continue;
             if ((DoorBlock)sender.Receiver != this) continue;

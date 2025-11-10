@@ -264,11 +264,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             cached.DetectAndApplyFourEdge();
         }
 
-        //// 낙하 이벤트 위해 추가
-        //if (allowFall)
-        //{
-        //    yield return StartCoroutine(CheckFall());
-        //}
         yield break;
     }
 
