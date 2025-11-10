@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Bits: 16384
   throughLayer:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 2064
   requiredHoldtime: 0.4
   allowFall: 1
   allowSlope: 0

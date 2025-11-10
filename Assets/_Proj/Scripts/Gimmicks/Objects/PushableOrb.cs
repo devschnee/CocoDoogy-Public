@@ -70,6 +70,8 @@ public class PushableOrb : PushableObjects
     protected override void OnLanded()
     {
         isMoving = false;
+        isFalling = false;
+
         if (Time.time - lastShockwaveTime < orbCoolTime)
             return;
 

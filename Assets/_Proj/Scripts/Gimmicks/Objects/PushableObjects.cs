@@ -21,7 +21,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     protected bool isHoling = false;
     protected bool isFalling = false;
     protected bool isRiding = false;
-    public float requiredHoldtime = 0.9f;
+    public float requiredHoldtime = 0.6f;
     protected float currHold = 0f;
     protected Vector2Int holdDir;
 
