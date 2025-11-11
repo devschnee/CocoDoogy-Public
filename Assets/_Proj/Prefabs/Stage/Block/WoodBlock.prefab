@@ -317,11 +317,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.2
+  moveTime: 0.25
   tileSize: 1
   blockingMask:
     serializedVersion: 2
-    m_Bits: 66432
+    m_Bits: 66440
   groundMask:
     serializedVersion: 2
     m_Bits: 896

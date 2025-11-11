@@ -36,11 +36,11 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
 
 
         // 앞 1칸 두께 있게 훑기 (레이어 제한 없이 -> IPushHandler로 필터)
-        Vector3 halfExtents = new(.2f, .2f, .2f);
-        float maxDist = tileSize * 1.1f;
+        Vector3 halfExtents = new(.2f, .4f, .2f);
+        float maxDist = tileSize * 1.5f;
         float front = Mathf.Max(0.1f, frontOffset);
 
-        Vector3 origin = rb.position + Vector3.up * 0.7f + dirN * front;
+        Vector3 origin = rb.position + Vector3.up * .8f + dirN * front;
 
         //SphereCastAll에서 BoxCastAll로 변경합니다.
         var hits = Physics.BoxCastAll(

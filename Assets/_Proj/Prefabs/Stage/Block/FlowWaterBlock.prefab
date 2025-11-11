@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1956ffc446d861346ae5fca4793b0f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowInterval: 0.5
+  flowInterval: 0.65
   pushableMask:
     serializedVersion: 2
     m_Bits: 256

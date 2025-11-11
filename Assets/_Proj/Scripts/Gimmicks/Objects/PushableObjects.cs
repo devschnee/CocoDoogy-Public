@@ -184,7 +184,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         float elapsed = 0f;
 
         // 탑승 리스트(적층형)
-        List<PushableObjects> riders = new List<PushableObjects>();
+        List<IRider> riders = new List<IRider>();
 
         Vector3 center = transform.position + Vector3.up * tileSize * 0.5f;
         Vector3 halfExtents = boxCol.size * 0.5f;
@@ -192,8 +192,8 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         // throughLayer는 제외하고 검사
         LayerMask riderMask = blockingMask & ~throughLayer;
 
-        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize, halfExtents * 0.9f, transform.rotation, riderMask);
-
+        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize * 0.5f, halfExtents * .9f, transform.rotation, riderMask);
+        Transform playerTransform = null;
         foreach (var hit in riderHits)
         {
             if (hit.gameObject != gameObject && hit.TryGetComponent<PushableObjects>(out var rider))
@@ -202,17 +202,32 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
                 if (Mathf.Abs(rider.transform.position.y - (transform.position.y + tileSize)) < 0.01f)
                 {
                     // 탑승자 감지 시 자식으로 설정
-                    rider.transform.SetParent(this.transform);
                     rider.OnStartRiding();
+                    rider.transform.SetParent(this.transform);
                     riders.Add(rider);
                 }
             }
+            if (hit.TryGetComponent<PlayerMovement>(out PlayerMovement player))
+            {
+                print("########박스의 IRider로 playerMovement 검출했음.########");
+                playerTransform = player.transform;
+            }
         }
 
+        
         while (elapsed < moveTime)
         {
+           
+            
             transform.position = Vector3.Lerp(start, target, elapsed / moveTime);
             elapsed += Time.deltaTime;
+
+
+            if (playerTransform)
+            {
+                float yOffset = playerTransform.position.y - transform.position.y;
+                playerTransform.position = Vector3.Lerp(playerTransform.position, transform.position + Vector3.up * yOffset, elapsed);
+            }
             yield return null;
         }
 
@@ -225,7 +240,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         {
             if (rider != null)
             {
-                rider.transform.SetParent(null);
+                //rider.transform.SetParent(null);
                 rider.OnStopRiding(); // OnStopRiding 내부에서 CheckFall()을 호출함
             }
         }
@@ -345,10 +360,10 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     public void OnStartRiding()
     {
         isRiding = true;
+        StartCoroutine(RidingCoroutine());
         isMoving = false;
         isHoling = false;
         currHold = 0f;
-        StartCoroutine(RidingCoroutine());
     }
 
     IEnumerator RidingCoroutine()
