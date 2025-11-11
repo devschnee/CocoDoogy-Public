@@ -205,9 +205,9 @@ public class StageManager : MonoBehaviour
                     var dialogue = go.GetComponent<Dialogue>();
 
                     if (block.blockName.Contains("1"))
-                        dialogue.Init(data.start_talk);
+                        dialogue.Init(data.dialogue_box_1);
                     else if (block.blockName.Contains("2"))
-                        dialogue.Init(data.end_talk);
+                        dialogue.Init(data.dialogue_box_2);
                 }
             }
             //GetComponent<Block>().Init(block);
