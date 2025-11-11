@@ -335,65 +335,47 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 // 현재 칸이 비었거나 Pushable이 없다면
                 if (chainOfStacks.Count == 0)
                 {
-                    // 첫 칸부터 없으면 실패
+                    // headWorldPos에서부터 Pushable을 못 찾으면 실패
                     return false;
                 }
                 else
                 {
-                    // 꼬리 칸 바로 다음 위치를 tailNextWorld로 반환
+                    // 체인 끝. 꼬리 뒤 칸은 cursor가 됨
                     tailNextWorld = cursor;
-
-                    // 꼬리칸의 모든 Pushable 개별 blocking 검사
-                    Vector3 tailDir = new Vector3(dir.x, 0, dir.y);
-                    Vector3 tailCheckPos = tailNextWorld; // 꼬리 다음칸
-
-                    List<PushableObjects> lastStack = chainOfStacks[chainOfStacks.Count - 1];
-                    foreach (var p in lastStack)
-                    {
-                        Vector3 checkCenter = p.transform.position + tailDir * tileSize + Vector3.up * 0.5f;
-                        Vector3 halfExt = new Vector3(0.45f, 0.5f, 0.45f);
-
-                        bool blocked = Physics.CheckBox(
-                            checkCenter,
-                            halfExt,
-                            Quaternion.identity,
-                            blockingMask,
-                            QueryTriggerInteraction.Collide);
-
-                        if (blocked)
-                        {
-                            // 꼬리 중 하나라도 막혀 있으면 밀기 실패
-                            return false;
-                        }
-                    }
-
                     return true;
                 }
             }
 
-            // 현재 칸에 blocking 있는지 검사 (중간에 막힌 칸)
-            bool midBlocked = false;
+            // Pushable이 아닌 충돌체(blocking)를 검사
+            bool nonPushBlocking = false;
             var cols = Physics.OverlapBox(
                 cursor + Vector3.up * 0.5f,
                 new Vector3(0.45f, 0.5f, 0.45f),
                 Quaternion.identity,
-                blockingMask,
-                QueryTriggerInteraction.Collide);
+                blockingMask, // blockingLayer만 체크
+                QueryTriggerInteraction.Collide
+            );
 
             foreach (var c in cols)
             {
                 if (c == null || c.isTrigger) continue;
-                midBlocked = true;
-                break;
+                // blockingLayer에 포함된 충돌체가 있으면 밀기 실패
+                if (((1 << c.gameObject.layer) & blockingMask.value) != 0)
+                {
+                    nonPushBlocking = true;
+                    break;
+                }
             }
 
-            if (midBlocked)
+            if (nonPushBlocking)
             {
                 // 체인 중간에 뭐 있으면 밀기 실패
                 return false;
             }
 
+            // pushable 체인에 수직 스택 누적
             chainOfStacks.Add(verticalStack);
+            // 다음 칸으로 이동
             cursor += step;
         }
     }
@@ -424,7 +406,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 //startingIEdgeColliderHandlers.Add(startingHandler); //검출된 핸들러를 넣고,
                 startingIEdgeColliderHandlers.AddRange(startingHandler.DetectGrounds()); //검출된 핸들러 사방의 핸들러를 추가로 넣음
             }
-           
+
         }
 
         int n = allChainObjects.Count;
@@ -471,11 +453,11 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                         if (a && b) Physics.IgnoreCollision(a, b, false);
 
         //이동이 끝났으므로 저장해놨던 IEdgeColliderHandlers가 각각 검사.
-        foreach(var handler in startingIEdgeColliderHandlers)
+        foreach (var handler in startingIEdgeColliderHandlers)
         {
             //이 핸들러는 시작 시점에 저장되어있던 모든 투명벽을 가진 블록들을 의미함.
             handler.DetectAndApplyFourEdge();
-            
+
         }
         foreach (var po in allChainObjects)
             if (po.TryGetComponent<IEdgeColliderHandler>(out var handler))
