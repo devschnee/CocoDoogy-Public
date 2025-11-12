@@ -911,7 +911,7 @@ MonoBehaviour:
     m_Bits: 17024
   groundMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 131840
   slopeMask:
     serializedVersion: 2
     m_Bits: 0

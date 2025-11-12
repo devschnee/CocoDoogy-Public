@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Water;
 
 // 10/29 TODO : 카메라 세팅 후 팝업 UI 조정 76라인
+// NOTE : 추후 필요 시 -> Boar가 Turtle을 탑승할 수 있게 된다면, IRider를 구현해줘야 함.
+// 탑승하지 못하지만 위에 쌓인 박스는 밀게 하고 싶다면 돌진 로직에서 ground에 감지되는 것이 Turtle이라면 밀고 나서 Boar도 한 칸 이동하는 이동로직을 안 하도록 분기해줘야 함.
 public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 {
     [Header("Canvas")]
@@ -32,6 +35,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     Transform IPlayerFinder.Player { get => playerTrans; set => playerTrans = value; }
 
     //public ParticleSystem hitFx;
+    Flow flowWater;
 
 
     protected override void Awake()
@@ -52,15 +56,25 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         if (playerGO) playerTrans = playerGO.transform;
     }
 
+    // Boar가 FlowWater위에 들어간 PushableObjects를 Flow Interval 시간보다 먼저 밀어서 오류 사항을 만들어내지 않기 위해 requiredTime을 조정하기 위함
+    void Start()
+    {
+        if (flowWater == null)
+        {
+            flowWater = FindAnyObjectByType<Flow>(FindObjectsInactive.Include);
+        }
+    }
+
     void Update()
     {
-        if (isHoling && !isMoving)
+        if ((isHoling || !isMoving) && flowWater != null)
         {
             currHold += Time.deltaTime;
-            if (currHold >= requiredHoldtime)
+            float holdThreshold = Mathf.Max(requiredHoldtime, flowWater.flowInterval + 1f);
+            if (currHold >= holdThreshold)
             {
-                TryPush(holdDir); // 홀드 시간 충족 시 밀기 시도
-                currHold = 0f;
+                TryPush(holdDir);
+                currHold = 0f;
                 isHoling = false;
             }
         }
