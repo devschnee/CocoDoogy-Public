@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
@@ -8,15 +9,16 @@ public static class UserDataExtensions
 {
     public static string ToJson(this IUserDataCategory category) => JsonConvert.SerializeObject(category);
     public static T FromJson<T>(this string json) where T : IUserDataCategory => JsonConvert.DeserializeObject<T>(json);
-
     public async static void Save(this IUserDataCategory category) => await FirebaseManager.Instance.UpdateLocalUserDataCategory(category);
+
+
 }
 
 
 
 public interface IUserDataCategory
 {
-    
+    public virtual string ToValidFormat() { return null; }
     
 }
 
@@ -159,6 +161,24 @@ public class UserData : IUserDataCategory
         public Lobby()
         {
 
+        }
+
+        public string ToValidFormat()
+        {
+            StringBuilder sb = new();
+            foreach (var p in props)
+            {
+                var validFomat = new PlaceableStore.Placed()
+                {
+                    cat = Enum.Parse<PlaceableCategory>(p.Key)/*를 기준으로 몇번대부터 몇번대까지는 이enum으로, 또 몇번까지는 저 enum으로 바꿔줘*/,
+                    id = int.Parse(p.Key),
+                    pos = new(p.Value[0].xPosition, 0, p.Value[0].yPosition),
+                    rot = Quaternion.Euler(0, p.Value[0].yAxisRotation, 0)
+                };
+
+                sb.Append(JsonUtility.ToJson(validFomat));
+            }
+            return sb.ToString();
         }
     }
 
@@ -319,5 +339,9 @@ public class UserData : IUserDataCategory
         await FirebaseManager.Instance.UpdateLocalUserData();
         
     }
-    
+
+    public string ToValidFormat()
+    {
+        throw new NotImplementedException();
+    }
 }

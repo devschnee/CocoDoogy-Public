@@ -271,6 +271,14 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
+    //public async Task<IUserDataCategory> FetchUserData(string uid, IUserDataCategory category)
+    //{
+    //    try
+    //    {
+
+    //    }
+    //}
+
     //2. DB에 로컬 유저데이터를 저장하는 처리 (전체를 JSON으로)
     public async Task UpdateLocalUserData() => await UpdateUserData(Auth.CurrentUser.UserId, UserData.Local);
     
