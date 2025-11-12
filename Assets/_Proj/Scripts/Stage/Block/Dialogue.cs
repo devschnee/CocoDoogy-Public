@@ -95,22 +95,23 @@ public class Dialogue : MonoBehaviour
         }
 
         var speakData = DataManager.Instance.Speaker.GetData(currentData.speaker_id);
-        var speakerSprite = DataManager.Instance.Speaker.GetPortrait(currentData.speaker_id, speakData.portrait_set_prefix);
+        var basePrefix = speakData.portrait_set_prefix;
+
+        var emotionSprite = GetEmotionSprite(currentData.speaker_id, basePrefix);
 
         // 화자 이미지 갱신
         if (currentData.speaker_position == SpeakerPosition.left)
         {
-            StageUIManager.Instance.DialogueSpeakerLeft.sprite = speakerSprite;
+            StageUIManager.Instance.DialogueSpeakerLeft.color = new Color(1, 1, 1, 1);
+            StageUIManager.Instance.DialogueSpeakerLeft.sprite = emotionSprite;
             StageUIManager.Instance.DialogueSpeakerRight.color = new Color(1, 1, 1, 0.2f);
         }
         else
         {
-            StageUIManager.Instance.DialogueSpeakerRight.sprite = speakerSprite;
+            StageUIManager.Instance.DialogueSpeakerRight.color = new Color(1, 1, 1, 1);
+            StageUIManager.Instance.DialogueSpeakerRight.sprite = emotionSprite;
             StageUIManager.Instance.DialogueSpeakerLeft.color = new Color(1, 1, 1, 0.2f);
         }
-
-        // 표정 변경
-        UpdateEmotion(currentData.speaker_id, speakData.portrait_set_prefix);
 
         // 이름, 텍스트 초기화
         StageUIManager.Instance.DialogueNameText.text = speakData.display_name;
@@ -140,13 +141,19 @@ public class Dialogue : MonoBehaviour
     }
 
     // 감정 표현 업데이트
-    private Sprite UpdateEmotion(SpeakerData.SpeakerId id, string emotion)
+    private Sprite GetEmotionSprite(SpeakerData.SpeakerId id, string basePrefix)
     {
-        // TODO: emotion값에 따라 sprite나 animator 변경
-        var newSprite = DataManager.Instance.Speaker.GetPortrait(id, emotion);
+        // 예: prefix가 "coco_"라면 "coco_Happy", "coco_Sad" 식으로 찾기
+        string emotionKey = $"{basePrefix}";
+        var sprite = DataManager.Instance.Speaker.GetPortrait(id, emotionKey);
+        if (sprite == null)
+        {
+            // 해당 감정 이미지 없으면 기본 표정
+            sprite = DataManager.Instance.Speaker.GetPortrait(id, basePrefix);
+        }
 
-        Debug.Log($"[Emotion] {id} → {emotion}");
-        return newSprite;
+        Debug.Log($"[Emotion] {id} → ({emotionKey})");
+        return sprite;
     }
 
     // TextMeshPro 타이핑 효과 함수
