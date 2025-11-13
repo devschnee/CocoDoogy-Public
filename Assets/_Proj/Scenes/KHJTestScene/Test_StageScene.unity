@@ -1173,6 +1173,7 @@ MonoBehaviour:
   OptionPanel: {fileID: 1918924225}
   ResultPanel: {fileID: 321378219}
   TreasurePanel: {fileID: 1780084018}
+  DialoguePanel: {fileID: 0}
   Overlay: {fileID: 491297653}
   stageName: {fileID: 1544757045}
   star:
@@ -1192,6 +1193,10 @@ MonoBehaviour:
   TreasureDesc: {fileID: 655073389}
   CocoDoogyImage: {fileID: 105974357}
   CocoDoogyDesc: {fileID: 1477821227}
+  DialogueSpeakerLeft: {fileID: 0}
+  DialogueSpeakerRight: {fileID: 0}
+  DialogueNameText: {fileID: 0}
+  DialogueText: {fileID: 0}
   collectedSprite: {fileID: 0}
   notCollectedSprite: {fileID: 0}
 --- !u!4 &1272991174

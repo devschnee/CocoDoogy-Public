@@ -908,7 +908,7 @@ MonoBehaviour:
   tileSize: 1
   blockingMask:
     serializedVersion: 2
-    m_Bits: 17024
+    m_Bits: 25216
   groundMask:
     serializedVersion: 2
     m_Bits: 131840
@@ -926,6 +926,7 @@ MonoBehaviour:
   overrideRiseSec: 0.5
   overrideHangSec: 0.2
   overrideFallSec: 0.5
+  flow: {fileID: 0}
   btnGroup: {fileID: 8979641072379291642}
   up: {fileID: 398772977987207836}
   down: {fileID: 7969498382675003730}

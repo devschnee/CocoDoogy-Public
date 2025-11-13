@@ -221,7 +221,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         Transform playerTransform = null;
         foreach (var hit in riderHits)
         {
-            if (hit.gameObject != gameObject && hit.TryGetComponent<PushableObjects>(out var rider))
+            if (hit.gameObject != gameObject && hit.TryGetComponent<IRider>(out var rider))
             {
                 // Y좌표 검사: 바로 위에 있는 오브젝트인지 확인 (탑승 중인 오브젝트는 y + tileSize 위치)
                 if (Mathf.Abs(rider.transform.position.y - (transform.position.y + tileSize)) < 0.01f)
