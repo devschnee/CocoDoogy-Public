@@ -249,6 +249,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7517514301832935545}
+  - component: {fileID: 2488779507157968457}
   m_Layer: 5
   m_Name: Volume
   m_TagString: Untagged
@@ -277,6 +278,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 290}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2488779507157968457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660087334143416951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13da10789222d8f44b72b828eb5b3e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 3087492312999757440}
+  audioType: 6
+  toggle: {fileID: 0}
 --- !u!1 &869572397966569879
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,6 +886,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4375810027701992162}
+  - component: {fileID: 1601033781848904865}
   m_Layer: 5
   m_Name: EffectVolume
   m_TagString: Untagged
@@ -898,6 +915,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 90}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1601033781848904865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055774894730941651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13da10789222d8f44b72b828eb5b3e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1009501282533903305}
+  audioType: 1
+  toggle: {fileID: 0}
 --- !u!1 &2225116395091598010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,6 +1627,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2598857641229132667}
+  - component: {fileID: 4537681549000459720}
   m_Layer: 5
   m_Name: CinematicVolume
   m_TagString: Untagged
@@ -1623,6 +1656,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4537681549000459720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4019265615826934673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13da10789222d8f44b72b828eb5b3e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 4439899652217554029}
+  audioType: 3
+  toggle: {fileID: 0}
 --- !u!1 &4086381074537813875
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,6 +3395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2404601571952068061}
+  - component: {fileID: 3085000995644639882}
   m_Layer: 5
   m_Name: BGM
   m_TagString: Untagged
@@ -3375,6 +3424,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 190}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3085000995644639882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7097732620858161423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13da10789222d8f44b72b828eb5b3e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 3589358309301798615}
+  audioType: 0
+  toggle: {fileID: 0}
 --- !u!1 &8279407307366553441
 GameObject:
   m_ObjectHideFlags: 0
