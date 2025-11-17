@@ -360,7 +360,7 @@ public class StageManager : MonoBehaviour
             Debug.Log("[StageManager] 컷신 없음 또는 StageData 없음, 재생 스킵");
             yield break;
         }
-
+       StageUIManager.Instance.videoImage.SetActive(true);
         string url = DataManager.Instance.Stage.GetStartCutsceneUrl(currentStageId);
         if (VideoPlayerController.Instance != null)
             yield return VideoPlayerController.Instance.PlayCutscene(url, true);
@@ -390,6 +390,7 @@ public class StageManager : MonoBehaviour
             return;
         }
 
+        StageUIManager.Instance.videoImage.SetActive(true);
         string url = DataManager.Instance.Stage.GetEndCutsceneUrl(currentStageId);
         await VideoPlayerController.Instance.PlayAsync(url);
     }

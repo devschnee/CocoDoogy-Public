@@ -56,6 +56,8 @@ public class VideoPlayerController : MonoBehaviour
 
         isPlaying = true;
 
+        AudioManager.Instance.StopAllAudioGroup();
+
         player.Stop();
         player.source = VideoSource.Url;
         player.url = url;
@@ -89,6 +91,9 @@ public class VideoPlayerController : MonoBehaviour
     {
         Debug.Log("[Cutscene] Finished.");
         isPlaying = false;
+
+        StageUIManager.Instance.videoImage.SetActive(false);
+        AudioManager.Instance.ResetAllAudioGroup();
     }
 
     void OnError(VideoPlayer vp, string msg)
