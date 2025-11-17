@@ -1,54 +1,99 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Video;
-using System.IO;
 using System.Collections;
-using UnityEngine.Networking;
+using System.Threading.Tasks;
 
 public class VideoPlayerController : MonoBehaviour
 {
+    public static VideoPlayerController Instance;
+
     public VideoPlayer player;
-    public void PlayCutscene(string stageId, bool isStart)
+
+    private bool isPlaying = false;
+
+    void Awake()
     {
-        string url = isStart ?
-            DataManager.Instance.Stage.GetStartCutsceneUrl(stageId) :
-            DataManager.Instance.Stage.GetEndCutsceneUrl(stageId);
+        Instance = this;
 
-        if (string.IsNullOrEmpty(url))
-        {
-            Debug.LogWarning("[Cutscene] No cutscene for stage " + stageId);
-            return;
-        }
+        // 중복등록 방지
+        player.loopPointReached -= OnFinished;
+        player.errorReceived -= OnError;
 
-        StartCoroutine(PlayRoutine(url));
+        // 이벤트 등록
+        player.loopPointReached += OnFinished;
+        player.errorReceived += OnError;
     }
 
-    IEnumerator PlayRoutine(string url)
+    //-------------------------------------------
+    // 1) StageManager가 요구하는 코루틴 방식
+    //-------------------------------------------
+    public IEnumerator PlayCutscene(string url, bool waitUntilFinish)
     {
-        Debug.Log("[Cutscene] Loading: " + url);
+        yield return PlayRoutine(url, waitUntilFinish);
+    }
 
+    //-------------------------------------------
+    // 2) StageManager가 요구하는 async/await 방식
+    //-------------------------------------------
+    public async Task PlayAsync(string url)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+
+        StartCoroutine(PlayRoutine(url, true, () =>
+        {
+            tcs.SetResult(true);
+        }));
+
+        await tcs.Task;
+    }
+
+    //-------------------------------------------
+    // 공통 실행 로직
+    //-------------------------------------------
+    IEnumerator PlayRoutine(string url, bool waitUntilFinish, System.Action onFinish = null)
+    {
+        Debug.Log("[Cutscene] Load: " + url);
+
+        isPlaying = true;
+
+        player.Stop();
         player.source = VideoSource.Url;
         player.url = url;
-
-        player.prepareCompleted += OnPrepared;
-        player.errorReceived += OnError;
-
         player.Prepare();
 
+        float timeout = 5f;
         while (!player.isPrepared)
+        {
+            timeout -= Time.deltaTime;
+            if (timeout < 0)
+            {
+                Debug.LogError("[Cutscene] Prepare Timeout!");
+                yield break;
+            }
             yield return null;
+        }
 
+        Debug.Log("[Cutscene] Playing: " + url);
         player.Play();
+
+        if (waitUntilFinish)
+        {
+            while (isPlaying)
+                yield return null;
+        }
+
+        onFinish?.Invoke();
     }
 
-    void OnPrepared(VideoPlayer vp)
+    void OnFinished(VideoPlayer vp)
     {
-        Debug.Log("[Cutscene] Ready. Playing.");
+        Debug.Log("[Cutscene] Finished.");
+        isPlaying = false;
     }
 
     void OnError(VideoPlayer vp, string msg)
     {
         Debug.LogError("[Cutscene] ERROR: " + msg);
+        isPlaying = false;
     }
-
 }

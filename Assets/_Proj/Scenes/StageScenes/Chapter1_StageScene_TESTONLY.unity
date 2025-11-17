@@ -1971,7 +1971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 929ffe1e0dd29e44a94cb7f0b1dfeb9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoPlayer: {fileID: 734338972}
+  player: {fileID: 734338972}
 --- !u!1 &832386949
 GameObject:
   m_ObjectHideFlags: 0
@@ -4416,7 +4416,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1876727053
 RectTransform:
   m_ObjectHideFlags: 0

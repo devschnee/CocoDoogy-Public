@@ -36,7 +36,7 @@ public class StageData
         if (string.IsNullOrEmpty(start_cutscene))
             return null;
 
-        return System.IO.Path.Combine("Movie/Stage", start_cutscene);
+        return System.IO.Path.Combine("Movie/Stage/", start_cutscene);
     }
 
     public string GetEndCutscenePath()
@@ -44,6 +44,6 @@ public class StageData
         if (string.IsNullOrEmpty(end_cutscene))
             return null;
 
-        return System.IO.Path.Combine("Movie/Stage", end_cutscene);
+        return System.IO.Path.Combine("Movie/Stage/", end_cutscene);
     }
 }
