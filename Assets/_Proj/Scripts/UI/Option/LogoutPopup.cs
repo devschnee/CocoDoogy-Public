@@ -5,9 +5,19 @@ using Google;
 
 public class LogoutPopup : MonoBehaviour
 {
-    public void Open() => gameObject.SetActive(true);
+    [SerializeField] private GameObject dim;
 
-    public void Close() => gameObject.SetActive(false);
+    public void Open()
+    {
+        dim.SetActive(true);
+        gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
+        dim.SetActive(false);
+    }
 
     // 로그아웃 '확인' 시, 타이틀 화면으로
     public void LogoutAndGotoTitle()

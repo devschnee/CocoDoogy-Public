@@ -9,6 +9,8 @@ public class OptionPanelController : MonoBehaviour
     [SerializeField] private GameInfoPopup gameInfoPopup;
     [SerializeField] private GameQuitPopup gameQuitPopup;
 
+    [SerializeField] private GameObject dim;
+
     [Header("LinkPopups")]
     public GameObject accountLinkSuccessPopup;
     public GameObject accountLinkFailPopup;
@@ -24,6 +26,8 @@ public class OptionPanelController : MonoBehaviour
         if (logoutPopup) logoutPopup.gameObject.SetActive(false);
         if (gameInfoPopup) gameInfoPopup.gameObject.SetActive(false);
         if (gameQuitPopup) gameQuitPopup.gameObject.SetActive(false);
+        if(dim) dim.SetActive(false);
+        if(dim) dim.SetActive(false);
 
         if (btnLinkAccount) btnLinkAccount.onClick.AddListener(() => accountLinkAskPopup.Open());
         if (btnLogout) btnLogout.onClick.AddListener(() => logoutPopup.Open());
