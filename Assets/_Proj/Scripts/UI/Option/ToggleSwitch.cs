@@ -21,7 +21,7 @@ public class ToggleSwitch : MonoBehaviour
 
     [Header("Settings")]
     public float animSpeed = 0.15f;
-    public bool isOn = false;
+    public bool isSkipOn = false;
 
     private Vector2 defaultPos;
 
@@ -34,13 +34,13 @@ public class ToggleSwitch : MonoBehaviour
 
     public void Toggle() // 토글 버튼 이벤트에 추가
     {
-        isOn = !isOn;
+        isSkipOn = !isSkipOn;
         UpdateVisual();
     }
 
     private void UpdateVisual(bool instant = false)
     {
-        float targetX = isOn ? handleMoveX : 0f;
+        float targetX = isSkipOn ? handleMoveX : 0f;
 
         if (instant)
         {
@@ -53,8 +53,8 @@ public class ToggleSwitch : MonoBehaviour
                 StartCoroutine(AnimateHandle(targetX));
             }
 
-            labelOn.color = isOn ? onColour : new Color(0.2f, 0.2f, 0.2f);
-            labelOff.color = isOn ? new Color(0.2f, 0.2f, 0.2f) : offColour;
+            labelOn.color = isSkipOn ? onColour : new Color(0.2f, 0.2f, 0.2f);
+            labelOff.color = isSkipOn ? new Color(0.2f, 0.2f, 0.2f) : offColour;
         }
     }
     IEnumerator AnimateHandle(float targetX)
