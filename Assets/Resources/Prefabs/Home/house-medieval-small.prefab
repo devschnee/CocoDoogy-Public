@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23000013545074986}
   - component: {fileID: 64000011111228676}
   - component: {fileID: 8414759753078626358}
+  - component: {fileID: 5729276266328743489}
   m_Layer: 6
   m_Name: house-medieval-small
   m_TagString: Untagged
@@ -28,14 +29,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000012625864402}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1464654176807367625}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33000013117924472
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -132,6 +133,20 @@ MonoBehaviour:
   useMaterialPropertyBlock: 1
   colorPropName: 
   useFullTransformPathForKey: 0
+--- !u!114 &5729276266328743489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012625864402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b85bcb0d7505e64fba5f795b690e130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  category: 0
+  id: 40001
 --- !u!1001 &6757209367287993288
 PrefabInstance:
   m_ObjectHideFlags: 0

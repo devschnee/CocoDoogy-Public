@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23000011290195844}
   - component: {fileID: 64000011102527026}
   - component: {fileID: 8193758957863492409}
+  - component: {fileID: -5711676530371327116}
   m_Layer: 6
   m_Name: hotel-western
   m_TagString: Untagged
@@ -131,3 +132,17 @@ MonoBehaviour:
   useMaterialPropertyBlock: 1
   colorPropName: 
   useFullTransformPathForKey: 0
+--- !u!114 &-5711676530371327116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012643304872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b85bcb0d7505e64fba5f795b690e130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  category: 0
+  id: 40004
