@@ -15,7 +15,7 @@ public class EndBlock : Block
 
 
     //???????????
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider collision)
     {
         Debug.Log("충돌 감지되긴 함");
 
