@@ -59,8 +59,8 @@ public class ToggleSwitch : MonoBehaviour
                 StartCoroutine(AnimateHandle(targetX));
             }
         }
-        labelOn.color = isSkipOn ? onColour : inactivateColor;
-        labelOff.color = isSkipOn ? inactivateColor : offColour;
+        labelOn.color = isOn ? onColour : inactivateColor;
+        labelOff.color = isOn ? inactivateColor : offColour;
     }
 
     IEnumerator AnimateHandle(float targetX)
