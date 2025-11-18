@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+
 using UnityEngine;
 
 
@@ -248,7 +249,7 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public async Task GoogleLogin(Action succeedCallback = null, Action failCallback = null)
+    public async Task<bool> GoogleLogin(Action succeedCallback = null, Action failCallback = null)
     {
         try
         {
@@ -270,62 +271,48 @@ public class FirebaseManager : MonoBehaviour
             //};
             //GoogleSignIn.Configuration.RequestEmail = true;
 
-            Task<GoogleSignInUser> signIn = GoogleSignIn.DefaultInstance.SignIn();
+            GoogleSignInUser signIn = await GoogleSignIn.DefaultInstance.SignIn();
 
-            TaskCompletionSource<FirebaseUser> signInCompleted = new TaskCompletionSource<FirebaseUser>();
-            await signIn.ContinueWith(task =>
+            if (signIn == null)
             {
-                if (task.IsCanceled)
-                {
-                    signInCompleted.SetCanceled();
-                    Debug.Log("Cancelled");
+                Debug.Log($"구글 로그인 취소.");
+                failCallback?.Invoke();
+                return false;
+            }
+            //TaskCompletionSource<FirebaseUser> signInCompleted = new TaskCompletionSource<FirebaseUser>();
 
-                }
-                else if (task.IsFaulted)
-                {
-                    signInCompleted.SetException(task.Exception);
+            //구글로 로그인한 유저가 잡힌 상황.
 
-                    Debug.Log("Faulted " + task.Exception);
-                    failCallback?.Invoke();
-                }
-                else
-                {
-                    Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(((Task<GoogleSignInUser>)task).Result.IdToken, null);
-                    Auth.SignInWithCredentialAsync(credential).ContinueWith(authTask =>
-                    {
-                        if (authTask.IsCanceled)
-                        {
-                            signInCompleted.SetCanceled();
-                        }
-                        else if (authTask.IsFaulted)
-                        {
-                            signInCompleted.SetException(authTask.Exception);
-                            Debug.Log("Faulted In Auth " + task.Exception);
-                            failCallback?.Invoke();
-                        }
-                        else
-                        {
-                            signInCompleted.SetResult(((Task<FirebaseUser>)authTask).Result);
-                            Debug.Log("Success");
-                            succeedCallback?.Invoke();
-                            FetchCurrentUserData();
+            Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(signIn.IdToken, null);
+            if (credential == null)
+            {
+                Debug.Log($"Credential을 받지 못함.");
+                failCallback?.Invoke();
+                return false;
+            }
+            else
+            {
 
+                FirebaseUser user = await Auth.SignInWithCredentialAsync(credential);
+                await FetchCurrentUserData();
+                Debug.Log($"파이어베이스 구글 로그인 완료.");
+                succeedCallback?.Invoke();
+                return true;
                             //user = Auth.CurrentUser;
                             //Username.text = user.DisplayName;
                             //UserEmail.text = user.Email;
 
-                            //StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
+                //StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
                         }
-                    });
-                }
-            });
+
         }
         catch (Exception e)
         {
             Debug.LogError(e.Message);
             failCallback?.Invoke();
+            return false;
         }
-        }
+    }
 
     //public async Task fdasf()
     //{
@@ -471,7 +458,7 @@ public class FirebaseManager : MonoBehaviour
                               category is UserData.EventArchive ? "eventArchive" :
                               category is UserData.Friends ? "friends" :
                               category is UserData.Progress ? "progress" :
-                              category is UserData ? "invalidNode" :
+                              category is UserData.Preferences ? "preferences" :
                               "invalidNode";
 
         try
@@ -519,6 +506,14 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public void SignOut() { UserData.Clear(); Auth.SignOut(); GoogleSignIn.DefaultInstance.SignOut(); }
+    public void SignOut() 
+    {
+            Auth.SignOut();
+        if (!IsGuest)
+            GoogleSignIn.DefaultInstance.SignOut();
+
+        
+            UserData.Clear();
+    }
     
 }
