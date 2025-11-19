@@ -80,6 +80,8 @@ public class StageManager : MonoBehaviour, IStageManager
     }
     IEnumerator StageStart()
     {
+        //가림막쳐주기
+
         //stageRoot.name = mapNameToLoad;
         //2. 가져온 맵 정보로 이 씬의 블록팩토리가 맵을 생성하도록 함.
         //2-1. 블록팩토리가 맵을 생성

@@ -12,11 +12,11 @@ public class CamControl : MonoBehaviour
 
     private Vector3 startPosition;
     private Vector3 endPosition;
-    private Vector3 offset;
+    public Vector3 offset;
 
     void Start()
     {
-        offset = transform.position;
+        offset = transform.position;//(4,9,-5)
     }
 
     void Update()
