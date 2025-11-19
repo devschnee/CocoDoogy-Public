@@ -7,10 +7,9 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 배치물 Placeable(집/동물/조경) 저장·복원 매니저
-/// - PlayerPrefs에 JSON으로 저장/로드
-/// - 세이브 데이터가 없으면 기본 집(defaultHomeId) 자동 생성
+/// - Firebase(UserData.Local.lobby) 데이터로 복원
+/// - Firebase 데이터가 없으면 기본 집(defaultHomeId) 자동 생성
 /// - 집이 여러 채면 1채만 남기고 정리
-/// - (확장) UserData.Lobby(Firebase) 데이터가 있으면 그걸 우선 사용
 /// </summary>
 public class PlaceableStore : MonoBehaviour
 {
@@ -31,8 +30,6 @@ public class PlaceableStore : MonoBehaviour
 
     #region === Save Keys & Types ===
 
-    private const string PREF_KEY_PREFIX = "PlaceableStore_v2::";
-
     [Serializable]
     public struct Placed
     {
@@ -42,6 +39,7 @@ public class PlaceableStore : MonoBehaviour
         public Quaternion rot;
     }
 
+    // PlayerPrefs JSON용 Wrapper 였던 것. 구조는 남겨둠 (필요 시 재사용 가능)
     [Serializable]
     private class Wrapper
     {
@@ -57,9 +55,6 @@ public class PlaceableStore : MonoBehaviour
     private Dictionary<int, DecoData> _decoById;
 
     private ResourcesLoader _loader;
-
-    private string PrefKeyForCurrentScene =>
-        PREF_KEY_PREFIX + SceneManager.GetActiveScene().name;
 
     #endregion
 
@@ -81,7 +76,7 @@ public class PlaceableStore : MonoBehaviour
 
     /// <summary>
     /// 현재 씬에 배치된 PlaceableTag를 읽어서 Placed 리스트로 반환.
-    /// - SaveAllFromScene(), Firebase 저장 둘 다 여기 공용 사용.
+    /// - Firebase 저장(TrySaveLobbyToFirebase)에서 사용.
     /// </summary>
     public List<Placed> CollectPlacedFromScene()
     {
@@ -97,7 +92,7 @@ public class PlaceableStore : MonoBehaviour
             var tag = tags[i];
             if (!tag || !tag.gameObject.activeInHierarchy) continue;
 
-            // 인벤에서 꺼냈지만 아직 확정 안 된 임시물은 저장하지 않음
+            // 인벤에서 꺼냈지만 아직 OK 안 누른 임시물은 저장하지 않음
             if (tag.GetComponent<InventoryTempMarker>()) continue;
 
             list.Add(new Placed
@@ -113,29 +108,22 @@ public class PlaceableStore : MonoBehaviour
     }
 
     /// <summary>
-    /// 현재 씬의 PlaceableTag를 모두 스캔해 위치/회전을 저장 (PlayerPrefs용)
+    /// [사용 중단] 기존 PlayerPrefs 저장용 함수.
+    /// 멀티 계정에서 다른 유저 배치가 섞이는 문제 때문에 내용 비움.
     /// </summary>
     public void SaveAllFromScene()
     {
-        var list = CollectPlacedFromScene();
-
-        string json = JsonUtility.ToJson(new Wrapper { items = list }, false);
-        PlayerPrefs.SetString(PrefKeyForCurrentScene, json);
-        PlayerPrefs.Save();
-
-        Debug.Log($"[PlaceableStore] Saved {list.Count} placed objects. (sceneKey={PrefKeyForCurrentScene})");
+        // 이제 저장은 EditModeController.TrySaveLobbyToFirebase()에서
+        // Firebase(UserData.Local.lobby) 경로로만 처리한다.
+        // 이 메서드는 호환성을 위해 남겨두었지만 아무 것도 하지 않음.
     }
 
-    /// <summary>현재 씬 키의 저장 데이터를 삭제</summary>
+    /// <summary>
+    /// [사용 중단] 기존 PlayerPrefs 삭제용 함수. 현재는 아무 것도 하지 않음.
+    /// </summary>
     public void ClearSaved()
     {
-        string key = PrefKeyForCurrentScene;
-        if (PlayerPrefs.HasKey(key))
-        {
-            PlayerPrefs.DeleteKey(key);
-            PlayerPrefs.Save();
-            Debug.Log($"[PlaceableStore] Cleared saved data. (sceneKey={key})");
-        }
+        // PlayerPrefs 기반 저장 방식을 더 이상 사용하지 않는다.
     }
 
     #endregion
@@ -145,7 +133,7 @@ public class PlaceableStore : MonoBehaviour
     /// <summary>
     /// 저장 데이터를 읽어 모두 스폰 + 기본 집 보장 + 중복 집 정리
     /// - 1순위: UserData.Local.lobby (Firebase) 데이터가 있으면 그걸 사용
-    /// - 2순위: 없으면 기존 PlayerPrefs JSON 사용
+    /// - 2순위: 없으면 기본 집(defaultHomeId)만 생성
     /// </summary>
     public void LoadAndSpawnAll()
     {
@@ -156,33 +144,10 @@ public class PlaceableStore : MonoBehaviour
             return;
         }
 
-        // 1) 없으면 기존 PlayerPrefs 경로 사용
-        string key = PrefKeyForCurrentScene;
-
-        if (!PlayerPrefs.HasKey(key))
-        {
-            // 저장이 없으면 기본 집을 바로 생성
-            EnsureSingleHomeExists();
-            return;
-        }
-
-        // NavMesh 재빌드
-        RebuildNavMeshIfExists();
-
-        string json = PlayerPrefs.GetString(key, "");
-        if (!string.IsNullOrEmpty(json))
-        {
-            var w = JsonUtility.FromJson<Wrapper>(json);
-            if (w?.items != null && w.items.Count > 0)
-            {
-                SpawnFromPlacedList(w.items);
-            }
-        }
-
-        // 복원 이후에도 최소 1채의 집을 보장
+        // 1) Firebase 데이터도 없으면 기본 집을 바로 생성
         EnsureSingleHomeExists();
 
-        // 혹시 중복된 집이 있으면 1채만 남김
+        // 2) 혹시 중복된 집이 있으면 1채만 남김
         CullExtraHomes();
     }
 
@@ -315,7 +280,7 @@ public class PlaceableStore : MonoBehaviour
 #if UNITY_2022_2_OR_NEWER
         var tags = FindObjectsByType<PlaceableTag>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 #else
-    var tags = FindObjectsOfType<PlaceableTag>();
+        var tags = FindObjectsOfType<PlaceableTag>();
 #endif
         for (int i = 0; i < tags.Length; i++)
         {
@@ -330,13 +295,21 @@ public class PlaceableStore : MonoBehaviour
             var prefab = hd.GetPrefab(_loader);
             if (prefab)
             {
-                // ✅ 회전 규칙: 기본 집 40001은 180도
-                Quaternion rot = Quaternion.identity;
+                // ✅ 회전 규칙
+                // id 40001 → Y = 180도
+                // id 40002 → Y = 90도
+                // id 40003 → Y = 0도
+                // id 40004 → Y = 0도
+                // (그 외 id는 0도 기본)
+                float yRot = 0f;
 
                 if (hd.home_id == 40001)
-                    rot = Quaternion.Euler(0f, 180f, 0f);
-                else if (hd.home_id == 40003)
-                    rot = Quaternion.Euler(0f, 270f, 0f);  // 혹시 defaultHomeId를 40003으로 바꾸는 경우 대비
+                    yRot = 180f;
+                else if (hd.home_id == 40002)
+                    yRot = 90f;
+                // 40003, 40004는 0f 그대로
+
+                Quaternion rot = Quaternion.Euler(0f, yRot, 0f);
 
                 var go = Instantiate(prefab, Vector3.zero, rot);
                 go.name = string.IsNullOrEmpty(hd.home_name) ? $"Home {hd.home_id}" : hd.home_name;
@@ -359,7 +332,6 @@ public class PlaceableStore : MonoBehaviour
             Debug.LogWarning($"[PlaceableStore] Default Home id={defaultHomeId} not found in DB.");
         }
     }
-
 
     /// <summary>집이 2채 이상이면 1채만 남기고 나머지는 제거</summary>
     private void CullExtraHomes()
