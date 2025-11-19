@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.IO;
-using UnityEngine.Networking;
-using System.Collections;
 
 public static class CutscenePathBuilder
 {
@@ -14,20 +12,16 @@ public static class CutscenePathBuilder
     {
         string streamingPath = BuildStreamingAssetsPath(relativePath);
 
-        // Android 내부 APK 경로는 jar:로 시작하므로 VideoPlayer 직접 접근 불가
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            // persistentDataPath로 복사해서 file:// 경로로 접근
-            string persistentFile = Path.Combine(Application.persistentDataPath, relativePath);
-            return "file://" + persistentFile;
-        }
-        else
-        {
-            // Standalone, Editor, iOS는 파일 직접 접근 가능
-            if (!streamingPath.StartsWith("file://"))
-                streamingPath = "file://" + streamingPath;
+#if UNITY_ANDROID
+        // Android는 StreamingAssets의 jar 경로를 VideoPlayer가 내부적으로 처리함
+        // 절대 file:// 붙이지 말 것!
+        return streamingPath;
+#else
+        // Editor, Windows, iOS는 file:// 붙여야 함
+        if (!streamingPath.StartsWith("file://"))
+            streamingPath = "file://" + streamingPath;
 
-            return streamingPath;
-        }
+        return streamingPath;
+#endif
     }
 }

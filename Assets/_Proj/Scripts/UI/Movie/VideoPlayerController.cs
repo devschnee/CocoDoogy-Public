@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Video;
 using System.Collections;
+using UnityEngine.Android;
 
 public class VideoPlayerController : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class VideoPlayerController : MonoBehaviour
 
     void Awake()
     {
+
+
+
         Instance = this;
 
         // 중복등록 방지
