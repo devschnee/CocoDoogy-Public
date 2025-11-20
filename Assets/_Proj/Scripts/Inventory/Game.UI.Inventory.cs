@@ -118,6 +118,7 @@ namespace Game.UI.Inventory
         // ─────────────────────────────────────────────
         private void BuildHome()
         {
+
             if (!homeDB) return;
             
             foreach (var data in homeDB.homeList)
