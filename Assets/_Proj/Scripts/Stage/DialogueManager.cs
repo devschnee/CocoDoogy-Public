@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
+    public System.Action OnDialogueEnd;
+    public bool isDialogueActive = false;
+    public PlayerMovement playerMovement;
 
     private string dialogueId;
     private bool isRead = false;
@@ -13,13 +16,10 @@ public class DialogueManager : MonoBehaviour
     private DialogueData currentData;
     private Coroutine typingCoroutine;
     private bool isTyping = false;
-    private bool isDialogueActive = false;
     private bool hasLeftSpeaker = false;
     private bool hasRightSpeaker = false;
 
     private int currentSeq = 0; // dialogue 내 순번
-
-    private PlayerMovement playerMovement;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -45,6 +45,8 @@ public class DialogueManager : MonoBehaviour
 
         currentSeq = 0;
         AnalyzeDialogueSideUsage(dialogueId);
+        //LSH 추가
+        AudioManager.Instance.EnterDialogue();
         ShowDialogue(dialogueId, currentSeq);
         isDialogueActive = true;
 
@@ -123,6 +125,8 @@ public class DialogueManager : MonoBehaviour
         typingCoroutine = StartCoroutine(
             TypeText(StageUIManager.Instance.DialogueText, currentData.text, currentData.char_delay)
         );
+        //LSH 추가, 소리 재생을 여기서 합니꽈?
+        PlaySoundFromData(currentData);
     }
 
     private void UpdateSpeakerUI(DialogueData currentData, Sprite emotionSprite)
@@ -262,6 +266,14 @@ public class DialogueManager : MonoBehaviour
         StageUIManager.Instance.Overlay.SetActive(false);
         StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(true);
         Debug.Log("[Dialogue] 대화 종료");
+
+        //LSH 추가
+        AudioManager.Instance.ExitDialogue();
+
+        if(playerMovement != null)
+            playerMovement.enabled = true;
+
+        OnDialogueEnd?.Invoke();
     }
 
     private void AnalyzeDialogueSideUsage(string id)
@@ -278,5 +290,24 @@ public class DialogueManager : MonoBehaviour
 
             seq++;
         }
+    }
+    //LSH 추가 소리부분
+    private void PlaySoundFromData(DialogueData data)
+    {
+        if (string.IsNullOrEmpty(data.sound_key)) return;
+        AudioType audioType;
+        switch (data.sound_type)
+        {
+            case SoundType.bgm :
+            audioType = AudioType.DialogueBGM;
+            break;
+            case SoundType.sfx :
+            audioType = AudioType.DialogueSFX;
+            break;
+            case SoundType.sfx_none :
+            default :
+            return;
+        }
+        AudioEvents.RaiseDialogueSound(audioType, data.sound_key);
     }
 }

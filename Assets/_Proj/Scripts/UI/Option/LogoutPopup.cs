@@ -26,6 +26,7 @@ public class LogoutPopup : MonoBehaviour
         // FirebaseAuth.DefaultInstance.SignOut();
         // GoogleSignIn.DefualtInstacne.SignOut();
         gameObject.SetActive(false);
+        FirebaseManager.Instance.SignOut();
         SceneManager.LoadScene("Title");
     }
 }

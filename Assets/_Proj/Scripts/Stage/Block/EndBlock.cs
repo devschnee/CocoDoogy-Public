@@ -2,26 +2,36 @@
 
 public class EndBlock : Block
 {
-    StageManager stage;
+    IStageManager stage;
     protected override void OnEnable()
     {
         base.OnEnable();
     }
 
-    public void Init(StageManager stage)
+    public void Init(IStageManager stage)
     {
         this.stage = stage;
     }
 
 
     //???????????
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider collision)
     {
         Debug.Log("충돌 감지되긴 함");
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+
+        if (collision.CompareTag("Player"))
         {
-            stage.ClearStage();
+            if (stage is StageManager stageM)
+            {
+                stageM.ClearStage();
+                
+            }
+            else if (stage is TutorialStageManager tutorial)
+            {
+                tutorial.ClearStage();
+                
+            }
         }
     }
 

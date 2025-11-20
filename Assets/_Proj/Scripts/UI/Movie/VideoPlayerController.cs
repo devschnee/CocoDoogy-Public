@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Video;
 using System.Collections;
-using System.Threading.Tasks;
+using UnityEngine.Android;
 
 public class VideoPlayerController : MonoBehaviour
 {
@@ -16,6 +16,9 @@ public class VideoPlayerController : MonoBehaviour
 
     void Awake()
     {
+
+
+
         Instance = this;
 
         // 중복등록 방지
@@ -43,38 +46,22 @@ public class VideoPlayerController : MonoBehaviour
     //-------------------------------------------
     // 1) StageManager가 요구하는 코루틴 방식
     //-------------------------------------------
-    public IEnumerator PlayCutscene(string url, bool waitUntilFinish)
+    public IEnumerator PlayCutscene(string url, System.Action onFinish = null)
     {
-        yield return PlayRoutine(url, waitUntilFinish);
+        yield return PlayRoutine(url, onFinish);
     }
 
-    //-------------------------------------------
-    // 2) StageManager가 요구하는 async/await 방식
-    //-------------------------------------------
-    public async Task PlayAsync(string url)
-    {
-        var tcs = new TaskCompletionSource<bool>();
-
-        StartCoroutine(PlayRoutine(url, true, () =>
-        {
-            tcs.TrySetResult(true);
-        }));
-
-        await tcs.Task;
-    }
-
-    //-------------------------------------------
-    // 공통 실행 로직
-    //-------------------------------------------
-    IEnumerator PlayRoutine(string url, bool waitUntilFinish, System.Action onFinish = null)
+    IEnumerator PlayRoutine(string url, System.Action onFinish = null)
     {
         Debug.Log("[Cutscene] Load: " + url);
 
         // 중복 재생 처리: 현재 재생 중이면 강제로 멈춤
         if (isPlaying)
         {
-            Debug.Log("[Cutscene] Warning: Already playing. Stopping previous.");
+            Debug.Log("[Cutscene] Warning: Already playing. Stopping previous."); 
+            player.loopPointReached -= OnFinished;
             player.Stop();
+            player.loopPointReached += OnFinished;
             isPlaying = false;
             // 약간의 대기(옵션)
             yield return null;
@@ -91,51 +78,38 @@ public class VideoPlayerController : MonoBehaviour
         player.Prepare();
 
         float timeout = 5f;
-        bool prepareFailed = false;
         while (!player.isPrepared)
         {
             timeout -= Time.deltaTime;
             if (timeout < 0)
             {
                 Debug.LogError("[Cutscene] Prepare Timeout!");
-                prepareFailed = true;
-                break;
+                isPlaying = false;
+                onFinish?.Invoke();
+                yield break;
             }
             yield return null;
         }
 
-        if (prepareFailed)
-        {
-            // 준비 실패 시 상태 정리 및 콜백 호출
-            isPlaying = false;
-            onFinish?.Invoke(); // 호출자(PlayAsync의 tcs 등)에게 끝났음을 알림
-            yield break;
-        }
-
-        Debug.Log("[Cutscene] Playing: " + url);
+        Debug.Log("[Cutscene] Playing");
         player.Play();
-        Debug.Log("Is track enabled: " + player.IsAudioTrackEnabled(0));
 
-
-        Debug.Log("Can set audio source? " + player.GetTargetAudioSource(0));
-
-        if (waitUntilFinish)
-        {
-            // isPlaying은 OnFinished / OnError에서 false로 설정됨
-            while (isPlaying)
-                yield return null;
-        }
+        // 끝날 때까지 대기 (OnFinished에서 isPlaying = false로 변경됨)
+        while (isPlaying)
+            yield return null;
 
         onFinish?.Invoke();
     }
 
     void OnFinished(VideoPlayer vp)
     {
+        if (!isPlaying) return;
+
         Debug.Log("[Cutscene] Finished.");
         isPlaying = false;
 
         StageUIManager.Instance.videoImage.SetActive(false);
-        //AudioManager.Instance.ResetAllAudioGroup();
+        AudioManager.Instance.ExitCutscene();
     }
 
     void OnError(VideoPlayer vp, string msg)

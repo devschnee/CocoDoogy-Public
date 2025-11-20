@@ -24,6 +24,7 @@ public class StageUIManager : MonoBehaviour
     public GameObject TreasurePanel;
     public GameObject DialoguePanel;
     public GameObject Overlay;
+    public GameObject FadePanel;
 
     [Header("ResultPanel")]
     public TextMeshProUGUI stageName;
@@ -71,7 +72,6 @@ public class StageUIManager : MonoBehaviour
         OptionCloseButton.onClick.AddListener(OptionClose);
         RetryButton.onClick.AddListener(Retry);
         QuitButton.onClick.AddListener(Quit);
-        ExitButton.onClick.AddListener(Exit);
         TreasureConfirmButton.onClick.AddListener(() =>
         {
             OnTreasureConfirm?.Invoke();
@@ -79,7 +79,7 @@ public class StageUIManager : MonoBehaviour
         });
 
         Overlay.SetActive(false);
-        OptionOpenButton.gameObject.SetActive(true);
+        //OptionOpenButton.gameObject.SetActive(true);
         OptionPanel.SetActive(false);
         ResultPanel.SetActive(false);
     }
@@ -109,14 +109,22 @@ public class StageUIManager : MonoBehaviour
     void Quit()
     {
         //Todo : 챕터에 따라 스테이지 선택화면 분기
+
+        
         //currentChapter
+
+        //StageManager.currentStageId를 보면 됨.
+        //currentStageId.Contains("0_1") => 튜토리얼 1번씬
+        //currentStageId.Contains("0_2") => 튜토리얼 2번씬
+        //위의 두 케이스 모두 타이틀씬을 불러오도록 하기.
+
         SceneManager.LoadScene("Main");
     }
 
-    void Exit()
-    {
-        //Todo : 챕터에 따라 스테이지 선택화면 분기
-        //currentChapter
-        SceneManager.LoadScene("Main");
-    }
+    //void Exit()
+    //{
+    //    //Todo : 챕터에 따라 스테이지 선택화면 분기
+    //    //currentChapter
+    //    SceneManager.LoadScene("Main");
+    //}
 }
