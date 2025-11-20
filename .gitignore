@@ -98,3 +98,10 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 Assets/_NotShared
+
+
+# 파이어베이스 깃이그노어: 용량 100mb 이상인 파일(2개)
+/[Aa]ssets/[Ff]irebase/[Pp]lugins/[Xx]86_64/[Ff]irebaseCppApp-13_2_0.bundle
+/[Aa]ssets/[Ff]irebase/[Pp]lugins/[Xx]86_64/[Ff]irebaseCppApp-13_2_0.bundle.meta
+/[Aa]ssets/[Ff]irebase/[Pp]lugins/[Xx]86_64/[Ff]irebaseCppApp-13_2_0.so
+/[Aa]ssets/[Ff]irebase/[Pp]lugins/[Xx]86_64/[Ff]irebaseCppApp-13_2_0.so.meta
