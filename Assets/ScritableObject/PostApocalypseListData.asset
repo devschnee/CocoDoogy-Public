@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6dfc3e6eba0931439c057868a977b6f, type: 3}
+  m_Name: PostApocalypseListData
+  m_EditorClassIdentifier: 
+  categoryName: F7
+  icon: {fileID: 21300000, guid: 8f9e1a577ef67d141832589ca797fd1e, type: 3}
+  blocks:
+  - {fileID: 11400000, guid: c8d8bf76129f92545887024bf546b2b9, type: 2}
+  - {fileID: 11400000, guid: 104efac8ff13557429aeb5f777afc636, type: 2}
+  - {fileID: 11400000, guid: 145f5ef7af8c0ef4983ab23c3f7eab09, type: 2}
+  - {fileID: 11400000, guid: 3541b34fbc56805459856f89341cb995, type: 2}
+  - {fileID: 11400000, guid: ea48e1dec49e73d449e36da0f3b92770, type: 2}
+  - {fileID: 11400000, guid: 933d0558f9b99144d8ba5ef5eb8a9079, type: 2}
+  - {fileID: 11400000, guid: 49e2d986f14596f42b575ce040c26fb9, type: 2}
+  - {fileID: 11400000, guid: 98ea714fbe0e36145b5fd45cc6c13bf9, type: 2}
+  - {fileID: 11400000, guid: fd6ac4241b3ab7947b30d66f8c7dc03b, type: 2}
+  - {fileID: 11400000, guid: 74d650b568e90104ab36117f5d80d83b, type: 2}
+  - {fileID: 11400000, guid: 0c87faaea82de834ca368643f094fdca, type: 2}

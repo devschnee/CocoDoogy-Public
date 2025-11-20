@@ -414,8 +414,6 @@ public class EditorManager : MonoBehaviour
 
         //// 블록목록에 등록: 커맨드에서 처리됨.
         //placedBlocks.Add(gridPos, cmd.Target);
-        previewObject.transform.rotation = Quaternion.identity;
-        currentRotation = Quaternion.identity;
         lastPlacedPos = gridPos;
     }
 
