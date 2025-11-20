@@ -18,6 +18,7 @@ public class Dialogue : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (UserData.Local.preferences.skipDialogues == true) return;
         if (isread) return;
         if (!other.CompareTag("Player")) return;
 
