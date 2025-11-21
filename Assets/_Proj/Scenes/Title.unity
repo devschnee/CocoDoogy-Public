@@ -947,7 +947,7 @@ MonoBehaviour:
   currentMapData:
     blocks: []
   selectStageID: 
-  heartbeatInterval: 1
+  heartbeatInterval: 5
 --- !u!4 &321501506
 Transform:
   m_ObjectHideFlags: 0

@@ -102,7 +102,7 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
                 currPushHandler?.StopPushAttempt();
                 currPushHandler = next;
             }
-            if (Vector3.Distance(transform.position, next.gameObject.transform.position) < 1.1f)
+            if (Vector3.Distance(transform.position, next.gameObject.transform.position) < 1.3f)
             {
                 currPushHandler.StartPushAttempt(dir4); // 고정 4방향
 
