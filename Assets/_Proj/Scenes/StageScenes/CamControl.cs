@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CamControl : MonoBehaviour
@@ -33,10 +34,22 @@ public class CamControl : MonoBehaviour
 
         wayPoint[0] = stage.GetComponentInChildren<EndBlock>().transform;
         wayPoint[4] = stage.GetComponentInChildren<StartBlock>().transform;
-        var treasureposList = stage.GetComponentsInChildren<Treasure>();
-        for (int i = 0; i < treasureposList.Length; i++)
+        var treasurePosList = stage.GetComponentsInChildren<Treasure>();
+
+        foreach (var treasure in treasurePosList)
         {
-            wayPoint[i + 1] = treasureposList[i].transform;
+            if (treasure.treaureBlockName.Contains("1")) 
+            {
+                wayPoint[3] = treasure.transform;
+            }
+            else if (treasure.treaureBlockName.Contains("2"))
+            {
+                wayPoint[2] = treasure.transform;
+            }
+            else if (treasure.treaureBlockName.Contains("3"))
+            {
+                wayPoint[1] = treasure.transform;
+            }
         }
     }
 
