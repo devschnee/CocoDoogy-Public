@@ -94,6 +94,14 @@ public class Joystick : MonoBehaviour
         int touchCnt = 0;
         var touches = Touchscreen.current.touches;
 
+        // 터치 몇 개 들어왔는지 카운팅
+        for (int i = 0; i < touches.Count; i++)
+        {
+            if (touches[i].press.isPressed)
+                touchCnt++;
+        }
+        //Debug.Log(touchCnt);
+
         // 터치 입력이 아무 것도 안 들어왔을 때 조이스틱 리셋
         if(touchCnt == 0)
         {
@@ -101,12 +109,6 @@ public class Joystick : MonoBehaviour
             return;
         }
 
-        // 터치 몇 개 들어왔는지 카운팅
-        for (int i = 0; i < touches.Count; i++)
-        {
-            if (touches[i].press.isPressed)
-                touchCnt++;
-        }
 
         // 모드 종료 확인 (터치 개수가 2개 미만이고, 모드가 켜져 있다면 종료하고 카메라 복귀)
         // 모드 종료 조건 (touchCount < 2)을 먼저 확인하고,
@@ -246,7 +248,10 @@ public class Joystick : MonoBehaviour
     }
 
 
-    // KHJ -  두 손가락으로 터치한 상태로 드래그 할 경우, 카메라가 드래그하는 방향, 드래그 하는 만큼의 -방향으로 이동돼야 함. 이때, 플레이어가 화면 밖으로 벗어날 정도로 움직이면 안 됨.(현재 플레이어는 카메라의 정중앙에 위치하도록 되어 있음.). CamControl.cs에서 두 손가락 터치가 입력될 경우 Cam의 타겟을 플레이어에서 끊고 주변을 둘러볼 수 있게 해야 함. 손가락이 하나라도 떨어지면 다시 코코두기를 타겟팅.
+    // KHJ -  두 손가락으로 터치한 상태로 드래그 할 경우, 카메라가 드래그하는 방향, 드래그 하는 만큼의 -방향으로 이동돼야 함.
+    // 이때, 플레이어가 화면 밖으로 벗어날 정도로 움직이면 안 됨.(현재 플레이어는 카메라의 정중앙에 위치하도록 되어 있음.)
+    // CamControl.cs에서 두 손가락 터치가 입력될 경우 Cam의 타겟을 플레이어에서 끊고 주변을 둘러볼 수 있게 해야 함.
+    // 손가락이 하나라도 떨어지면 다시 코코두기를 타겟팅.
     public void ResetTwoFingerMode()
     {
         IsTwoFingerMode = false;

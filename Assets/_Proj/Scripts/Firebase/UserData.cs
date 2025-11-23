@@ -216,11 +216,7 @@ public class UserData : IUserData
         }
         public Inventory()
         {
-            items.Add("10001", 1);
-            items.Add("10002", 2);
-            items.Add("10003", 3);
-            items.Add("10004", 4);
-            items.Add("10005", 5);
+            
         }
     }
 
