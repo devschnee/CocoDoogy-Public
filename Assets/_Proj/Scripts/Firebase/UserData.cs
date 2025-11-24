@@ -6,7 +6,10 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-
+public enum GoodsType
+{
+    cap, coin, energy
+}
 public static class UserDataExtensions
 {
     public static string ToJson(this IUserData data) => JsonConvert.SerializeObject(data);
@@ -19,7 +22,7 @@ public static class UserDataExtensions
 
 public interface IUserData
 {
-
+    
 }
 
 public interface IUserDataCategory : IUserData
@@ -111,10 +114,7 @@ public class UserData : IUserData
     [Serializable]
     public class Goods : IUserDataCategory
     {
-        public enum GoodsType
-        {
-            cap, coin, energy
-        }
+        
         public Dictionary<string, int> values;
         ////병뚜껑 (무료 재화)
         //public int cap;
@@ -133,6 +133,13 @@ public class UserData : IUserData
                 var targetKey = goodsId == 110001 ? "energy" : goodsId == 110002 ? "cap" : "coin";
                 values[targetKey] = value;
             }
+        }
+
+        public int this[GoodsType type]
+        {
+            get => type == GoodsType.energy ? this[110001] : type == GoodsType.cap ? this[110002] : this[110003];
+            set => values[type.ToString().ToLower()] = value; 
+            
         }
 
         public Goods()
