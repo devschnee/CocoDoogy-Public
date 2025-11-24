@@ -101,6 +101,7 @@ public class ProfilePanelController : MonoBehaviour
     public void OpenItemPopup(ProfileType type, ProfileFavoriteIcon caller)
     {
         if (!itemSelectorPopup) return;
+        itemSelectorPopup.gameObject.SetActive(true);
         itemSelectorPopup.Open(type, caller, this);
     }
 
@@ -108,12 +109,14 @@ public class ProfilePanelController : MonoBehaviour
     public void OpenProfileIconPopup()
     {
         if (!iconSelectorPopup) return;
+        iconSelectorPopup.gameObject.SetActive(true);
         iconSelectorPopup.Open(this);
     }
 
     // 공통: 타입별로 내가 가지고 있는 아이템 가져가기
     public List<ProfileOwnedItemData> GetOwnedItemsByType(ProfileType type)
     {
+
         var list = new List<ProfileOwnedItemData>();
         var entries = profileService ? profileService.GetByType(type) : null;
         if (entries == null) return list;
