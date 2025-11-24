@@ -2368,7 +2368,6 @@ MonoBehaviour:
   dampingStrength: 4
   maxLookAroundDistance: 5
   lookAroundSpeed: 25
-  targetHFOV: 85
 --- !u!1001 &1769265752
 PrefabInstance:
   m_ObjectHideFlags: 0

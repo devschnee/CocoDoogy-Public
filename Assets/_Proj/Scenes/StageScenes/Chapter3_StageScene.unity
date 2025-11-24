@@ -532,7 +532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2382615479384546012, guid: 70a6022e78cbaad4a897f0996d0faafd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2382615479384546012, guid: 70a6022e78cbaad4a897f0996d0faafd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2438,7 +2438,6 @@ MonoBehaviour:
   dampingStrength: 4
   maxLookAroundDistance: 5
   lookAroundSpeed: 25
-  targetHFOV: 85
 --- !u!1 &1952791719
 GameObject:
   m_ObjectHideFlags: 0
