@@ -191,50 +191,48 @@ public class ObjectActionToolbar : MonoBehaviour
     /// <summary>대상 월드 포지션을 기준으로 스크린pos → 캔버스pos 구한다.</summary>
     private Vector2 CalcScreenPos()
     {
-        Vector3 worldPos = GetAnchorWorldPosition();
+        EnsureRefs();
+        if (!target || !canvasRect)
+            return currentAnchored;
+
         if (!cam) cam = Camera.main;
+        if (!cam)
+            return currentAnchored;
 
-        // 월드 → 스크린
-        Vector2 screen = RectTransformUtility.WorldToScreenPoint(cam, worldPos);
-        screen += screenOffset;
+        // 1) 오브젝트 위 월드 위치
+        Vector3 worldPos = GetAnchorWorldPosition();
 
-        // 화면 밖 클램프
+        // 2) 월드 → Viewport (0~1)
+        Vector3 vp = cam.WorldToViewportPoint(worldPos);
+
+        // 카메라 뒤면 그대로
+        if (vp.z <= 0f)
+            return currentAnchored;
+
+        // 3) Viewport → Canvas local (해상도/비율과 무관)
+        Vector2 size = canvasRect.rect.size;
+        Vector2 local = new Vector2(
+            (vp.x - 0.5f) * size.x,
+            (vp.y - 0.5f) * size.y
+        );
+
+        // 4) 오브젝트 바로 위로 조금 띄우는 오프셋 (캔버스 좌표 기준)
+        //    Pivot 을 (0.5, 0) 로 맞춰놨으니, 이 local 이 "툴바 아래 중앙" 위치가 된다.
+        local += screenOffset;   // 예: screenOffset = (0, 40)
+
+        // 5) 화면(캔버스) 안쪽으로만 클램프
         if (clampToScreen)
         {
-            Vector2 min = clampPadding;
-            Vector2 max = new Vector2(Screen.width, Screen.height) - clampPadding;
+            Vector2 min = -size * 0.5f + clampPadding;
+            Vector2 max = size * 0.5f - clampPadding;
 
-            // SafeArea 고려 (Overlay에서만)
-            if (respectSafeArea && canvas && canvas.renderMode == RenderMode.ScreenSpaceOverlay)
-            {
-                Rect sa = Screen.safeArea;
-                min = new Vector2(Mathf.Max(min.x, sa.xMin), Mathf.Max(min.y, sa.yMin));
-                max = new Vector2(Mathf.Min(max.x, sa.xMax), Mathf.Min(max.y, sa.yMax));
-            }
-
-            screen.x = Mathf.Clamp(screen.x, min.x, max.x);
-            screen.y = Mathf.Clamp(screen.y, min.y, max.y);
+            local.x = Mathf.Clamp(local.x, min.x, max.x);
+            local.y = Mathf.Clamp(local.y, min.y, max.y);
         }
 
-        // Canvas 좌표계로 변환
-        if (canvas && canvas.renderMode == RenderMode.ScreenSpaceOverlay)
-        {
-            // Overlay 는 스크린 = anchored
-            return screen;
-        }
-        else
-        {
-            // ★ 카메라 & 캔버스 Rect 보장
-            var cr = canvasRect ? canvasRect : (canvas ? canvas.transform as RectTransform : null);
-            var camForCanvas = (canvas && canvas.worldCamera) ? canvas.worldCamera : (cam ? cam : lastWorldCam);
-
-            if (cr && RectTransformUtility.ScreenPointToLocalPointInRectangle(cr, screen, camForCanvas, out var local))
-                return local;
-
-            // 실패 시 이전 값 유지
-            return currentAnchored;
-        }
+        return local;
     }
+
 
     /// <summary>AnchorMode 에 따라 기준 월드 위치를 구한다.</summary>
     private Vector3 GetAnchorWorldPosition()
