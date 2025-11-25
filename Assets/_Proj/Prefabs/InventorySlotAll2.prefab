@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 887098822909788338}
   - component: {fileID: 813224188931427336}
   m_Layer: 5
-  m_Name: InventorySlotAll
+  m_Name: InventorySlotAll2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,7 +310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8649869063928303612
 RectTransform:
   m_ObjectHideFlags: 0
