@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionSeconds: 0.1
-  jumpDuration: 0.35
+  jumpDuration: 0.75
   jumpY:
     serializedVersion: 2
     m_Curve:
