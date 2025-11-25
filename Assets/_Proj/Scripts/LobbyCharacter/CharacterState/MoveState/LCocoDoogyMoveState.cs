@@ -120,6 +120,8 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
             {
                 charAgent.MoveToLastPoint(route.moveWaypoints[0].transform);
 
+                (owner as CocoDoogyBehaviour).SetTimeToGoHome(true);
+                
                 while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
                 {
                     yield return null;
