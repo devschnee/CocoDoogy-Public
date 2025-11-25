@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1371113907637537254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6922464467934927224}
+  - component: {fileID: 1679186910206937839}
+  m_Layer: 11
+  m_Name: BoxCollider (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6922464467934927224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371113907637537254}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6107338780212194591}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1679186910206937839
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371113907637537254}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1468510749670645365
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,7 +67,7 @@ GameObject:
   - component: {fileID: 3683261028050005787}
   - component: {fileID: 8611777253475136124}
   - component: {fileID: 180925807758137407}
-  m_Layer: 8
+  m_Layer: 18
   m_Name: IronballBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,6 +89,7 @@ Transform:
   m_Children:
   - {fileID: 3004677658455672232}
   - {fileID: 858025281195470718}
+  - {fileID: 6922464467934927224}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9170303572979979739
@@ -54,7 +108,7 @@ MonoBehaviour:
   tileSize: 1
   blockingMask:
     serializedVersion: 2
-    m_Bits: 63360
+    m_Bits: 325504
   groundMask:
     serializedVersion: 2
     m_Bits: 769
@@ -69,15 +123,16 @@ MonoBehaviour:
   allowSlope: 0
   immuneTime: 5
   overrideLiftTiming: 1
-  overrideRiseSec: 0.5
-  overrideHangSec: 0.2
-  overrideFallSec: 0.5
+  overrideRiseSec: 0.3
+  overrideHangSec: 1
+  overrideFallSec: 0.3
   flow: {fileID: 5130774834560676477, guid: b4cd3f06419b67046b7fced9fed33f79, type: 3}
   shockwave: {fileID: 3683261028050005787}
   shockPing: {fileID: 8611777253475136124}
   orbCoolTime: 6
   probeUp: 0.1
   probeDown: 0.6
+  sphereRadius: 0.35
 --- !u!65 &5937561180784654500
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -115,7 +170,7 @@ MonoBehaviour:
   radiusShock: 5
   targetLayer:
     serializedVersion: 2
-    m_Bits: 12544
+    m_Bits: 274688
   useOcclusion: 1
   occluderMask:
     serializedVersion: 2
@@ -233,19 +288,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1060442986644140, guid: 3223543c5c1bd614d93d621524c4e9ba, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1230407975484872, guid: 3223543c5c1bd614d93d621524c4e9ba, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1345280947682272, guid: 3223543c5c1bd614d93d621524c4e9ba, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1923597383269112, guid: 3223543c5c1bd614d93d621524c4e9ba, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 4003129616334518, guid: 3223543c5c1bd614d93d621524c4e9ba, type: 3}
       propertyPath: m_LocalScale.x
