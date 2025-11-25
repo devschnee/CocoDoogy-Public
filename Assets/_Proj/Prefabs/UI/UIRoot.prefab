@@ -43912,6 +43912,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7890512722885660201}
     m_Modifications:
+    - target: {fileID: 832502458363861222, guid: 8757955fab48a6040ad6503d6a5d7c7e, type: 3}
+      propertyPath: screenOffset.x
+      value: -823
+      objectReference: {fileID: 0}
+    - target: {fileID: 832502458363861222, guid: 8757955fab48a6040ad6503d6a5d7c7e, type: 3}
+      propertyPath: screenOffset.y
+      value: -560
+      objectReference: {fileID: 0}
     - target: {fileID: 3985721566238661702, guid: 8757955fab48a6040ad6503d6a5d7c7e, type: 3}
       propertyPath: m_Name
       value: EditMode2
