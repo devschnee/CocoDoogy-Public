@@ -54,16 +54,16 @@ public class AmbientGroup : BaseAudioGroup
 
     public override void SetVolumeHalf()
     {
-        
+        player.SetVolumeHalf();
     }
 
     public override void SetVolumeNormal()
     {
-        
+        player.SetVolumeNormal();
     }
 
     public override void SetVolumeZero()
     {
-        
+        player.SetVolumeZero();
     }
 }

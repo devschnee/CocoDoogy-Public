@@ -17,7 +17,7 @@ public class CutscenePlayer : AudioPlayerControl
         currentSource = gObj.AddComponent<AudioSource>();
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
-        currentSource.volume = 1;
+        currentSource.volume = 0.7f;
     }
 
     public AudioSource GetCutsceneAS()
@@ -34,7 +34,7 @@ public class CutscenePlayer : AudioPlayerControl
                 if (DOTween.IsTweening(src, true)) src.DOKill();
                 if (src.volume != 1)
                 {
-                    src.DOFade(1, 0.5f);
+                    src.DOFade(0.7f, 0.5f);
                 }
                 else { }
             }
@@ -58,7 +58,7 @@ public class CutscenePlayer : AudioPlayerControl
             if (src != null)
             {
                 if (DOTween.IsTweening(src, true)) src.DOKill();
-                src.DOFade(1, 0.5f);
+                src.DOFade(0.7f, 0.5f);
             }
         }
     }
@@ -81,7 +81,7 @@ public class CutscenePlayer : AudioPlayerControl
             {
                 if (DOTween.IsTweening(src, true)) src.DOKill();
                 src.loop = false;
-                src.volume = 1f;
+                src.volume = 0.7f;
                 src.pitch = 1f;
                 src.clip = null;
             }

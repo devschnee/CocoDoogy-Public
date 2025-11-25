@@ -25,8 +25,9 @@ public class StageInfo : MonoBehaviour
     {
         PlayerProgressManager.OnProgressUpdated += RefreshUI;
         Debug.Log("[StageInfo] OnEnable → 이벤트 구독 완료");
-
         RefreshUI();
+        //LSH 추가 1125
+        AudioManager.Instance.EnterChapterPanel();
     }
 
     void OnDisable()
