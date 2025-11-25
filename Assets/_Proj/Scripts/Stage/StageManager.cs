@@ -236,7 +236,10 @@ public class StageManager : MonoBehaviour, IStageManager
     void ClaimRewards()
     {
         //리플레이시
-        //추가 획득이나 코인같은 보상대체는 없음                                                 
+        //추가 획득이나 코인같은 보상대체는 없음
+
+        
+
         var stageData = DataManager.Instance.Stage.GetData(currentStageId);
         string[] treasureIds = { stageData.treasure_01_id, stageData.treasure_02_id, stageData.treasure_03_id };
 
@@ -244,6 +247,10 @@ public class StageManager : MonoBehaviour, IStageManager
 
         for (int i = 0; i < treasureIds.Length; i++)
         {
+            if (i == 0 && UserData.Local.progress.scores[stageData.stage_id].star_1_rewarded) continue;
+            if (i == 1 && UserData.Local.progress.scores[stageData.stage_id].star_2_rewarded) continue;
+            if (i == 2 && UserData.Local.progress.scores[stageData.stage_id].star_3_rewarded) continue;
+
             if (collectedTreasures[i])
             {
                 var itemIdFromTreasure = DataManager.Instance.Treasure.GetData(treasureIds[i]).reward_id;
@@ -266,10 +273,13 @@ public class StageManager : MonoBehaviour, IStageManager
                 if (rangeFunc(110000, 120000, itemIdFromTreasure))
                 //재화에 해당됨.
                 {
-                    //코드 구조가 좀 이상한데... 모르겠다 작동은 잘 될 거임.
                     GoodsService service = new GoodsService(new UserDataGoodsStore(110001, 110002, 110003));
-                    service.Add(itemIdFromTreasure, qty);
+                    //코드 구조가 좀 이상한데... 모르겠다 작동은 잘 될 거임.
+                        service.Add(itemIdFromTreasure, qty);
                 }
+            if (i == 0) UserData.Local.progress.scores[stageData.stage_id].star_1_rewarded = true;
+            if (i == 1) UserData.Local.progress.scores[stageData.stage_id].star_2_rewarded = true;
+            if (i == 2) UserData.Local.progress.scores[stageData.stage_id].star_3_rewarded = true;
             }
         }
 

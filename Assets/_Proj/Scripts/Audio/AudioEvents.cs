@@ -22,17 +22,20 @@ public static class AudioEvents
     {
         switch (type)
         {
-            case AnimalType.dog:
+            case AnimalType.cow:
             OnPlayAudio?.Invoke(SFXKey.Buffalo, index, 0, 0, loop, pooled, pos);
             break;
-            case AnimalType.pig:
+            case AnimalType.horse:
             OnPlayAudio?.Invoke(SFXKey.Donkey, index, 0, 0, loop, pooled, pos);
             break;
-            case AnimalType.bird:
+            case AnimalType.pig:
             OnPlayAudio?.Invoke(SFXKey.Hog, index, 0, 0, loop, pooled, pos);
             break;
-            case AnimalType.rat:
+            case AnimalType.bird:
             OnPlayAudio?.Invoke(SFXKey.Rooster, index, 0, 0, loop, pooled, pos);
+            break;
+            case AnimalType.turtle:
+            OnPlayAudio?.Invoke(SFXKey.Tortoise, index, 0, 0, loop, pooled, pos);
             break;
         }
     }

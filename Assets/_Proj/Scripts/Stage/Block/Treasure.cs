@@ -7,18 +7,25 @@ public class Treasure : MonoBehaviour
     public string treaureBlockName;
     private string treasureId;
     private bool isCollected = false;
-    private bool isGetTreasure;
 
     void Start()
     {
-        var progress = PlayerProgressManager.Instance.GetStageProgress(StageUIManager.Instance.stageManager.currentStageId);
+        var progress = UserData.Local.progress.scores[StageUIManager.Instance.stageManager.currentStageId];
 
         // 이미 먹은 보물은 회색 표시
-        if (progress.treasureCollected[treasureIndex])
+        if (progress.star_1_rewarded)
         {
             // 시각적 표시
             GetComponentInChildren<MeshRenderer>().material.color = Color.red;
             //isCollected = true; // 다시 못먹게
+        }
+        if (progress.star_2_rewarded)
+        {
+            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+        }
+        if (progress.star_3_rewarded)
+        {
+            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
         }
     }
     public void Init(string id)

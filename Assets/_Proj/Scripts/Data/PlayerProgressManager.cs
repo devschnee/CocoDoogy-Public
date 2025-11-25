@@ -85,6 +85,10 @@ public class PlayerProgressManager : MonoBehaviour
             score.star_2 = kvp.Value.treasureCollected[1];
             score.star_3 = kvp.Value.treasureCollected[2];
 
+            score.star_1_rewarded = UserData.Local.progress.scores[kvp.Key].star_1_rewarded;
+            score.star_2_rewarded = UserData.Local.progress.scores[kvp.Key].star_2_rewarded;
+            score.star_3_rewarded = UserData.Local.progress.scores[kvp.Key].star_3_rewarded;
+
             scores.Add(kvp.Key, score);
             
         }

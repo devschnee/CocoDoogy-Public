@@ -31,7 +31,7 @@ public class AnimalData
 }
 public enum AnimalType
 {
-    dog, pig, bird, rat
+    pig, turtle, cow, horse, bird
 }
 public enum AnimalTag
 {

@@ -15,7 +15,7 @@ MonoBehaviour:
   animalList:
   - animal_id: 30001
     animal_name: "\uBA67\uB3FC\uC9C0"
-    animal_type: 1
+    animal_type: 0
     animal_tag: 0
     animal_prefab: Prefabs/Animal/Hog
     animal_icon: Icons/Animal/icon_animal_hog
@@ -24,7 +24,7 @@ MonoBehaviour:
       \uBA67\uB3FC\uC9C0 \uCE5C\uAD6C\uC785\uB2C8\uB2E4.\""
   - animal_id: 30002
     animal_name: "\uAC70\uBD81\uC774"
-    animal_type: 0
+    animal_type: 1
     animal_tag: 0
     animal_prefab: Prefabs/Animal/Tortoise
     animal_icon: Icons/Animal/icon_animal_tortoise
@@ -33,7 +33,7 @@ MonoBehaviour:
       \uCE5C\uAD6C\uC785\uB2C8\uB2E4.\""
   - animal_id: 30003
     animal_name: "\uBC84\uD314\uB85C"
-    animal_type: 1
+    animal_type: 2
     animal_tag: 0
     animal_prefab: Prefabs/Animal/Buffalo
     animal_icon: Icons/Animal/icon_animal_buffalo
@@ -42,7 +42,7 @@ MonoBehaviour:
       \uB118\uCE58\uB294 \uBC84\uD314\uB85C \uCE5C\uAD6C\uC785\uB2C8\uB2E4.\""
   - animal_id: 30004
     animal_name: "\uB2F9\uB098\uADC0"
-    animal_type: 1
+    animal_type: 3
     animal_tag: 0
     animal_prefab: Prefabs/Animal/Donkey
     animal_icon: Icons/Animal/icon_animal_donkey
@@ -51,7 +51,7 @@ MonoBehaviour:
       \uC5C6\uB294 \uB2F9\uB098\uADC0 \uCE5C\uAD6C\uC785\uB2C8\uB2E4.\""
   - animal_id: 30005
     animal_name: "\uB2ED"
-    animal_type: 2
+    animal_type: 4
     animal_tag: 0
     animal_prefab: Prefabs/Animal/Rooster
     animal_icon: Icons/Animal/icon_animal_chick

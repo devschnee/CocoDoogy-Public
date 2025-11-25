@@ -574,7 +574,13 @@ public class UserData : IUserData
             public bool star_2;
             public bool star_3;
 
-            
+            //보상지급할때 사용
+            //얘네가 true면은 이미 보상을 받은것이므로 지급x
+            public bool star_1_rewarded;
+            public bool star_2_rewarded;
+            public bool star_3_rewarded;
+
+
         }
         
 
