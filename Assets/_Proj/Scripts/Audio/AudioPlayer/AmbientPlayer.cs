@@ -60,8 +60,8 @@ public class AmbientPlayer : AudioPlayerControl
         }
         else currentSource.spatialBlend = 0f;
 
-        currentSource.pitch = UnityEngine.Random.Range(0.95f, 1.05f);
-        currentSource.volume = UnityEngine.Random.Range(0.95f, 1f);
+        // currentSource.pitch = UnityEngine.Random.Range(0.95f, 1.05f);
+        // currentSource.volume = UnityEngine.Random.Range(0.95f, 1f);
 
         // ��� �� ����
         if (pooled)
@@ -111,14 +111,17 @@ public class AmbientPlayer : AudioPlayerControl
     public override void SetVolumeHalf()
     {
         base.SetVolumeHalf();
+        audioPool.SetPoolVolumeHalf();
     }
     public override void SetVolumeNormal()
     {
         base.SetVolumeNormal();
+        audioPool.SetPoolVolumeNormal();
     }
     public override void SetVolumeZero()
     {
         base.SetVolumeZero();
+        audioPool.SetPoolVolumeZero();
     }
 
     private void NewDestroy(GameObject gObj, float length)
