@@ -764,6 +764,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
+--- !u!114 &54818903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8059832755018320614, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
+  m_PrefabInstance: {fileID: 54818902}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c440c06824ebc846a6696e4729deddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &66011775
 GameObject:
   m_ObjectHideFlags: 0
@@ -5690,7 +5701,7 @@ MonoBehaviour:
   undoMax: -1
   overlapEpsilon: 0.0005
   undoButton: {fileID: 797287641}
-  actionToolbar: {fileID: 593872210}
+  actionToolbar: {fileID: 54818903}
   longPressTarget: {fileID: 0}
   longPressSeconds: 1
   longPressSlopPixels: 10
@@ -6396,17 +6407,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 583745935}
   m_Enabled: 1
---- !u!114 &593872210 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3897738668391161437, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
-  m_PrefabInstance: {fileID: 54818902}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c440c06824ebc846a6696e4729deddb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &600772995
 GameObject:
   m_ObjectHideFlags: 0
