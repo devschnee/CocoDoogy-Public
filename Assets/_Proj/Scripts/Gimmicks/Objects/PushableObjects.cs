@@ -222,7 +222,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         // throughLayer는 제외하고 검사
         LayerMask riderMask = blockingMask & ~throughLayer;
 
-        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize * 0.5f, halfExtents * .98f, transform.rotation, riderMask);
+        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize * 0.5f, halfExtents * .995f, transform.rotation, riderMask);
         Transform playerTransform = null;
         foreach (var hit in riderHits)
         {
@@ -247,17 +247,17 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         YieldInstruction wait = new WaitForFixedUpdate();
         while (elapsed < moveTime)
         {
+            elapsed += Time.fixedDeltaTime;
             transform.position = Vector3.Lerp(start, target, elapsed / moveTime);
             if (playerTransform)
             {
                 float yOffset = playerTransform.position.y - transform.position.y;
-                playerTransform.position = Vector3.Lerp(playerTransform.position, transform.position + Vector3.up * yOffset, elapsed);
+                playerTransform.position = Vector3.Lerp(playerTransform.position, transform.position + Vector3.up * yOffset, elapsed / moveTime);
             }
             //yield return null;
             yield return wait;
-            elapsed += Time.deltaTime;
         }
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
         if (playerTransform)
             playerTransform.position = target + (Vector3.up * (playerTransform.position.y - transform.position.y));
         transform.position = target;
