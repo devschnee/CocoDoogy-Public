@@ -293,21 +293,22 @@ public class StageManager : MonoBehaviour, IStageManager
                     //코드 구조가 좀 이상한데... 모르겠다 작동은 잘 될 거임.
                         service.Add(itemIdFromTreasure, qty);
                 }
+
             if (i == 0) UserData.Local.progress.scores[stageData.stage_id].star_1_rewarded = true;
             if (i == 1) UserData.Local.progress.scores[stageData.stage_id].star_2_rewarded = true;
             if (i == 2) UserData.Local.progress.scores[stageData.stage_id].star_3_rewarded = true;
             }
         }
 
+            //해금 가능한 동물친구의 해금상태가 false일 때, 해당 동물친구를 하나 획득하여 인벤토리에 보관.
+            //해금 처리는 인벤토리에 들어갈 때 자동으로 true가 됨.
         foreach (Block block in blocks)
         {
-            if (block is HogBlock) { UserData.Local.codex[CodexType.animal, 30001] = true; break; }
-            if (block is TortoiseBlock) { UserData.Local.codex[CodexType.animal, 30002] = true; break; }
-            if (block is BuffaloBlock) { UserData.Local.codex[CodexType.animal, 30003] = true; break; }
+            if (block is HogBlock) { if (!UserData.Local.codex[CodexType.animal, 30001]) InventoryService.I.Add(30001); break; }
+            if (block is TortoiseBlock) { if (!UserData.Local.codex[CodexType.animal, 30002]) InventoryService.I.Add(30002); break; }
+            if (block is BuffaloBlock) { if (!UserData.Local.codex[CodexType.animal, 30003]) InventoryService.I.Add(30003); break; }
         }
 
-        //모르겠다... 레이스컨디션 문제에서 과연 안전할까?
-        UserData.Local.codex.Save();
 
     }
 
