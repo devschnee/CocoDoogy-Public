@@ -203,7 +203,19 @@ public partial class EditModeController
 
         // 선택 해제 + 저장 완료 패널
         SelectTarget(null);
-        if (savedInfoPanel) savedInfoPanel.SetActive(true);
+
+        if (savedInfoPanel)
+        {
+            savedInfoPanel.SetActive(true);
+
+            // 이미 돌고 있던 코루틴 있으면 중지
+            if (savedInfoRoutine != null)
+                StopCoroutine(savedInfoRoutine);
+
+            // 2초 뒤 자동 닫힘
+            savedInfoRoutine = StartCoroutine(HideSavedPanelDelayed());
+        }
+
     }
 
 
