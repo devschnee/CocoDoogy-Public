@@ -61,7 +61,7 @@ MonoBehaviour:
     m_Bits: 131976
   slopeMask:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 0
   throughLayer:
     serializedVersion: 2
     m_Bits: 2064
