@@ -1,174 +1,142 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
+/// <summary>
+/// Ground Renderer의 Bounds를 기준으로
+/// - 중앙 그리드 없이
+/// - 바깥 테두리 4줄만 LineRenderer로 그려주는 오버레이
+/// </summary>
 [DisallowMultipleComponent]
 public class GridOverlay : MonoBehaviour
 {
     [Header("Target Ground")]
-    [SerializeField] private Renderer groundRenderer;   // Grid를 깔 기준이 되는 Plane / Mesh
-    [SerializeField] private float cellSize = 1f;       // 칸 크기
-    [SerializeField] private int maxCellsPerAxis = 200; // 너무 넓을 때 폭주 방지
+    [SerializeField] private Renderer groundRenderer;   // 선을 둘러줄 Ground Mesh/Renderer
 
-    [Header("Visual")]
-    [SerializeField] private Material lineMaterial;     // URP Unlit/Color 머티리얼
-    [SerializeField] private Color lineColor = new Color(1, 1, 1, 0.25f);
-    [SerializeField] private float lineWidth = 0.02f;
-    [SerializeField] private float yOffset = 0.02f;     // Ground 위로 살짝 띄우기
+    [Header("Line")]
+    [SerializeField] private Material lineMaterial;     // URP: Unlit/Color 같은 머티리얼
+    [SerializeField] private Color lineColor = new Color(1f, 1f, 1f, 0.35f);
+    [SerializeField] private float lineWidth = 0.03f;
+    [SerializeField, Tooltip("Ground 위로 조금 띄울 높이(m)")]
+    private float yOffset = 0.02f;
 
     private readonly List<LineRenderer> _lines = new();
-    private bool _built = false;
     private bool _visible = false;
 
     private void Awake()
     {
-        // 처음 씬 들어올 때는 항상 비표시 상태
-        SetVisible(false);
+        // 시작할 때 테두리 라인 생성만 해두고
+        RebuildBorder();
+
+        // 처음 씬 진입할 땐 항상 안 보이게 (편집모드 On에서 Show 호출)
+        Hide();
     }
 
-    private void OnDisable()
-    {
-        SetVisible(false);
-    }
-
-    // ─────────────────────────────────────────────
-    // Public API (EditModeController에서 호출)
-    // ─────────────────────────────────────────────
-
-    /// <summary>편집모드 On → Grid 표시</summary>
+    // 외부에서 호출
     public void Show()
     {
-        EnsureGround();
-        EnsureBuilt();
-        SetVisible(true);
+        if (_visible) return;
+        _visible = true;
+        SetLinesActive(true);
     }
 
-    /// <summary>편집모드 Off → Grid 숨김</summary>
     public void Hide()
     {
-        SetVisible(false);
+        if (!_visible && _lines.Count == 0) return;
+        _visible = false;
+        SetLinesActive(false);
     }
 
-    // ─────────────────────────────────────────────
-    // Build / Visible
-    // ─────────────────────────────────────────────
-
-    private void EnsureGround()
+    /// <summary>
+    /// Ground Bounds가 바뀌었을 때(스케일 조정 등) 다시 호출
+    /// </summary>
+    public void RebuildBorder()
     {
-        if (groundRenderer != null) return;
+        ClearLines();
 
-        // 혹시 비워놨으면, 자기 자식/부모에서 아무 Renderer나 하나라도 잡아오기
-        groundRenderer = GetComponentInChildren<Renderer>();
         if (!groundRenderer)
         {
-            Debug.LogWarning("[GridOverlay] groundRenderer가 설정되지 않았습니다.");
+            Debug.LogWarning("[GridOverlay] groundRenderer가 할당되지 않았습니다.");
+            return;
         }
-    }
 
-    /// <summary>아직 라인을 만든 적이 없다면 지금 만든다.</summary>
-    private void EnsureBuilt()
-    {
-        if (_built) return;
-        if (!groundRenderer) return;
+        if (!lineMaterial)
+        {
+            Debug.LogWarning("[GridOverlay] lineMaterial이 비어 있어서 그리드를 그릴 수 없습니다.");
+            return;
+        }
 
-        BuildGridFromBounds();
-        _built = true;
-    }
-
-    private void BuildGridFromBounds()
-    {
         Bounds b = groundRenderer.bounds;
-
         float minX = b.min.x;
         float maxX = b.max.x;
         float minZ = b.min.z;
         float maxZ = b.max.z;
-
-        if (cellSize <= 0.001f)
-            cellSize = 1f;
-
-        int xCount = Mathf.CeilToInt((maxX - minX) / cellSize) + 1;
-        int zCount = Mathf.CeilToInt((maxZ - minZ) / cellSize) + 1;
-
-        xCount = Mathf.Min(xCount, maxCellsPerAxis);
-        zCount = Mathf.Min(zCount, maxCellsPerAxis);
-
-        int neededLines = xCount + zCount;
-
-        // 라인 개수 맞추기
-        while (_lines.Count < neededLines)
-        {
-            var go = new GameObject("GridLine");
-            go.transform.SetParent(transform, worldPositionStays: false);
-            var lr = go.AddComponent<LineRenderer>();
-            SetupLineRenderer(lr);
-            _lines.Add(lr);
-        }
-
-        // 초과분은 비활성
-        for (int i = neededLines; i < _lines.Count; i++)
-        {
-            if (_lines[i])
-                _lines[i].gameObject.SetActive(false);
-        }
-
-        int index = 0;
         float y = b.min.y + yOffset;
 
-        // Z 방향으로 평행한 X-라인들
-        for (int xi = 0; xi < xCount; xi++)
-        {
-            float x = minX + xi * cellSize;
-            var lr = _lines[index++];
-            if (!lr) continue;
+        // ─────────────────────────────────────
+        // 4개의 모서리 점
+        // ─────────────────────────────────────
+        Vector3 p00 = new Vector3(minX, y, minZ); // 왼아래
+        Vector3 p01 = new Vector3(minX, y, maxZ); // 왼위
+        Vector3 p11 = new Vector3(maxX, y, maxZ); // 오른위
+        Vector3 p10 = new Vector3(maxX, y, minZ); // 오른아래
 
-            lr.gameObject.SetActive(true);
-            lr.positionCount = 2;
-            lr.SetPosition(0, new Vector3(x, y, minZ));
-            lr.SetPosition(1, new Vector3(x, y, maxZ));
-        }
+        // 테두리 4줄
+        CreateLine(p00, p01); // 왼쪽 세로
+        CreateLine(p01, p11); // 위쪽 가로
+        CreateLine(p11, p10); // 오른쪽 세로
+        CreateLine(p10, p00); // 아래쪽 가로
 
-        // X 방향으로 평행한 Z-라인들
-        for (int zi = 0; zi < zCount; zi++)
-        {
-            float z = minZ + zi * cellSize;
-            var lr = _lines[index++];
-            if (!lr) continue;
-
-            lr.gameObject.SetActive(true);
-            lr.positionCount = 2;
-            lr.SetPosition(0, new Vector3(minX, y, z));
-            lr.SetPosition(1, new Vector3(maxX, y, z));
-        }
+        // 현재 보이는 상태에 맞춰 활성/비활성
+        SetLinesActive(_visible);
     }
 
-    private void SetupLineRenderer(LineRenderer lr)
+    // ─────────────────────────────────────────────
+    // 내부 Helper
+    // ─────────────────────────────────────────────
+
+    private void CreateLine(Vector3 a, Vector3 b)
     {
+        var go = new GameObject("GridBorderLine");
+        go.transform.SetParent(transform, worldPositionStays: false);
+
+        var lr = go.AddComponent<LineRenderer>();
+
+        lr.positionCount = 2;
         lr.useWorldSpace = true;
-        lr.alignment = LineAlignment.View;
-        lr.shadowCastingMode = ShadowCastingMode.Off;
-        lr.receiveShadows = false;
-        lr.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
 
-        lr.widthMultiplier = lineWidth;
-        lr.numCornerVertices = 0;
-        lr.numCapVertices = 0;
-
-        if (lineMaterial)
-            lr.sharedMaterial = lineMaterial;
-
+        lr.sharedMaterial = lineMaterial;
         lr.startColor = lineColor;
         lr.endColor = lineColor;
+        lr.startWidth = lineWidth;
+        lr.endWidth = lineWidth;
+
+        lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        lr.receiveShadows = false;
+        lr.alignment = LineAlignment.View;
+        lr.textureMode = LineTextureMode.Stretch;
+
+        lr.SetPosition(0, a);
+        lr.SetPosition(1, b);
+
+        _lines.Add(lr);
     }
 
-    private void SetVisible(bool on)
+    private void SetLinesActive(bool on)
     {
-        _visible = on;
         for (int i = 0; i < _lines.Count; i++)
         {
-            var lr = _lines[i];
-            if (!lr) continue;
-            lr.gameObject.SetActive(on && _built);
+            if (_lines[i])
+                _lines[i].gameObject.SetActive(on);
         }
+    }
+
+    private void ClearLines()
+    {
+        for (int i = 0; i < _lines.Count; i++)
+        {
+            if (_lines[i])
+                Destroy(_lines[i].gameObject);
+        }
+        _lines.Clear();
     }
 }
