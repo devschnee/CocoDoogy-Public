@@ -423,8 +423,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2336ce1886c4e4e4ea93304e73d2eaf6, type: 3}
   - {fileID: 21300000, guid: cd0ccf5007ed2ba4ca96a408638f2244, type: 3}
   - {fileID: 21300000, guid: bd273976546751541b2614164981d66c, type: 3}
+  CollecTreausreCountText: {fileID: 0}
   videoImage: {fileID: 249544900}
   stageIdInformation: {fileID: 0}
+  stageGetTreasureCount: 0
 --- !u!4 &289616245
 Transform:
   m_ObjectHideFlags: 0
@@ -1307,7 +1309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Stage Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 692200064f896b54c8fa08df8d167886, type: 2}
   m_sharedMaterial: {fileID: 235566447649535823, guid: 692200064f896b54c8fa08df8d167886, type: 2}
