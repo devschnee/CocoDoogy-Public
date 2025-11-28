@@ -106,6 +106,8 @@ public class Buffalo : MonoBehaviour, IPlayerFinder
     public void Interact()
     {
         if (running || onCooldown) return;
+        // LSH 추가 1127 ETCEvent.Invoke... => 소리
+        ETCEvent.InvokeCocoInteractSoundInGame();
         StartCoroutine(WaveRunCoroutine());
         StartCoroutine(CooldownCoroutine());
     }

@@ -76,9 +76,9 @@ public class DialoguePlayer : AudioPlayerControl
     {
         base.StopAll();
     }
-    public override void ResetAll()
+    public override void ResetAll(float volumeValue)
     {
-        base.ResetAll();
+        base.ResetAll(volumeValue);
     }
     public override void SetVolumeHalf()
     {

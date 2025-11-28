@@ -136,7 +136,7 @@ public abstract class AudioPlayerControl
         }
     }
 
-    public virtual void ResetAll()
+    public virtual void ResetAll(float volumeValue)
     {
         foreach (var src in activeSources)
         {
@@ -151,7 +151,7 @@ public abstract class AudioPlayerControl
                     src.DOFade(0, 0.3f).OnComplete(() => {src.Stop(); src.volume = 1f;});
                 }
                 src.loop = false;
-                src.volume = 1f;
+                src.volume = volumeValue;
                 src.pitch = 1f;
                 src.clip = null; 
             }

@@ -40,9 +40,9 @@ public class BGMGroup : BaseAudioGroup
     {
         player.StopAll();
     }
-    public override void ResetPlayer()
+    public override void ResetPlayer(float volumeValue)
     {
-        player.ResetAll();
+        player.ResetAll(volumeValue);
     }
     public override void SetVolumeHalf()
     {

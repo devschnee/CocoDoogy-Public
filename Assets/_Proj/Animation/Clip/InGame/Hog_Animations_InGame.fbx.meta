@@ -408,8 +408,8 @@ ModelImporter:
       curves: []
       events:
       - time: 1
-        functionName: ReturnToIdleState
-        data: 
+        functionName: HandleAnimationEvent
+        data: Anim_Idle
         objectReferenceParameter: {fileID: 11500000, guid: d039d4628cb3c1347a0ff8b4e2a57968, type: 3}
         floatParameter: 0
         intParameter: 0
@@ -587,7 +587,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.08200281
+        functionName: HandleSoundEvent
+        data: Sound_RunOne
+        objectReferenceParameter: {fileID: 11500000, guid: d039d4628cb3c1347a0ff8b4e2a57968, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5784729
+        functionName: HandleSoundEvent
+        data: Sound_RunTwo
+        objectReferenceParameter: {fileID: 11500000, guid: d039d4628cb3c1347a0ff8b4e2a57968, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

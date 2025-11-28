@@ -60,6 +60,8 @@ public class Treasure : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isCollected = true;
+            // LSH 추가 1128
+            AudioEvents.Raise(UIKey.Stage, 4);
             StageUIManager.Instance.TreasurePanel.SetActive(true);
             StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
             StageUIManager.Instance.CocoDoogyImage.sprite = StageUIManager.Instance.CoCoDoogySprite;

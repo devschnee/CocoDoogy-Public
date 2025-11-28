@@ -23,25 +23,25 @@ public class LobbyCharacterAnim
     {
         //anim.SetLookAtPosition(pos);
         anim.Play("Spin");
-        AudioEvents.Raise(SFXKey.Cocodoogy, 0, loop: false, pooled: true, pos: owner.transform.position);
+        AudioEvents.Raise(SFXKey.OutGameCocodoogy, 0, loop: false, pooled: true, pos: owner.transform.position);
     }
 
     public void PlayMasterInterationWithCoco()
     {
         //anim.SetLookAtPosition(pos);
         anim.Play("InteractCoco2");
-        AudioEvents.Raise(SFXKey.Master, 1, loop: false, pooled: true, pos: owner.transform.position);
+        AudioEvents.Raise(SFXKey.OutGameMaster, 1, loop: false, pooled: true, pos: owner.transform.position);
     }
 
     public void PlayCocoInteractionWithAnimal()
     {
         anim.Play("Spin2");
-        AudioEvents.Raise(SFXKey.Master, 1, loop: false, pooled: true, pos: owner.transform.position);
+        AudioEvents.Raise(SFXKey.OutGameMaster, 1, loop: false, pooled: true, pos: owner.transform.position);
     }
     public void PlayAnimalInteractionWithCoco()
     {
         anim.Play("Spin");
-        AudioEvents.Raise(SFXKey.Master, 1, loop: false, pooled: true, pos: owner.transform.position);
+        AudioEvents.Raise(SFXKey.OutGameMaster, 1, loop: false, pooled: true, pos: owner.transform.position);
     }
 
     public void MoveAnim(float speed)

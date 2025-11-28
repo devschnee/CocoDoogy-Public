@@ -18,6 +18,9 @@ using System.Linq;
 /// 4. 오디오믹서 그룹도 3개로 축소 => Master, BGM, SFX 근데 일단 다른 것들 삭제는 안함
 /// 
 /// 그룹을 추상화로 상속 받아서 스크립터블오브젝트로 필드 만들고 IAudioController에서 그 스크립터블오브젝트 파일을 참조하는
+/// 
+/// 인게임에서는 오디오리스너를 코코두기가 생성되면 코코두기에게 연결하고 인게임 들어가면 전용 오디오 3d 거리 값을 해야할 듯 
+/// 인게임 시 코코두기 생성 시 오디오리스너 온, 카메라에 오디오리스너는 오프 효과음, 환경음 3d loga min 1 max 40
 /// </summary>
 [Serializable]
 public struct AudioGroupMapping
@@ -44,8 +47,10 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
 
     private Dictionary<AudioType, AudioMixerGroup> groupMap;
     private AudioLibraryProvider libraryProvider;
+    public AudioLibraryProvider LibraryProvider => libraryProvider;
     private AudioVolumeHandler volumeHandler;
     private BaseAudioGroup[] audioGroups;
+    public BaseAudioGroup[] AudioGroups => audioGroups;
     private SceneAudio sAudio;
 
     private BGMGroup bgmGroup;
@@ -185,7 +190,13 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         // {
         //     sAudio.StartBGM();
         // }
-        AudioGroupController.ResetAllAudioGroup();
+
+        // 중요: 씬 챕터 추가시 if 문에 추가해 스테이지 전용 오디오소스 볼륨 크기로 돌아갑니다.
+        if (scne.name.Contains("_StageScene"))
+        {
+            AudioGroupController.ResetAllAudioGroupInGame();
+        }
+        else AudioGroupController.ResetAllAudioGroupOutGame();
         Debug.Log("오디오 그룹 초기화 완료");
     }
 

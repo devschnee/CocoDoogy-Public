@@ -354,7 +354,12 @@ public partial class EditModeController : IQuestBehaviour
         if (!saveButton) return;
         saveButton.gameObject.SetActive(false);
         saveButton.onClick.RemoveAllListeners();
-        saveButton.onClick.AddListener(OnSaveClicked);
+        // LSH 추가 1127
+        saveButton.onClick.AddListener(() => 
+        {
+            OnSaveClicked();
+            if (LobbyCharacterManager.Instance != null) LobbyCharacterManager.Instance.InitWayPoint();
+        });
     }
 
     private void WireBackButton()
@@ -403,8 +408,7 @@ public partial class EditModeController : IQuestBehaviour
         {
             savedInfoPanel?.SetActive(false); 
             //LSH 추가 1121
-            if (LobbyCharacterManager.Instance == null) return;
-            LobbyCharacterManager.Instance.InitWayPoint();
+            if (LobbyCharacterManager.Instance != null) LobbyCharacterManager.Instance.InitWayPoint();
         });
     }
 

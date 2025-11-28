@@ -71,7 +71,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
     }
 
-    protected void OnDisable()
+    protected virtual void OnDisable()
     {
         switch (gameObject.tag)
         {

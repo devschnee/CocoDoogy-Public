@@ -47,9 +47,16 @@ public class AmbientGroup : BaseAudioGroup
         player.StopAll();
     }
 
-    public override void ResetPlayer()
+    public override void ResetPlayer(float volumeValue)
     {
-        player.ResetAll();
+        player.ResetAll(volumeValue);
+    }
+    
+    public void ResetPlayer(float volumeValue, SFXMode sfxMode)
+    {
+        ResetPlayer(volumeValue);
+        audioPool.ResetPool(volumeValue);
+        audioPool.SettingPool(volumeValue,sfxMode);
     }
 
     public override void SetVolumeHalf()
@@ -65,5 +72,10 @@ public class AmbientGroup : BaseAudioGroup
     public override void SetVolumeZero()
     {
         player.SetVolumeZero();
+    }
+
+    public void CustomPlayerControl()
+    {
+        // ?필요없음
     }
 }

@@ -1,6 +1,14 @@
-using System.Collections;
+﻿using System;
 using UnityEngine;
 
+[Serializable]
+public class AnimalPositionEntry
+{
+    public string objectName;
+    public Vector3 objectPos;
+}
+
+public class AnimalBehaviour : BaseLobbyCharacterBehaviour
 public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
 {
     public Transform TargetDeco { get; set; }
@@ -25,7 +33,9 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
     protected override void OnEnable()
     {
         base.OnEnable();
-        if (!LobbyCharacterManager.Instance.IsInitMode) agent.avoidancePriority = Random.Range(50, 70);
+        if (!LobbyCharacterManager.Instance.IsInitMode) agent.avoidancePriority = UnityEngine.Random.Range(50, 70);
+        ETCEvent.OnSaveAnimalPositions += HandleSetAnimalPos;
+        ETCEvent.OnDeleteAnimalPosition += HandleDeleteAnimalPos;
     }
     protected override void Start()
     {
@@ -34,6 +44,12 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
     protected override void Update()
     {
         base.Update();
+    }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        ETCEvent.OnSaveAnimalPositions -= HandleSetAnimalPos;
+        ETCEvent.OnDeleteAnimalPosition -= HandleDeleteAnimalPos;
     }
 
     // 코코두기 상호작용
@@ -44,6 +60,17 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
     public override void ChangeStateToInteractState()
     {
         base.ChangeStateToInteractState();
+    }
+
+    private void HandleSetAnimalPos()
+    {
+        SettingManager.Instance.SetAnimalPosition(gameObject.name, gameObject.transform.position);
+        SettingManager.Instance.SaveSettings();
+    }
+
+    private void HandleDeleteAnimalPos(Transform t)
+    {
+        SettingManager.Instance.RemoveAnimalPosition(t.name);
     }
 
     // 인터페이스 영역
@@ -97,6 +124,14 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
     public override void LoadInit()
     {
         base.LoadInit();
+
+        string name = gameObject.name;
+
+        if (SettingManager.Instance.TryGetAnimalPosition(name, out Vector3 pos))
+        {
+            if (agent != null) agent.Warp(pos);
+            else transform.position = pos;
+        }
     }
     public override void FinalInit()
     {

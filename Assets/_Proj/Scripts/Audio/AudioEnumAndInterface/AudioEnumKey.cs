@@ -25,13 +25,21 @@ public enum BGMKey
 
 public enum SFXKey
 {
-    Cocodoogy = 0,
-    Master,
-    Buffalo,
-    Donkey,
-    Hog,
-    Rooster,
-    Tortoise
+    OutGameCocodoogy = 0,
+    InGameCocodoogy,
+    OutGameMaster,
+    InGameMaster,
+    OutGameBuffalo,
+    InGameBuffalo,
+    OutGameDonkey,
+    InGameDonkey,
+    OutGameHog,
+    InGameHog,
+    OutGameRooster,
+    InGameRooster,
+    OutGameTortoise,
+    InGameTortoise,
+    InGameObject
 }
 
 public enum AmbientKey

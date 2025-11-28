@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 3078124929395302607}
   - component: {fileID: 3078124929395302606}
   - component: {fileID: 3078124929395302593}
+  - component: {fileID: 9169518088649945738}
+  - component: {fileID: -6950792285603031258}
+  - component: {fileID: 4902404381316943423}
+  - component: {fileID: -1547474236434766473}
   m_Layer: 0
   m_Name: Rooster
   m_TagString: Untagged
@@ -115,6 +119,82 @@ CapsuleCollider:
   m_Height: 0.75277853
   m_Direction: 1
   m_Center: {x: 0, y: 0.44154668, z: -0.020498961}
+--- !u!114 &9169518088649945738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078124929395302595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71d17737898b6f544b0f76a6c08bff63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-6950792285603031258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078124929395302595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8016b02592f6844891f1518eba3324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 3078124930700563520}
+  - {fileID: 3078124930645066277}
+  - {fileID: 3078124929766028029}
+  - {fileID: 3078124931196116317}
+  highlightColor: {r: 1, g: 0.9, b: 0.3, a: 1}
+  invalidColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+  loadSavedTransformOnStart: 1
+  customSaveKey: 
+  useMaterialPropertyBlock: 1
+  colorPropName: 
+  useFullTransformPathForKey: 0
+--- !u!195 &4902404381316943423
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078124929395302595}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-1547474236434766473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078124929395302595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce56ebb6545656409a60ec40209e1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3.5
+  angularSpeed: 120
+  acceleration: 8
+  moveRadius: 8.5
+  hasBeenInit: 0
+  animalType: 4
 --- !u!1 &3078124929766028031
 GameObject:
   m_ObjectHideFlags: 0

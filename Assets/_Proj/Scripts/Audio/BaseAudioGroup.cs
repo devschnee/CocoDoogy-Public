@@ -16,7 +16,7 @@ public abstract class BaseAudioGroup : MonoBehaviour, IAudioController
     public abstract void PausePlayer();
     public abstract void ResumePlayer();
     public abstract void StopPlayer();
-    public abstract void ResetPlayer();
+    public abstract void ResetPlayer(float volumeValue);
     public abstract void SetVolumeHalf();
     public abstract void SetVolumeNormal();
     public abstract void SetVolumeZero();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,7 +41,7 @@ public class PlayerMovement : MonoBehaviour, IRider
             return input.sqrMagnitude > 0.01f;
         }
     }
-
+    //
     #endregion
 
 

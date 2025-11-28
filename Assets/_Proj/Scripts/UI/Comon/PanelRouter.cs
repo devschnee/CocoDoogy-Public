@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -164,6 +165,7 @@ public class PanelRouter : MonoBehaviour
     public void EnterChapterPanel()
     {
         AudioManager.Instance.EnterChapterPanel();
+        ETCEvent.InvokeSaveAnimalPos();
     }
     public void ReturnToMain()
     {

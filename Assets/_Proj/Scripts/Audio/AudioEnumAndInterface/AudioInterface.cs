@@ -43,7 +43,7 @@ public interface IAudioController
     void PausePlayer();
     void ResumePlayer();
     void StopPlayer();
-    void ResetPlayer();
+    void ResetPlayer(float volumeValue);
     void SetVolumeHalf();
     void SetVolumeNormal();
     void SetVolumeZero();

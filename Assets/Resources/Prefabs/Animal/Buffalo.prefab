@@ -209,6 +209,9 @@ GameObject:
   - component: {fileID: 5688514589227935450}
   - component: {fileID: 5688514589227935449}
   - component: {fileID: 4979488724882639200}
+  - component: {fileID: 514711748237968157}
+  - component: {fileID: -5444892509936189780}
+  - component: {fileID: -4443023230240527810}
   m_Layer: 6
   m_Name: Buffalo
   m_TagString: Untagged
@@ -336,6 +339,58 @@ MonoBehaviour:
   useMaterialPropertyBlock: 1
   colorPropName: 
   useFullTransformPathForKey: 0
+--- !u!114 &514711748237968157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5688514589227935463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71d17737898b6f544b0f76a6c08bff63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!195 &-5444892509936189780
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5688514589227935463}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-4443023230240527810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5688514589227935463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce56ebb6545656409a60ec40209e1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3.5
+  angularSpeed: 120
+  acceleration: 8
+  moveRadius: 8.5
+  hasBeenInit: 0
+  animalType: 2
 --- !u!1 &5688514589964983292
 GameObject:
   m_ObjectHideFlags: 0

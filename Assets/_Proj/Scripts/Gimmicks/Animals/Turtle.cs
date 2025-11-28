@@ -24,6 +24,8 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
     private Transform playerTrans; // 감지된 플레이어의 Transform
 
     private bool isMoving = false;
+    //LSH 추가 1128
+    public bool IsMoving => isMoving;
     private Vector3 targetPos;
     private Rigidbody rb; // 물리 처리용 (물살 영향 방지)
 
@@ -41,10 +43,11 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
     void Awake()
     {
-        up.onClick.AddListener(() => { GetDirection(new Vector2Int(0, 1)); btnGroup.SetActive(false); });
-        down.onClick.AddListener(() => { GetDirection(new Vector2Int(0, -1)); btnGroup.SetActive(false); });
-        left.onClick.AddListener(() => { GetDirection(new Vector2Int(-1, 0)); btnGroup.SetActive(false); });
-        right.onClick.AddListener(() => { GetDirection(new Vector2Int(1, 0)); btnGroup.SetActive(false); });
+        // LSH 추가 1127 ETCEvent.Invoke... => 소리
+        up.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(0, 1)); btnGroup.SetActive(false); });
+        down.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(0, -1)); btnGroup.SetActive(false); });
+        left.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(-1, 0)); btnGroup.SetActive(false); });
+        right.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(1, 0)); btnGroup.SetActive(false); });
 
         btnGroup.SetActive(false);
 

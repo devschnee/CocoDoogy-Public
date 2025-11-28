@@ -30,6 +30,7 @@ public class LobbyCharacterManager : MonoBehaviour
 
     public List<LobbyWaypoint> Waypoints { get; private set; } = new();
     private List<ILobbyState> lobbyCharacter = new(); // 맵에 활성화 된 캐릭터들 모음
+    public List<ILobbyState> LobbyCharacter => lobbyCharacter;
 
     private static event Action<BaseLobbyCharacterBehaviour> HeyManager;
     
@@ -99,6 +100,7 @@ public class LobbyCharacterManager : MonoBehaviour
             else if (!IsEditMode)
             {
                 planeSurface.BuildNavMesh();
+                if (SettingManager.Instance != null) SettingManager.Instance.RefreshAnimalPositionEntryList();
                 foreach (var lC in lobbyCharacter)
                 {
                     if (lC != null)

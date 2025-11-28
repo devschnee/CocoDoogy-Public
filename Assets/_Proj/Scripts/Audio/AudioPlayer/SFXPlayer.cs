@@ -7,70 +7,79 @@ using UnityEngine.Audio;
 public class SFXPlayer : AudioPlayerControl
 {
     private readonly AudioMixer mixer;
+    private AudioMixerGroup group;
     private readonly Transform myTrans;
     private readonly AudioPool audioPool;
     private MonoBehaviour coroutineHost;
-    private AudioSource currentSource;
+    private AudioSource currentPooledSource;
+    private AudioSource currentNotPooledSource;
 
-    public SFXPlayer(AudioMixer mixer, Transform myTrans, AudioPool pool)
+    public SFXPlayer(AudioMixer mixer, AudioMixerGroup group, Transform myTrans, AudioPool pool)
     {
         this.mixer = mixer;
+        this.group = group;
         this.myTrans = myTrans;
         audioPool = pool;
         coroutineHost = myTrans.GetComponent<MonoBehaviour>();
+
+        GameObject gObj = new GameObject($"NotPooledAudio");
+        gObj.transform.parent = myTrans;
+        currentNotPooledSource = gObj.AddComponent<AudioSource>();
+        activeSources.Add(currentNotPooledSource);
+        currentNotPooledSource.outputAudioMixerGroup = group;
+        currentNotPooledSource.volume = 1f;
+        currentNotPooledSource.pitch = 1f;
+        currentNotPooledSource.rolloffMode = AudioRolloffMode.Custom;
+        AnimationCurve curve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(50f, 0.877f), new Keyframe(60f, 0.59f), new Keyframe(80f, 0.34f), new Keyframe(128f, 0.125f), new Keyframe(200f, 0.002f));
+        currentNotPooledSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, curve);
+        currentNotPooledSource.minDistance = 40f;
+        currentNotPooledSource.maxDistance = 200f;
     }
 
-    public void PlayAudio(AudioClip clip, AudioMixerGroup group, bool loop, bool pooled, Vector3? pos = null)
+    public void PlayAudio(AudioClip clip, bool loop, bool pooled, Vector3? pos = null)
     {
         if (pooled)
         {
-            currentSource = audioPool.GetSource();
+            currentPooledSource = audioPool.GetSource();
+            currentPooledSource.outputAudioMixerGroup = group;
+            currentPooledSource.clip = clip;
+            currentPooledSource.loop = loop;
+
+            //  3D 옵션
+            if (pos.HasValue)
+            {
+                currentPooledSource.transform.position = pos.Value;
+                currentPooledSource.spatialBlend = 1f;
+            }
+            else currentPooledSource.spatialBlend = 0f;
+
+            // currentSource.pitch = UnityEngine.Random.Range(0.95f, 1.05f);
+            // currentSource.volume = UnityEngine.Random.Range(0.95f, 1f);
+
+            currentPooledSource.Play();
+            coroutineHost.StartCoroutine(audioPool.ReturnAfterDelay(currentPooledSource, clip.length));
         }
         else
         {
-            GameObject gObj = new GameObject($"SFXPlay");
-            gObj.transform.parent = myTrans;
-            currentSource = gObj.AddComponent<AudioSource>();
-            activeSources.Add(currentSource);
-            currentSource.volume = 1f;
-            currentSource.pitch = 1f;
-            currentSource.rolloffMode = AudioRolloffMode.Custom;
-            AnimationCurve curve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(50f, 0.877f), new Keyframe(60f, 0.59f), new Keyframe(80f, 0.34f), new Keyframe(128f, 0.125f), new Keyframe(200f, 0.002f));
-            currentSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, curve);
-            currentSource.minDistance = 40f;
-            currentSource.maxDistance = 200f;
-        }
-        currentSource.outputAudioMixerGroup = group;
-        currentSource.clip = clip;
-        currentSource.loop = loop;
+            if (currentNotPooledSource.clip == clip && currentNotPooledSource.isPlaying) return;
+            currentNotPooledSource.clip = clip;
+            currentNotPooledSource.loop = loop;
 
-        //  3D 옵션
-        if (pos.HasValue)
-        {
-            currentSource.transform.position = pos.Value;
-            currentSource.spatialBlend = 1f;
-        }
-        else currentSource.spatialBlend = 0f;
+            //  3D 옵션
+            if (pos.HasValue)
+            {
+                currentNotPooledSource.transform.position = pos.Value;
+                currentNotPooledSource.spatialBlend = 1f;
+            }
+            else currentNotPooledSource.spatialBlend = 0f;
 
-        // currentSource.pitch = UnityEngine.Random.Range(0.95f, 1.05f);
-        // currentSource.volume = UnityEngine.Random.Range(0.95f, 1f);
-
-        // 풀링이라면
-        if (pooled)
-        {
-            currentSource.Play();
-            coroutineHost.StartCoroutine(audioPool.ReturnAfterDelay(currentSource, clip.length));
-        }
-        if (!pooled)
-        {
             //play
-            currentSource.Play();
+            currentNotPooledSource.Play();
             // loop�϶� ���� �� ���°� �߰� �ؾ���
             if (loop) { }
-            else NewDestroy(currentSource.gameObject, clip.length);
         }
     }
-
+    
     public override void PlayAll()
     {
         base.PlayAll();
@@ -86,10 +95,15 @@ public class SFXPlayer : AudioPlayerControl
         base.ResumeAll();
         audioPool.ResumePool();
     }
-    public override void ResetAll()
+    public override void ResetAll(float volumeValue)
     {
-        base.ResetAll();
-        audioPool.ResetPool();
+        base.ResetAll(volumeValue);
+    }
+    public void ResetAll(float volumeValue, SFXMode sfxMode)
+    {
+        ResetAll(volumeValue);
+        audioPool.ResetPool(volumeValue);
+        audioPool.SettingPool(volumeValue,sfxMode);
     }
     public override void StopAll()
     {
@@ -110,6 +124,11 @@ public class SFXPlayer : AudioPlayerControl
     {
         base.SetVolumeZero();
         audioPool.SetPoolVolumeZero();
+    }
+
+    public void CustomPoolSourceInPool(AudioClip clip, int mode, float? volumeValue = null)
+    {
+        audioPool.CustomPoolSourceInPool(clip, mode, volumeValue);
     }
 
     private void NewDestroy(GameObject gObj, float length)
