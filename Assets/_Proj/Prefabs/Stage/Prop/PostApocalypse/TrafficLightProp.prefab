@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7955941271080652986}
   - component: {fileID: 7717356052596077479}
   - component: {fileID: 3426815560554401747}
-  - component: {fileID: 210885299747848929}
   m_Layer: 0
   m_Name: traffic-lights-apocalypse-a
   m_TagString: Untagged
@@ -89,28 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &210885299747848929
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188510542187956700}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -633767280318029905, guid: ba3139fb7a0fc8548a9101361394f78c, type: 3}
 --- !u!1 &4627739000566613806
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +129,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 161100544069794074}
-  - component: {fileID: 307910275471048937}
   - component: {fileID: -1865607994268908521}
   m_Layer: 0
   m_Name: TrafficLightProp
@@ -177,27 +153,6 @@ Transform:
   - {fileID: 199956224877005273}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &307910275471048937
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5508677998836993676}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-1865607994268908521
 MonoBehaviour:
   m_ObjectHideFlags: 0
