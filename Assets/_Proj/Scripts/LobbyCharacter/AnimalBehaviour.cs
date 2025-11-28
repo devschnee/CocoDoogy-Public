@@ -7,8 +7,6 @@ public class AnimalPositionEntry
     public string objectName;
     public Vector3 objectPos;
 }
-
-public class AnimalBehaviour : BaseLobbyCharacterBehaviour
 public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
 {
     public Transform TargetDeco { get; set; }
