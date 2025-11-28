@@ -400,7 +400,7 @@ MonoBehaviour:
       \uAC70\uC57C.\""
   - treasure_id: treasure_3_1_2
     treasureType: 4
-    reward_id: 50022
+    reward_id: 50023
     count: 1
     view_codex_id: codex_artifact_compass
     coco_coment: "\"\uC9D1\uC73C\uB85C \uB3CC\uC544\uAC08 \uC218 \uC788\uC744\uAE4C?\""

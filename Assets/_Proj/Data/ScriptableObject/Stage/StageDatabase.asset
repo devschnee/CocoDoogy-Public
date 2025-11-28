@@ -84,7 +84,7 @@ MonoBehaviour:
     stage_name: "1-2. \uC78A\uD78C \uACE0\uC18D\uB3C4\uB85C(2)"
     stage_img: Img/Stage/stage_1_2
     stage_desc: "\uC801\uB9C9\uC774 \uB0B4\uB824\uC549\uC740 \uACE0\uC18D\uB3C4\uB85C\\n\uD55C\uAC00\uC6B4\uB370\uC785\uB2C8\uB2E4.
-      \uC18C\uB9AC \uD558\uB098 \uB4E4\uB9AC\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."
+      \uC18C\uB9AC \uD558\uB098 \uB4E4\uB9AC\uC9C0\\n\uC54A\uC2B5\uB2C8\uB2E4."
     map_id: map_1_2
     start_cutscene: -1
     start_talk: dialogue_1_2_0
@@ -696,7 +696,7 @@ MonoBehaviour:
     stage_img: Img/Stage/stage_3_4
     stage_desc: "\uC808\uBCBD \uC0B0 \uC815\uC0C1\uC5D0 \uAC70\uC758 \uB3C4\uB2EC\uD55C
       \uC9C0\uC810\uC785\uB2C8\uB2E4.\\n\uBA40\uB9AC \uC544\uB798\uB85C \uAC15\uACFC
-      \uD3D0\uD5C8\uAC00 \uD76C\uBBF8\uD558\uAC8C \uBCF4\uC785\uB2C8\uB2E4."
+      \uD3D0\uD5C8\uAC00 \uD76C\uBBF8\uD558\uAC8C\\n\uBCF4\uC785\uB2C8\uB2E4."
     map_id: map_3_8
     start_cutscene: -1
     start_talk: -1
@@ -743,8 +743,8 @@ MonoBehaviour:
     stage_name: "3-10 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
     stage_img: Img/Stage/stage_3_4
     stage_desc: "\uC808\uBCBD \uC544\uB798\uB85C \uB0B4\uB824\uAC00\uB294 \uC9C0\uC810\uC785\uB2C8\uB2E4.\\n\uCDA9\uACA9
-      \uAC10\uC9C0\uD0D1\uACFC \uBD80\uC11C\uC9C4 \uBCD1\uAE30\uB85C\uBD07\uB4E4\uC774
-      \uC8FC\uBCC0\uC5D0 \uD769\uC5B4\uC838 \uC788\uC2B5\uB2C8\uB2E4."
+      \uAC10\uC9C0\uD0D1\uACFC \uBD80\uC11C\uC9C4 \uBCD1\uAE30\uB85C\uBD07\uB4E4\uC774\\n\uC8FC\uBCC0\uC5D0
+      \uD769\uC5B4\uC838 \uC788\uC2B5\uB2C8\uB2E4."
     map_id: map_3_10
     start_cutscene: -1
     start_talk: dialogue_3_10_0
