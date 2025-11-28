@@ -97,10 +97,17 @@ public class AmbientPlayer : AudioPlayerControl
         audioPool.ResumePool();
     }
 
-    public override void ResetAll()
+    public override void ResetAll(float volumeValue)
     {
-        base.ResetAll();
-        audioPool.ResetPool();
+        base.ResetAll(volumeValue);
+        
+    }
+
+    public void ResetAll(float volumeValue, SFXMode sfxMode)
+    {
+        ResetAll(volumeValue);
+        audioPool.ResetPool(volumeValue);
+        audioPool.SettingPool(volumeValue,sfxMode);
     }
 
     public override void StopAll()

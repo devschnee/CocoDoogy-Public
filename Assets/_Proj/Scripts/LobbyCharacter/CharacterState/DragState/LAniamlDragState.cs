@@ -80,6 +80,8 @@ public class LAnimalDragState : LobbyCharacterBaseState, IDragState
             trans.position = navHit.position;
             Debug.Log($"{owner.gameObject.name} : NavMesh 있음 해당 포지션으로");
         }
+        SettingManager.Instance.SetAnimalPosition(owner.name, pos);
+        SettingManager.Instance.SaveSettings();
         fsm.ChangeState((owner as AnimalBehaviour).IdleState);
     }
 }

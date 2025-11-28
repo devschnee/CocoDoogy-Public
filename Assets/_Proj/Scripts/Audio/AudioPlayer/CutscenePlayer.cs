@@ -73,7 +73,7 @@ public class CutscenePlayer : AudioPlayerControl
             } 
         }
     }
-    public override void ResetAll()
+    public override void ResetAll(float volumeValue)
     {
         foreach (var src in activeSources)
         {
@@ -81,7 +81,7 @@ public class CutscenePlayer : AudioPlayerControl
             {
                 if (DOTween.IsTweening(src, true)) src.DOKill();
                 src.loop = false;
-                src.volume = 0.7f;
+                src.volume = volumeValue;
                 src.pitch = 1f;
                 src.clip = null;
             }

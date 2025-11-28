@@ -47,6 +47,11 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
         base.Update();
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
+
     // 코코두기 상호작용 부분
     /// <summary>
     /// 코코두기의 상호작용. 0 = 마스터 상호작용 함, 1 = 동물 상호작용 함, 2 = 둘다 리셋 false로

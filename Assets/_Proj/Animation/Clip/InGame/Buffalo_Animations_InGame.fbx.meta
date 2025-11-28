@@ -234,8 +234,15 @@ ModelImporter:
       curves: []
       events:
       - time: 1
-        functionName: ReturnToIdleState
-        data: 
+        functionName: HandleAnimationEvent
+        data: Anim_Idle
+        objectReferenceParameter: {fileID: 11500000, guid: d039d4628cb3c1347a0ff8b4e2a57968, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.38709676
+        functionName: HandleSoundEvent
+        data: Sound_Bomb
         objectReferenceParameter: {fileID: 11500000, guid: d039d4628cb3c1347a0ff8b4e2a57968, type: 3}
         floatParameter: 0
         intParameter: 0
@@ -530,9 +537,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0
+        functionName: HandleSoundEvent
+        data: Sound_Charge
+        objectReferenceParameter: {fileID: 11500000, guid: d039d4628cb3c1347a0ff8b4e2a57968, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.5451895
-        functionName: ChangeJumpToBounce
-        data: 
+        functionName: HandleAnimationEvent
+        data: Anim_Bounce
         objectReferenceParameter: {fileID: 11500000, guid: d039d4628cb3c1347a0ff8b4e2a57968, type: 3}
         floatParameter: 0
         intParameter: 0

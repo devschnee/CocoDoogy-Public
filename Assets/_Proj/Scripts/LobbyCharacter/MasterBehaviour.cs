@@ -36,6 +36,10 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     {
         base.Update();
     }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
     
     public void SetTimeToGoHome(bool which)
     {

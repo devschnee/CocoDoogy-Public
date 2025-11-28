@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class UIGroup : BaseAudioGroup
 {
@@ -35,20 +36,20 @@ public class UIGroup : BaseAudioGroup
     {
         player.StopAll();
     }
-    public override void ResetPlayer()
+    public override void ResetPlayer(float volumeValue)
     {
-        player.ResetAll();
+        player.ResetAll(volumeValue);
     }
     public override void SetVolumeHalf()
     {
-        
+        // ?필요없음
     }
     public override void SetVolumeNormal()
     {
-        
+        // ?필요없음
     }
     public override void SetVolumeZero()
     {
-        
+        // ?필요없음
     }
 }

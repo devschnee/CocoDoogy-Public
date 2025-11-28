@@ -442,6 +442,9 @@ public partial class EditModeController
                 break;
             case PlaceableCategory.Animal:
                 AnimalReturnedToInventory?.Invoke(tag.id);
+                // LSH 추가 1127
+                ETCEvent.InvokeDeleteAnimalPos(t);
+                //
                 Destroy(t.gameObject);
                 hasUnsavedChanges = true;
                 break;

@@ -95,10 +95,15 @@ public class SFXPlayer : AudioPlayerControl
         base.ResumeAll();
         audioPool.ResumePool();
     }
-    public override void ResetAll()
+    public override void ResetAll(float volumeValue)
     {
-        base.ResetAll();
-        audioPool.ResetPool();
+        base.ResetAll(volumeValue);
+    }
+    public void ResetAll(float volumeValue, SFXMode sfxMode)
+    {
+        ResetAll(volumeValue);
+        audioPool.ResetPool(volumeValue);
+        audioPool.SettingPool(volumeValue,sfxMode);
     }
     public override void StopAll()
     {
@@ -119,6 +124,11 @@ public class SFXPlayer : AudioPlayerControl
     {
         base.SetVolumeZero();
         audioPool.SetPoolVolumeZero();
+    }
+
+    public void CustomPoolSourceInPool(AudioClip clip, int mode, float? volumeValue = null)
+    {
+        audioPool.CustomPoolSourceInPool(clip, mode, volumeValue);
     }
 
     private void NewDestroy(GameObject gObj, float length)
