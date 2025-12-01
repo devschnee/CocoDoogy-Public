@@ -7843,8 +7843,8 @@ GameObject:
   - component: {fileID: 491783818966259155}
   - component: {fileID: 3317252088037482213}
   - component: {fileID: 5692289398220537165}
+  - component: {fileID: 1942442360128976764}
   - component: {fileID: 1459004264139508337}
-  - component: {fileID: 4227707949078458272}
   m_Layer: 5
   m_Name: QuestPanel
   m_TagString: Untagged
@@ -7916,6 +7916,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1942442360128976764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690065407059083169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.25
+  startScale: 0.75
+  endScale: 1
+  scaleInDuration: 0.35
+  scaleOutDuration: 0.25
 --- !u!114 &1459004264139508337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7949,24 +7967,6 @@ MonoBehaviour:
   coinItemId: 110003
   goodsManager: {fileID: 175423429525761574}
   closeButton: {fileID: 6345513875914408755}
---- !u!114 &4227707949078458272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1690065407059083169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInDuration: 0.2
-  fadeOutDuration: 0.1
-  startScale: 0.8
-  endScale: 1
-  scaleInDuration: 0.4
-  scaleOutDuration: 0.2
 --- !u!1 &1703400713880254586
 GameObject:
   m_ObjectHideFlags: 0
@@ -11384,8 +11384,8 @@ GameObject:
   - component: {fileID: 2350355555362547611}
   - component: {fileID: 4915496465277112585}
   - component: {fileID: 3627385438663056120}
+  - component: {fileID: 8459918170906208887}
   - component: {fileID: 642287866348264164}
-  - component: {fileID: 6852444718163996523}
   m_Layer: 5
   m_Name: ShopPanel
   m_TagString: Untagged
@@ -11459,6 +11459,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8459918170906208887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2518744052257046501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.25
+  startScale: 0.75
+  endScale: 1
+  scaleInDuration: 0.35
+  scaleOutDuration: 0.25
 --- !u!114 &642287866348264164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11521,24 +11539,6 @@ MonoBehaviour:
   insufficientPopup: {fileID: 4966153593183692113}
   uiBlocker: {fileID: 8727588841937480799}
   goodsManager: {fileID: 175423429525761574}
---- !u!114 &6852444718163996523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2518744052257046501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInDuration: 0.2
-  fadeOutDuration: 0.1
-  startScale: 0.8
-  endScale: 1
-  scaleInDuration: 0.4
-  scaleOutDuration: 0.2
 --- !u!1 &2534972492750047639
 GameObject:
   m_ObjectHideFlags: 0
@@ -14904,12 +14904,12 @@ GameObject:
   - component: {fileID: 598009904685948625}
   - component: {fileID: 5576524518855981883}
   - component: {fileID: 9186417104221549191}
+  - component: {fileID: 3517648941324093548}
   - component: {fileID: 7203101139131157607}
   - component: {fileID: 8181081944788877275}
   - component: {fileID: 4404722952245805932}
   - component: {fileID: 2771023507903297275}
   - component: {fileID: 516990774705144367}
-  - component: {fileID: 4875959496934261681}
   m_Layer: 5
   m_Name: FriendsPanel
   m_TagString: Untagged
@@ -14984,6 +14984,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3517648941324093548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3128954769727831656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.25
+  startScale: 0.75
+  endScale: 1
+  scaleInDuration: 0.35
+  scaleOutDuration: 0.25
 --- !u!114 &7203101139131157607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15078,24 +15096,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca75661d3eee27d46bed9cd86b794de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4875959496934261681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3128954769727831656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInDuration: 0.2
-  fadeOutDuration: 0.1
-  startScale: 0.8
-  endScale: 1
-  scaleInDuration: 0.4
-  scaleOutDuration: 0.2
 --- !u!1 &3139409873594407593
 GameObject:
   m_ObjectHideFlags: 0
@@ -25689,8 +25689,8 @@ GameObject:
   - component: {fileID: 3981817740883596990}
   - component: {fileID: 8758585870191283538}
   - component: {fileID: 213869149557368029}
+  - component: {fileID: 8408910599876043713}
   - component: {fileID: 2568023077457875225}
-  - component: {fileID: 2961702305789074898}
   m_Layer: 5
   m_Name: CodexPanel
   m_TagString: Untagged
@@ -25762,6 +25762,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8408910599876043713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5113632901751525052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.25
+  startScale: 0.75
+  endScale: 1
+  scaleInDuration: 0.35
+  scaleOutDuration: 0.25
 --- !u!114 &2568023077457875225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25793,24 +25811,6 @@ MonoBehaviour:
   - {fileID: 4770758453115925021}
   pageSize: 8
   defaultType: 2
---- !u!114 &2961702305789074898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5113632901751525052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInDuration: 0.2
-  fadeOutDuration: 0.1
-  startScale: 0.8
-  endScale: 1
-  scaleInDuration: 0.4
-  scaleOutDuration: 0.2
 --- !u!1 &5192978841871802748
 GameObject:
   m_ObjectHideFlags: 0
@@ -32160,7 +32160,7 @@ GameObject:
   - component: {fileID: 8508097905428495973}
   - component: {fileID: 3429134083263792519}
   - component: {fileID: 2900964805002306341}
-  - component: {fileID: 8883868745088009725}
+  - component: {fileID: 72667444551712214}
   m_Layer: 5
   m_Name: ProfilePanel
   m_TagString: Untagged
@@ -32259,7 +32259,7 @@ MonoBehaviour:
   artifactIcon: {fileID: 2750246940186699645}
   itemSelectorPopup: {fileID: 550630401822787226}
   iconSelectorPopup: {fileID: 5190214277248034744}
---- !u!114 &8883868745088009725
+--- !u!114 &72667444551712214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -32272,11 +32272,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeInDuration: 0.2
-  fadeOutDuration: 0.1
-  startScale: 0.8
+  fadeOutDuration: 0.25
+  startScale: 0.75
   endScale: 1
-  scaleInDuration: 0.4
-  scaleOutDuration: 0.2
+  scaleInDuration: 0.35
+  scaleOutDuration: 0.25
 --- !u!1 &6665201597661794264
 GameObject:
   m_ObjectHideFlags: 0
@@ -32821,7 +32821,7 @@ MonoBehaviour:
   - {fileID: 4817715065721579558}
   - {fileID: 7446991117831028001}
   stageRewardIcons:
-  - {fileID: 4567236094047094639}
+  - {fileID: 7937356280464898653}
   - {fileID: 4567236094047094639}
   - {fileID: 166887821404469361}
   stageMarkers:
@@ -32840,9 +32840,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9f83a1b90e7ea41fba9214ec379543fb, type: 3}
   rewardPopup: {fileID: 5174634207680469556}
   goodsManager: {fileID: 175423429525761574}
-  coinSprite: {fileID: 0}
-  capSprite: {fileID: 0}
-  energySprite: {fileID: 0}
+  coinSprite: {fileID: 21300000, guid: ec73a4e8355185e419024ba1573e41df, type: 3}
+  capSprite: {fileID: 21300000, guid: bab171487c88aba42b0e4ae5d58416e3, type: 3}
+  energySprite: {fileID: 21300000, guid: 2cd2b8edbd5758c4b9b56a77f42055cb, type: 3}
 --- !u!1 &6736594103363855284
 GameObject:
   m_ObjectHideFlags: 0
@@ -43429,9 +43429,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6085800257018246282, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9049281348042340045}
     - targetCorrespondingSourceObject: {fileID: 4348717946257856342, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4596293807531669251}
@@ -43833,24 +43830,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6085800257018246282, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
   m_PrefabInstance: {fileID: 3766458881260027161}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9049281348042340045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931107392315967891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a27b7ed02707c74196cef8b7d88183f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInDuration: 0.2
-  fadeOutDuration: 0.1
-  startScale: 0.8
-  endScale: 1
-  scaleInDuration: 0.4
-  scaleOutDuration: 0.2
 --- !u!1 &7014926330628186080 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6133656612868383481, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
