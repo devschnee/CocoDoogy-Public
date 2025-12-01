@@ -15031,8 +15031,8 @@ MonoBehaviour:
   friendListContent: {fileID: 1775465189450871480}
   friendSlotPrefab: {fileID: 4395669131427311675, guid: a0d8751b42d48dc43aed2806c14c12d5, type: 3}
   searchField: {fileID: 1113393249345134973}
-  searchButton: {fileID: 8195133336055869506}
-  clearSearchButton: {fileID: 7849849257053470899}
+  searchButton: {fileID: 7849849257053470899}
+  clearSearchButton: {fileID: 8195133336055869506}
   searchContent: {fileID: 985932547882412248}
   friendSearchSlotPrefab: {fileID: 4590839072291572792, guid: b69a68eb5266c124b9d6ba92e61807b1, type: 3}
   receivedCountText: {fileID: 5279316053731393371}
@@ -18017,7 +18017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4164246660307557947
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23359,7 +23359,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 64}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &216337501586415277
 MonoBehaviour:
@@ -25846,7 +25846,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1823948871421103361
 MonoBehaviour:
