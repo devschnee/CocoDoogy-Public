@@ -190,12 +190,14 @@ public class QuestStackRewardUI : MonoBehaviour
 
     private Sprite GetRewardIcon(int itemId)
     {
-        if (itemId == 110003) return coinSprite;
-        if (itemId == 110002) return capSprite;
-        if (itemId == 110001) return energySprite;
+        //if (itemId == 110003) return coinSprite;
+        //if (itemId == 110002) return capSprite;
+        //if (itemId == 110001) return energySprite;
 
         if (10000 < itemId && itemId < 20000)
             return DataManager.Instance.Deco.GetIcon(itemId);
+        if (110000 < itemId && itemId < 120000)
+            return DataManager.Instance.Goods.GetIcon(itemId);
 
         if (30000 < itemId && itemId < 40000)
             return DataManager.Instance.Animal.GetIcon(itemId);
