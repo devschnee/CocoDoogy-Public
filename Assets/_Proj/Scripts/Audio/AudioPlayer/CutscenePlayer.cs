@@ -18,6 +18,7 @@ public class CutscenePlayer : AudioPlayerControl
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
         currentSource.volume = 0.7f;
+        initVolume = currentSource.volume;
     }
 
     public AudioSource GetCutsceneAS()

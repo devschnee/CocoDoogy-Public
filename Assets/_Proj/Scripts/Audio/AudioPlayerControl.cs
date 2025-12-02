@@ -39,10 +39,10 @@ public abstract class AudioPlayerControl
                 {
                     src.DOKill();
                 }
-                if (src.volume != 1)
+                if (src.volume != initVolume)
                 {
                     src.Play();
-                    src.DOFade(1, 0.5f);
+                    src.DOFade(initVolume, 0.3f);
                 }
                 else
                 {
@@ -62,7 +62,7 @@ public abstract class AudioPlayerControl
                 {
                     src.DOKill();
                 }
-                src.DOFade(0, 0.5f).OnComplete(() => src.Pause());
+                src.DOFade(0, 0.2f).OnComplete(() => src.Pause());
             }
         }
     }
@@ -78,49 +78,11 @@ public abstract class AudioPlayerControl
                     src.DOKill();
                 }
                 src.UnPause();
-                src.DOFade(1, 0.5f);
+                src.DOFade(initVolume, 0.3f);
             }
         }
     }
-    // public virtual void PlayAll()
-    // {
-    //     foreach (var src in activeSources)
-    //     {
-    //         if (src != null && !src.isPlaying)
-    //         {
-    //             if (src.volume != initVolume)
-    //             {
-    //                 mono.StartCoroutine(VolumeFadeIn(src, mode: 2));
-    //             }
-    //             else
-    //             {
-    //                 src.Play();
-    //             }
-    //         }
-    //     }
-    // }
 
-    // public virtual void PauseAll()
-    // {
-    //     foreach (var src in activeSources)
-    //     {
-    //         if (src != null && src.isPlaying)
-    //         {
-    //             mono.StartCoroutine(VolumeFadeOut(src, mode: 1));
-    //         }
-    //     }
-    // }
-
-    // public virtual void ResumeAll()
-    // {
-    //     foreach (var src in activeSources)
-    //     {
-    //         if (src != null && !src.isPlaying)
-    //         {
-    //             mono.StartCoroutine(VolumeFadeIn(src, mode: 1));
-    //         }
-    //     }
-    // }
     public virtual void StopAll()
     {
         foreach (var src in activeSources)
@@ -131,7 +93,7 @@ public abstract class AudioPlayerControl
                 {
                     src.DOKill();
                 }
-                src.DOFade(0, 0.5f).OnComplete(() => src.Stop());
+                src.DOFade(0, 0.2f).OnComplete(() => src.Stop());
             } 
         }
     }
@@ -148,7 +110,7 @@ public abstract class AudioPlayerControl
                     {
                         src.DOKill();
                     }
-                    src.DOFade(0, 0.3f).OnComplete(() => {src.Stop(); src.volume = 1f;});
+                    src.DOFade(0, 0.2f).OnComplete(() => {src.Stop(); src.volume = initVolume;});
                 }
                 src.loop = false;
                 src.volume = volumeValue;
@@ -166,7 +128,7 @@ public abstract class AudioPlayerControl
             {
                 src.DOKill();
             }
-            src.DOFade(0, 0.5f);
+            src.DOFade(0, 0.2f);
         }
     }
 
@@ -178,7 +140,7 @@ public abstract class AudioPlayerControl
             {
                 src.DOKill();
             }
-            src.DOFade(0.3f, 0.5f);
+            src.DOFade(0.3f, 0.3f);
         }
     }
 
@@ -190,7 +152,19 @@ public abstract class AudioPlayerControl
             {
                 src.DOKill();
             }
-            src.DOFade(1, 0.5f);
+            src.DOFade(initVolume, 0.3f);
+        }
+    }
+
+    public virtual void SetVolume(float volume, float fadeDuration = 0.5f)
+    {
+        foreach (var src in activeSources)
+        {
+            if (DOTween.IsTweening(src, true))
+            {
+                src.DOKill();
+            }
+            src.DOFade(volume, fadeDuration);
         }
     }
 

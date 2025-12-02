@@ -12,8 +12,8 @@ public class PlayerAnimationController : MonoBehaviour
     public PlayerPush push;
     private WaitForSeconds startDelay;
     private WaitForSeconds nextDelay;
-    private Coroutine currentCoroutine;
-    private AudioSource src;
+    //private Coroutine currentCoroutine;
+    //private AudioSource src;
 
     private void Awake()
     {
@@ -81,7 +81,7 @@ public class PlayerAnimationController : MonoBehaviour
     private void PlayCocoInteractSound()
     {
         int index = UnityEngine.Random.Range(1, 5);
-        AudioEvents.Raise(SFXKey.InGameCocodoogy, index, loop: false, pooled: true, pos: transform.position);
+        AudioEvents.Raise(SFXKey.InGameCocodoogy, index);
     }
     
 }

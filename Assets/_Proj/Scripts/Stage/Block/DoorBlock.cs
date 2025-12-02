@@ -35,6 +35,8 @@ public class DoorBlock : Block, ISignalReceiver
             return;
         }
 
+        // LSH 추가 1201
+        AudioEvents.Raise(SFXKey.InGameObject,3, pooled: true, pos: gameObject.transform.position);
         // KHJ - 기믹 타입에 따라 IsOn 조건을 달리 해줌.
         if (connectedType == GimmickType.Turret)
         {

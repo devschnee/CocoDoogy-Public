@@ -59,6 +59,9 @@ public class PushableOrb : PushableObjects
         // 이전에는 공중이었는데, 지금은 지상에 닿은 경우 = 착지 완료
         if (!wasGrounded && grounded)
         {
+            // LSH 추가 1201
+            if (gameObject.layer == LayerMask.NameToLayer("Ironball")) AudioEvents.Raise(SFXKey.InGameObject, 4, pooled: true, pos: gameObject.transform.position);
+            
             Debug.Log($"[Orb] 충격파 발생 {name}", this);
             TryFireShockwave(); // 충격파 발생 시도
         }

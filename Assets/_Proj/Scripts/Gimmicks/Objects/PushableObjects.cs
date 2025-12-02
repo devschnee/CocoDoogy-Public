@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using Water;
 
@@ -80,7 +81,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     #region Push
     // 밀기 시도(경사로 / 낙하 포함)
-    public bool TryPush(Vector2Int dir)
+    public bool TryPush(Vector2Int dir, bool isPassive = true)
     {
         if (isMoving || isFalling)
         {
@@ -162,16 +163,22 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
                 // 허용이면 그대로 진행 (낙하 연출로 사라지는/끝층까지 떨어지는 케이스)
             }
         }
+        if (isPassive)
+        {
+            // LSH 추가 1201
+            if (gameObject.layer == LayerMask.NameToLayer("WoodBox")) AudioEvents.Raise(SFXKey.InGameObject, 1, pooled: true, pos: transform.position);
+            else if (gameObject.layer == LayerMask.NameToLayer("Ironball")) AudioEvents.Raise(SFXKey.InGameObject, 5, pooled: true, pos: transform.position);
+        }
         Debug.Log($"[PushableObjects] {name}: 일반 이동 시작. Target: {target}");
         // 이동 후 낙하여부까지 처리
         StartCoroutine(MoveAndFall(target));
         return true;
     }
 
-    public void ImmediatePush(Vector2Int dir)
+    public void ImmediatePush(Vector2Int dir, bool isPassive)
     {
         if (isMoving || isFalling) return;
-        TryPush(dir);
+        TryPush(dir, isPassive);
         OnStopRiding();
     }
 
@@ -529,6 +536,11 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         isMoving = false;
         isFalling = false;
         isLifting = false;
+        // LSH 추가 1201
+        if (gameObject.layer == LayerMask.NameToLayer("WoodBox"))
+        {
+            AudioEvents.Raise(SFXKey.InGameObject, 0, pooled: true, pos: gameObject.transform.position);
+        }
         Debug.Log($"[PO] {name} 충격파 영향 받음. 이제 떨어질 것임.");
         //yield break;
         // NOTE : 혹시나 뭔가 다른 작업을 하다 여기에서 CheckFall()을 할 일이 생긴다면 차라리 다른 스크립트를 작성하는 것을 권장. 원위치 복귀 후 다시 낙하 검사하는 실수 생기면 안 됨.

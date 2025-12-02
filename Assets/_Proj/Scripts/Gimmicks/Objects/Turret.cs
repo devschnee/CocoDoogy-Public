@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Linq;
+using UnityEngine;
 
 [DisallowMultipleComponent]
 public class Turret : MonoBehaviour
@@ -21,6 +23,25 @@ public class Turret : MonoBehaviour
     private float myYLevel; // 자기 층 높이
     private const float heightTolerance = 0.3f; // 층 오차 허용
     private bool doorShouldBeClosed; // 현재 문이 닫혀 있어야 하는지
+
+    #region LSH 사운드 추가
+    private Coroutine AudioCoroutine;
+    private IEnumerator PlayTurretAlertSound()
+    {
+        while (true)
+        {
+            AudioEvents.Raise(SFXKey.InGameObject, 7, pooled: true, pos: transform.position);
+            AudioClip clip = AudioManager.Instance.LibraryProvider.GetClip(AudioType.SFX, SFXKey.InGameObject, 7);
+            yield return clip.length;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    private void StopTurretAlertSound()
+    {
+        StopCoroutine(AudioCoroutine);
+        AudioCoroutine = null;
+    }
+    #endregion
 
     void Start()
     {
@@ -87,6 +108,9 @@ public class Turret : MonoBehaviour
         if (nowDetected && !targetInside)
         {
             targetInside = true;
+            // LSH 추가 1201
+            if (targetInside == true && AudioCoroutine == null) AudioCoroutine = StartCoroutine(PlayTurretAlertSound());
+            //
             if (!doorShouldBeClosed)
             {
                 doorShouldBeClosed = true;
@@ -99,6 +123,9 @@ public class Turret : MonoBehaviour
         else if (!nowDetected && targetInside)
         {
             targetInside = false;
+            // LSH 추가 1201
+            if (targetInside == false && AudioCoroutine != null) StopTurretAlertSound();
+            //
             if (doorShouldBeClosed)
             {
                 doorShouldBeClosed = false;

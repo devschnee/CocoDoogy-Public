@@ -82,7 +82,7 @@ public class DashExecutor
             if (collider.TryGetComponent<PushableObjects>(out var pushable))
             {
                 // 홀드 시간 없이 즉시 밀어내기
-                pushable.ImmediatePush(dir);
+                pushable.ImmediatePush(dir, true);
 
                 break; // 타일에 하나에 하나의 PushableObject만 있다고 가정
             }

@@ -13,6 +13,8 @@ public class SwitchBlock : Block, ISignalSender
 
     public void SendSignal()
     {
+        // LSH 추가 1201
+        AudioEvents.Raise(SFXKey.InGameObject, 2, pooled: true);
         Receiver.ReceiveSignal();
     }
     protected override void OnEnable()

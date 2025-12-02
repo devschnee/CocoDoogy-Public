@@ -19,6 +19,7 @@ public class UIPlayer : AudioPlayerControl
         currentSource.outputAudioMixerGroup = group;
         currentSource.loop = false;
         currentSource.volume = 0.34f;
+        initVolume = currentSource.volume;
     }
 
     public void PlayAudio(AudioClip clip)

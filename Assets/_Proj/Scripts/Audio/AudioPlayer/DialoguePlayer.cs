@@ -22,6 +22,7 @@ public class DialoguePlayer : AudioPlayerControl
         activeSources.Add(diaBGM);
         diaBGM.outputAudioMixerGroup = bgm;
         diaBGM.volume = 1;
+        initVolume = diaBGM.volume;
 
         GameObject gObj2 = new GameObject("DialogueSFX");
         gObj2.transform.parent = myTrans;

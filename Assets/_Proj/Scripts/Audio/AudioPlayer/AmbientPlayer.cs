@@ -18,6 +18,7 @@ public class AmbientPlayer : AudioPlayerControl
         this.myTrans = myTrans;
         audioPool = pool;
         coroutineHost = myTrans.GetComponent<MonoBehaviour>();
+        initVolume = 1f;
     }
 
     public void PlayAudio(AudioClip clip, AudioMixerGroup group, bool loop, bool pooled, Vector3? pos = null)

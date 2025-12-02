@@ -28,6 +28,7 @@ public class SFXPlayer : AudioPlayerControl
         activeSources.Add(currentNotPooledSource);
         currentNotPooledSource.outputAudioMixerGroup = group;
         currentNotPooledSource.volume = 1f;
+        initVolume = currentNotPooledSource.volume;
         currentNotPooledSource.pitch = 1f;
         currentNotPooledSource.rolloffMode = AudioRolloffMode.Custom;
         AnimationCurve curve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(50f, 0.877f), new Keyframe(60f, 0.59f), new Keyframe(80f, 0.34f), new Keyframe(128f, 0.125f), new Keyframe(200f, 0.002f));
@@ -61,8 +62,8 @@ public class SFXPlayer : AudioPlayerControl
         }
         else
         {
-            if (currentNotPooledSource.clip == clip && currentNotPooledSource.isPlaying) return;
-            currentNotPooledSource.clip = clip;
+            //if (currentNotPooledSource.clip == clip && currentNotPooledSource.isPlaying) return;
+            //currentNotPooledSource.clip = clip;
             currentNotPooledSource.loop = loop;
 
             //  3D 옵션
@@ -74,7 +75,7 @@ public class SFXPlayer : AudioPlayerControl
             else currentNotPooledSource.spatialBlend = 0f;
 
             //play
-            currentNotPooledSource.Play();
+            currentNotPooledSource.PlayOneShot(clip);
             // loop�϶� ���� �� ���°� �߰� �ؾ���
             if (loop) { }
         }

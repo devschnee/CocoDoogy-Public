@@ -81,6 +81,13 @@ public class AudioPool
         activePool.Remove(src);
         pool.Enqueue(src);
     }
+    
+
+    public IEnumerator ReturnAfterDelay(AudioSource src, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ReturnSource(src);
+    }
 
     private void SetInGameMode(AudioSource src)
     {
@@ -130,7 +137,7 @@ public class AudioPool
         {
             if (src != null && src.isPlaying) 
             {
-                src.DOFade(0, 1f);
+                src.DOFade(0, 0.3f);
                 src.Stop();
             }
         }
@@ -190,7 +197,7 @@ public class AudioPool
                 {
                     src.DOKill();
                 }
-                src.DOFade(0.3f, 0.5f);
+                src.DOFade(0.3f, 0.3f);
             }
         }
     }
@@ -204,7 +211,7 @@ public class AudioPool
                 {
                     src.DOKill();
                 }
-                src.DOFade(1, 0.5f);
+                src.DOFade(1, 0.3f);
             }
         }
     }
@@ -218,7 +225,7 @@ public class AudioPool
                 {
                     src.DOKill();
                 }
-                src.DOFade(0, 0.5f);
+                src.DOFade(0, 0.2f);
             }
         }
     }
@@ -270,10 +277,5 @@ public class AudioPool
         }
     }
 
-    public IEnumerator ReturnAfterDelay(AudioSource src, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ReturnSource(src);
-    }
     
 }

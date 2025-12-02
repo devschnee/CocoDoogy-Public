@@ -20,6 +20,7 @@ public class BGMPlayer : AudioPlayerControl
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
         currentSource.volume = 1f;
+        initVolume = currentSource.volume;
     }
 
     public void PlayAudio(AudioClip clip, float fadeIn, float fadeOut, bool loop)

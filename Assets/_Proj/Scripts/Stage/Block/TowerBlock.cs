@@ -11,6 +11,8 @@ public class TowerBlock : Block, ISignalSender
 
     public void SendSignal()
     {
+        // LSH 추가 1201
+        AudioEvents.Raise(SFXKey.InGameObject, 6, pooled: true, pos: transform.position);
         Receiver.ReceiveSignal();
     }
 }
