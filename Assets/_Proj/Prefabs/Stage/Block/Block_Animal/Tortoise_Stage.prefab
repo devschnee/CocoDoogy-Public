@@ -1194,7 +1194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6606228269694984067, guid: a6002dee3229d954384f4b1de9a0901d, type: 3}
       propertyPath: m_Height
-      value: 0.8
+      value: 0.71
       objectReference: {fileID: 0}
     - target: {fileID: 6606228269694984067, guid: a6002dee3229d954384f4b1de9a0901d, type: 3}
       propertyPath: m_Center.z
