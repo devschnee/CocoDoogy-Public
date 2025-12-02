@@ -52,16 +52,19 @@ public class StageIdInformation : MonoBehaviour
             {
                 pr.ToggleStage("chapter_1");
                 pr.selectStageDimOverlay.gameObject.SetActive(false);
+                stageIdInfo = null;
             }
             else if (stageIdInfo.Contains("stage_2"))
             {
                 pr.ToggleStage("chapter_2");
                 pr.selectStageDimOverlay.gameObject.SetActive(false);
+                stageIdInfo = null;
             }
             else if (stageIdInfo.Contains("stage_3"))
             {
                 pr.ToggleStage("chapter_3");
                 pr.selectStageDimOverlay.gameObject.SetActive(false);
+                stageIdInfo = null;
             }
         }
     }
