@@ -54,6 +54,13 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
         int gx = Mathf.RoundToInt(Mathf.Clamp(dirN.x, -1f, 1f));
         int gz = Mathf.RoundToInt(Mathf.Clamp(dirN.z, -1f, 1f));
         Vector2Int dirGrid = new Vector2Int(gx, gz);
+        if (Mathf.Abs(dirGrid.x) + Mathf.Abs(dirGrid.y) != 1)
+        {
+            // 4방향 유효성 검사
+            // Push 시도 자체를 막기 위해 즉시 리턴
+            // 이동은 그대로 허용
+            return (moveDir, Vector3.zero);
+        }
         // ---
 
         /* ▼ 기존 코드
