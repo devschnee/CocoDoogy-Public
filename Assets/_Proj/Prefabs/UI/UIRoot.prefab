@@ -41591,6 +41591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a1deb1d032b104780c27e646bec1fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goodsManager: {fileID: 175423429525761574}
   energyRecoveryTime: {fileID: 5628489256406560839}
 --- !u!222 &6292664434440247756
 CanvasRenderer:

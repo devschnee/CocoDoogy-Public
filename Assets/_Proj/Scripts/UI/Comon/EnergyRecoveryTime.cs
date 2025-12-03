@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnergyRecoveryTime : MonoBehaviour
 {
+    public GoodsManager goodsManager;
     public TextMeshProUGUI energyRecoveryTime;
     private bool isRunning = false;
 
@@ -43,13 +45,15 @@ public class EnergyRecoveryTime : MonoBehaviour
             DateTimeOffset lastOffset = DateTimeOffset.FromUnixTimeSeconds(lastEnergyTime);
 
             TimeSpan elapsed = DateTimeOffset.UtcNow - lastOffset;
-            int recoverSeconds = 60; //테스트 후 1800으로 변경
+            int recoverSeconds = 1800; //테스트 후 1800으로 변경
 
             // 다음 1개 회복까지 남은 시간
             int remainSec = recoverSeconds - (int)elapsed.TotalSeconds;
 
+            remainSec = Mathf.Max(remainSec, 0);
+
             int min = remainSec / 60;
-            int sec = remainSec % 60;
+            int sec = remainSec % 60;   
 
             energyRecoveryTime.text = $"{min:00}:{sec:00}";
 

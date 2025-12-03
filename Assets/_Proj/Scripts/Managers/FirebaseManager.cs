@@ -764,12 +764,16 @@ public class FirebaseManager : MonoBehaviour, IQuestBehaviour
         while (lastEnergyAcquiredTime < now - 1800 && UserData.Local.goods[GoodsType.energy] < 5)
         {
             UserData.Local.goods[GoodsType.energy]++;
-            lastEnergyAcquiredTime += 1800;
+            //GoodsService gs = FindAnyObjectByType<GoodsManager>()?.GetGoodsService();
+            //gs?.onValueChanged?.Invoke();
+            lastEnergyAcquiredTime += 60;
             UserData.Local.master.lastEnergyTime = lastEnergyAcquiredTime;
         } //<=이건 왜냐면, 5보다 크거나 같아진 상황에서 계속 '현재 시간'을 기록해야 딱 하나 쓰고 바로 타이머가 30분부터 돌아가게 되기 때문에.
 
+            UserData.Local.goods.onValueChanged?.Invoke();
         
         await UploadLocalUserDataCategory(UserData.Local.goods);
+
         await UploadLocalUserDataCategory(UserData.Local.master);
     }
     public void SignOut() 
