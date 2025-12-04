@@ -22,6 +22,7 @@ public class StageUIManager : MonoBehaviour
     public GameObject OptionPanel;
     public GameObject ResultPanel;
     public GameObject TreasurePanel;
+    public GameObject TreasureCollectedPanel;
     public GameObject DialoguePanel;
     public GameObject Overlay;
     public GameObject FadePanel;
@@ -90,6 +91,7 @@ public class StageUIManager : MonoBehaviour
         ResultPanel.SetActive(false);
         
         stageIdInformation = FindAnyObjectByType<StageIdInformation>();
+        stageImage.sprite = ResultCoCoDoogySprite[0];
         stageGetTreasureCount = 0;
     }
 
