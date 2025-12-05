@@ -33,7 +33,7 @@ public class AutoVersionIncrement : IPreprocessBuildWithReport
             Debug.Log("[AtuoVersionIncrement] Patch limit reached → Minor++");
         }
 
-        if (minor > MinorLimit)
+        if (minor >= MinorLimit)
         {
             minor = 0;
             major++;
