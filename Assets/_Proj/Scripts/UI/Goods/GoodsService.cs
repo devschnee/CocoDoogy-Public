@@ -42,7 +42,7 @@ public class GoodsService : IQuestBehaviour
         
         //퀘스트 핸들링: 병뚜껑 쓰기
         if (goodsId == 110002)
-            this.Handle(QuestObject.use_cap, value: -amount);
+            this.Handle(QuestObject.use_cap, value: amount);
 
         onValueChanged?.Invoke();
         return true;
