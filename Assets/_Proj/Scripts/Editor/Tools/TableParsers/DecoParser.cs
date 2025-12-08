@@ -12,7 +12,7 @@ public static class DecoParser
         string textCsvPath = "Assets/_Proj/Data/CSV/tbl_text_mst.csv";
         var textDict = TextParser.Import(textCsvPath);
 
-        string[] lines = File.ReadAllLines(csvPath);
+        var lines = csvPath.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
         //매개변수로 받음 csvPath에서 텍스트 파일을 열고 파일의 모든 줄을 읽은 다음 파일을 닫음
         //한줄씩 lines에 저장
         //ex)
@@ -78,7 +78,9 @@ public static class DecoParser
             });
         }
 
-        string assetPath = "Assets/_Proj/Data/ScriptableObject/Deco/DecoDatabase.asset";
+        string assetPath = "Assets/_Proj/Data/ScriptableObject/Deco/DecoDatabase.asset"; if (AssetDatabase.LoadAssetAtPath<AnimalDatabase>(assetPath) != null)
+            AssetDatabase.DeleteAsset(assetPath);
+
         //Deco의 ScriptableObject인 DecoDatabase.asset이 생성될 경로
         //실제 폴더가 있어야함
         //다른 DataTable일시 Assets/_Proj/Data/ScriptableObject/여기/이거.asset 이름을 변경하면 됨

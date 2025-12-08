@@ -1,81 +1,99 @@
-﻿{
-  "entries": [
-
-    {
-      "name": "tbl_animal_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_artifact_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_background_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_chapter_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_codex_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_costume_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_deco_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_dialogue_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_dialogue_speakers_dtl",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_goods_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_home_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_manual_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_profile_icon_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_quest_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_shop_item_dtl",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_shop_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_stage_mst",
-      "type": "SO"
-    },
-    {
-      "name": "tbl_text_mst",
-      "type": "CSV_ONLY"
-    },
-    {
-      "name": "tbl_treasure_mst",
-      "type": "SO"
-    }
-  ]
+{
+    "entries": [
+        {
+            "name": "tbl_animal_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1oxyVFvxm22_xtsILoSxjoj9n1GvYJ3Kil_E-PK8vj1s/export?format=csv&gid=880352551"
+        },
+        {
+            "name": "tbl_artifact_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1oP4YAoaSoxwhhm2M3K12XLkAECx_hsNB6IFvUrpPd08/export?format=csv&gid=1642870830"
+        },
+        {
+            "name": "tbl_background_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1lG5yeT_8xQKWC_t1hFAETjIXM003nOCWdij2ASxSh3I/export?format=csv&gid=1872740722"
+        },
+        {
+            "name": "tbl_chapter_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1qw4-Kf7SwuxQqQq_dIufhigvq-sosEEgZ_eyhUFZrO8/export?format=csv&gid=201464870"
+        },
+        {
+            "name": "tbl_codex_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1nFIupmFIbFm0nnOZ0ew9Ny3h4NV8GQzOxaCYb0E5tpE/export?format=csv&gid=1311943172"
+        },
+        {
+            "name": "tbl_costume_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1dhj57C5cO04FKNEK3G_MfTyG7LnnmsOhROAKmena2nA/export?format=csv&gid=818329843"
+        },
+        {
+            "name": "tbl_deco_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1_euo_03RZP3WrlXmcr3JPJRNmBrv3pa09HDWFiC0Iw8/export?format=csv&gid=2123209810"
+        },
+        {
+            "name": "tbl_dialogue_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1hjyyhSdPjEs8i_URZubBiePJlfF7eLLF14PG3wRBYRs/export?format=csv&gid=1762373662"
+        },
+        {
+            "name": "tbl_dialogue_speakers_dtl",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1l2KIxC3KCg20DkC8yeovm9vNBvnREDqmaTolTwYsGVs/export?format=csv&gid=1861441619"
+        },
+        {
+            "name": "tbl_goods_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1GbetUygpoVzYZnyyh1558X0oze-EDr4wWGEX4Q0asLI/export?format=csv&gid=1500030125"
+        },
+        {
+            "name": "tbl_home_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1Km0BaJM1iji2uNhJQE0JmT4imzP5WQmzGmef4aLLOvk/export?format=csv&gid=201592052"
+        },
+        {
+            "name": "tbl_manual_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1gOeVx8yfx2Don2wpuYGOiVkGs3lCdA83DLNVfs3rIBs/export?format=csv&gid=397595087"
+        },
+        {
+            "name": "tbl_profile_icon_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1rnBrlXW6C1Q1vYkkeF8R8XTXUBRL0fv6A8mSNL5f4gE/export?format=csv&gid=1933712657"
+        },
+        {
+            "name": "tbl_quest_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1cxj-iE0HuIEU2i0hPQCHOYgYDxk6yM-4E5t1f95Fgqo/export?format=csv&gid=2035923919"
+        },
+        {
+            "name": "tbl_shop_item_dtl",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1mh6ju-D11ZQ7CNIcu5kCzYFl2p1Jr76iwAaidr-JKBY/export?format=csv&gid=407657108"
+        },
+        {
+            "name": "tbl_shop_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/162QUNeSumskvbK3bxjwHz7a7p4QpwlygiH_2Emzl_Jk/export?format=csv&gid=2027772648"
+        },
+        {
+            "name": "tbl_stage_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1725W40dV3sYhK7DMaywYlGpA8DzaUE8n9-cv-Dlbnfc/export?format=csv&gid=1589781452"
+        },
+        {
+            "name": "tbl_text_mst",
+            "type": "CSV_ONLY",
+            "url": "https://docs.google.com/spreadsheets/d/1YT4TVRcNtKfRZmzxw5jIrlWPqG7XpmTBIqKBafP7cOk/export?format=csv&gid=1058752546"
+        },
+        {
+            "name": "tbl_treasure_mst",
+            "type": "SO",
+            "url": "https://docs.google.com/spreadsheets/d/1He-EJd6cys6xbnzU-Hwu-_CVDsyz_SroNVlF495qxHY/export?format=csv&gid=1455476346"
+        }
+    ]
 }

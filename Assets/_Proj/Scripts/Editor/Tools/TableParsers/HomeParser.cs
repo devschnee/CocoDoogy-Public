@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public static class HomeParser
         string textCsvPath = "Assets/_Proj/Data/CSV/tbl_text_mst.csv";
         var textDict = TextParser.Import(textCsvPath);
 
-        string[] lines = File.ReadAllLines(csvPath);
+        var lines = csvPath.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
         if (lines.Length <= 1) return;
 
@@ -22,7 +23,7 @@ public static class HomeParser
 
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            var v = line.Split(',');
+            var v = Regex.Split(line, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
             if (v.Length < 7)
             {
@@ -36,8 +37,8 @@ public static class HomeParser
                 continue;
             }
 
-            Enum.TryParse(v[5], true, out HomeTag tag);
-            Enum.TryParse(v[6], true, out HomeAcquire acquire);
+            Enum.TryParse(v[4], true, out HomeTag tag);
+            Enum.TryParse(v[5], true, out HomeAcquire acquire);
 
             string rawName = v[1];
             string finalName = TextParser.Resolve(rawName, textDict);
@@ -55,6 +56,11 @@ public static class HomeParser
         }
 
         string assetPath = "Assets/_Proj/Data/ScriptableObject/Home/HomeDatabase.asset";
+
+        // 기존 파일 삭제
+        if (AssetDatabase.LoadAssetAtPath<HomeDatabase>(assetPath) != null)
+            AssetDatabase.DeleteAsset(assetPath);
+
         AssetDatabase.CreateAsset(db, assetPath);
         AssetDatabase.SaveAssets();
 

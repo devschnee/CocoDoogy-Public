@@ -2,6 +2,8 @@
 using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
+using System.Net;
+using System;
 
 public class CsvImportManager : EditorWindow
 {
@@ -9,112 +11,147 @@ public class CsvImportManager : EditorWindow
     public static void ShowWindow() => GetWindow(typeof(CsvImportManager));
     //유니티 에디터 상에서 Tools -> CSV Import Manager 생성
 
-    private string csvFolderPath = "Assets/_Proj/Data/CSV";
     private string metaFilePath = "Assets/_Proj/Scripts/Editor/Tools/table_meta.json";
-    //각각 CSV를 보관하는 폴더의 경로와 json이 보관된 경로
-    //경로가 변경될시 이곳에서 바꿔줘야함
+    //각각의 데이터 관련 정보를 보관하는 json이 보관된 경로
     
     void OnGUI()
     {
-        if (GUILayout.Button("CSV → ScriptableObject 변환"))
+        GUILayout.Label("CSV 자동 다운로드 + Import", EditorStyles.boldLabel);
+        metaFilePath = EditorGUILayout.TextField("Meta JSON Path", metaFilePath);
+
+        if (GUILayout.Button("Download & Import All"))
         {
-            ImportAllTables();
+            DownloadAndImport();
             //에디터에 생성한 CSV Import Manager의 버튼 생성 및 수행할 함수 할당
         }
     }
-
-    void ImportAllTables()
+    private void DownloadAndImport()
     {
+        if (!File.Exists(metaFilePath))
+        {
+            Debug.LogError("Meta 파일을 찾을 수 없습니다: " + metaFilePath);
+            return;
+        }
+
+        string json = File.ReadAllText(metaFilePath);
+        TableMetaList config = JsonUtility.FromJson<TableMetaList>(json);
+
+        foreach (var entry in config.entries)
+        {
+            try
+            {
+                Debug.Log($"[CSV] Download: {entry.name} - {entry.url}");
+
+
+                // Google Sheet CSV 다운로드
+                string csv = DownloadCSV(entry.url);
+
+                if (entry.type == "CSV_ONLY")
+                {
+                    string savePath = $"Assets/_Proj/Data/CSV/{entry.name}.csv";
+                    File.WriteAllText(savePath, csv);
+                    Debug.Log($"[CSV] Saved CSV_ONLY: {savePath}");
+                    continue;
+                }
+
+                // CSV 파싱 → ScriptableObject 생성
+                ImportAllTables(entry.name, entry.type, csv);
+
+                Debug.Log($"[CSV] Imported: {entry.name}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[CSV] Error importing {entry.name}: {e.Message}");
+            }
+        }
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
+
+    private string DownloadCSV(string url)
+    {
+        using (WebClient wc = new WebClient())
+        {
+            return wc.DownloadString(url);
+        }
+    }
+
+    void ImportAllTables(string name, string type, string csv)
+    {
+        if (type != "SO")
+        {
+            Debug.LogWarning($"[CSV] {name} 은 type SO가 아니므로 건너뜀");
+            return;
+        }
+
         // JsonUtility로 메타 읽기
         string metaJson = File.ReadAllText(metaFilePath);
         //텍스트 파일을 열고, 파일의 모든 텍스트를 읽은 다음에 파일을 닫고
         var metaList = JsonUtility.FromJson<TableMetaList>(metaJson);
         //entries json으로 변환
 
-        foreach (string csvPath in Directory.GetFiles(csvFolderPath, "*.csv"))
+        //type이 "SO"라면 테이블 이름별 전용 Parser 호출
+        switch (name)
         {
-            //미리 경로를 저장해둔 csvFolderPath 를 매개변수로 사용하고, 해당 경로에서
-            //"*.csv"의 조건에 맞는 파일을 탐색한다.
-            //* 은 앞에 올 파일이름명들 총칭, .csv는 확장자명
-            //xxxx.csv와 같은 형식이라면 모두 탐색, 여기서 xxxx을 *로 처리한것
-            //->지정된 디렉터리에서 지정된 검색 패턴과 일치하는 파일 이름(파일 경로 포함)을 반환
-
-            string fileName = Path.GetFileNameWithoutExtension(csvPath);
-            //확장명 없이 지정된 경로 문자열의 파일 이름을 반환
-
-            // meta에 존재하는지 확인
-            var meta = metaList.entries.Find(x => x.name == fileName);
-            //metaList에 저장된 name변수와 같은 이름의 fileName이 있는지 체크
-            if (meta == null)
-            {
-                Debug.Log($"[CSV] {fileName} 은 meta.json에 정의되어 있지 않음 → 건너뜀");
-                continue;
-            }
-
-            if (meta.type != "SO") continue;
-
-            //type이 "SO"라면 테이블 이름별 전용 Parser 호출
-            switch (fileName)
-            {
-                //CSV의 type이 "SO"인 경우가 추가될 때마다 case를 추가, 각 CSV에 맞는 Parser클래스 생성
-                case "tbl_animal_mst":
-                    AnimalParser.Import(csvPath);
-                    break;
-                case "tbl_artifact_mst":
-                    ArtifactParser.Import(csvPath);
-                    break;
-                case "tbl_background_mst":
-                    BackgroundParser.Import(csvPath);
-                    break;
-                case "tbl_chapter_mst":
-                    ChapterParser.Import(csvPath);
-                    break;
-                case "tbl_codex_mst":
-                    CodexParser.Import(csvPath);
-                    break;
-                case "tbl_costume_mst":
-                    CostumeParser.Import(csvPath);
-                    break;
-                case "tbl_deco_mst":
-                    DecoParser.Import(csvPath);
-                    break;
-                case "tbl_dialogue_mst":
-                    DialogueParser.Import(csvPath);
-                    break;
-                case "tbl_dialogue_speakers_dtl":
-                    SpeakerParser.Import(csvPath);
-                    break;
-                case "tbl_goods_mst":
-                    GoodsParser.Import(csvPath);
-                    break;
-                case "tbl_home_mst":
-                    HomeParser.Import(csvPath);
-                    break;
-                case "tbl_manual_mst":
-                    ManualParser.Import(csvPath);
-                    break;
-                case "tbl_profile_icon_mst":
-                    Profile_iconParser.Import(csvPath);
-                    break;
-                case "tbl_quest_mst":
-                    QuestParser.Import(csvPath);
-                    break;
-                case "tbl_shop_item_dtl":
-                    Shop_itemParser.Import(csvPath);
-                    break;
-                case "tbl_shop_mst":
-                    ShopParser.Import(csvPath);
-                    break;
-                case "tbl_stage_mst":
-                    StageParser.Import(csvPath);
-                    break;
-                case "tbl_treasure_mst":
-                    TreasureParser.Import(csvPath);
-                    break;
-                default:
-                    Debug.LogWarning($"[CSV] {fileName} 변환 로직 없음");
-                    break;
-            }
+            //CSV의 type이 "SO"인 경우가 추가될 때마다 case를 추가, 각 CSV에 맞는 Parser클래스 생성
+            case "tbl_animal_mst":
+                AnimalParser.Import(csv);
+                break;
+            case "tbl_artifact_mst":
+                ArtifactParser.Import(csv);
+                break;
+            case "tbl_background_mst":
+                BackgroundParser.Import(csv);
+                break;
+            case "tbl_chapter_mst":
+                ChapterParser.Import(csv);
+                break;
+            case "tbl_codex_mst":
+                CodexParser.Import(csv);
+                break;
+            case "tbl_costume_mst":
+                CostumeParser.Import(csv);
+                break;
+            case "tbl_deco_mst":
+                DecoParser.Import(csv);
+                break;
+            case "tbl_dialogue_mst":
+                DialogueParser.Import(csv);
+                break;
+            case "tbl_dialogue_speakers_dtl":
+                SpeakerParser.Import(csv);
+                break;
+            case "tbl_goods_mst":
+                GoodsParser.Import(csv);
+                break;
+            case "tbl_home_mst":
+                HomeParser.Import(csv);
+                break;
+            case "tbl_manual_mst":
+                ManualParser.Import(csv);
+                break;
+            case "tbl_profile_icon_mst":
+                Profile_iconParser.Import(csv);
+                break;
+            case "tbl_quest_mst":
+                QuestParser.Import(csv);
+                break;
+            case "tbl_shop_item_dtl":
+                Shop_itemParser.Import(csv);
+                break;
+            case "tbl_shop_mst":
+                ShopParser.Import(csv);
+                break;
+            case "tbl_stage_mst":
+                StageParser.Import(csv);
+                break;
+            case "tbl_treasure_mst":
+                TreasureParser.Import(csv);
+                break;
+            default:
+                Debug.LogWarning($"[CSV] {name} 변환 로직 없음");
+                break;
         }
     }
 }

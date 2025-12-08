@@ -12,6 +12,7 @@ public class TableMetaEntry
 {
     public string name;
     public string type;
+    public string url;
 }
 //데이터테이블 클래스 구조
 //todo : 데이터 테이블 추가 될 시 json파일에 name, type 올릴것

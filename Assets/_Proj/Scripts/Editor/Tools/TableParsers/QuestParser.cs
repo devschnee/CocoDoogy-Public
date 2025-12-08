@@ -10,7 +10,7 @@ public static class QuestParser
         string textCsvPath = "Assets/_Proj/Data/CSV/tbl_text_mst.csv";
         var textDict = TextParser.Import(textCsvPath);
 
-        string[] lines = File.ReadAllLines(csvPath);
+        var lines = csvPath.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
         if (lines.Length <= 1) return;
 
@@ -60,7 +60,9 @@ public static class QuestParser
             });
         }
 
-        string assetPath = "Assets/_Proj/Data/ScriptableObject/Quest/QuestDatabase.asset";
+        string assetPath = "Assets/_Proj/Data/ScriptableObject/Quest/QuestDatabase.asset"; if (AssetDatabase.LoadAssetAtPath<AnimalDatabase>(assetPath) != null)
+            AssetDatabase.DeleteAsset(assetPath);
+
         AssetDatabase.CreateAsset(db, assetPath);
         AssetDatabase.SaveAssets();
 
