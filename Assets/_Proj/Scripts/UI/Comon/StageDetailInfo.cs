@@ -17,9 +17,11 @@ public class StageDetailInfo : MonoBehaviour
     public Sprite notCollectedSprite;
     public GameObject EnergyNoticePanel;
     private int consume = 1;
+    private bool isEnter = false;
 
     void Awake()
     {
+        isEnter = false;
         // LSH 추가 1125
         enterButton.onClick.AddListener(() => {EnterStage(); AudioEvents.Raise(UIKey.Normal, 2);});
     }
@@ -54,6 +56,8 @@ public class StageDetailInfo : MonoBehaviour
 
     async void EnterStage()
     {
+        if (isEnter) return;
+        isEnter = true;
         if (UserData.Local.goods[110001] < consume)
         {
             //Todo : 행동력이 부족하다면 추가 팝업 보여주고 리턴
@@ -66,7 +70,6 @@ public class StageDetailInfo : MonoBehaviour
         //행동력을 consume 만큼 빼줘야함
         UserData.Local.goods[110001] -= consume;
         UserData.Local.goods.Save();
-
         if (currentStageId.Contains("stage_1"))
         {
             SceneManager.LoadScene("Chapter1_StageScene"); 
