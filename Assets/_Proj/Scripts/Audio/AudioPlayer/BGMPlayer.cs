@@ -15,9 +15,9 @@ public class BGMPlayer : AudioPlayerControl
         this.mixer = mixer;
         this.myTrans = myTrans;
 
-        setVolume = 0.8f;
-        ingameVolume = 0.4f;
-        outgameVolume = 0.8f;
+        setVolume = 0.9f;
+        ingameVolume = 0.32f;
+        outgameVolume = 0.9f;
         
         GameObject gObj = new GameObject($"BGMPlayer");
         gObj.transform.parent = myTrans;

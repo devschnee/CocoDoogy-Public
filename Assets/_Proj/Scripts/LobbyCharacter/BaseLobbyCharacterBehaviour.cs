@@ -131,7 +131,10 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     // 애니메이션 이벤트 마지막 부분에
     public void FromAToB()
     {
-        fsm.ChangeState(IdleState); 
+        if (fsm.CurrentState == ClickSate || fsm.CurrentState == InteractState)
+        {
+            fsm.ChangeState(IdleState); 
+        }
     }
 
     /// <summary>
