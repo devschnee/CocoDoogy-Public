@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 
-//KHJ - 11/21 TODO : 기획팀 요청 : push가 끝난 후 n초동안 이동을 입력을 0으로 만들어서 push가 연속으로 되는 문제를 딜레이줘서 해결하도록. n초는 inspector에서 수정할 수 있어야 함.
+/// <summary>
+/// 플레이어 이동 입력을 기반으로
+/// 전방의 Pushable 오브젝트와 상호작용(밀기)을 시도하는 이동 전략 클래스
+/// (실제 이동/차단/낙하 규칙은 PushableObject가 담당. 본 클래스는 입력 안정화와 대상 선정까지만 책임짐)
+/// 연속 푸시 방지를 위해 쿨타임 기반 제어를 포함함
+/// </summary>
 
 public class PlayerPush : MonoBehaviour, IMoveStrategy
 {
@@ -17,18 +22,17 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
     // 현재 밀고 있는 대상 추적을 위한
     private IPushHandler currPushHandler = null;
 
-    //LSH추가
     public bool isPushing => currPushHandler != null;
     private Vector3 lastDirN = Vector3.forward; // 기즈모용 변수
 
     public (Vector3, Vector3) Execute(Vector3 moveDir, Rigidbody rb, PlayerMovement player)
     {
+        // 밀기 동작 직후 짧은 쿨타임을 주어 의도치 않은 연속 밀기 방지
         if (currCooltime > 0f)
         {
             currCooltime -= Time.deltaTime;
 
-            //currPushHandler = null;
-            //return (Vector3.zero, Vector3.zero);
+            // 쿨타임 중에는 이동 속도 감속
             Vector3 moveDelay = moveDir * 0.45f;
             return (moveDelay, Vector3.zero);
         }
@@ -44,43 +48,23 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
             return (Vector3.zero, Vector3.zero);
         }
 
-
-        // --- 12/03 변경. moveDir이 이미 4방향이라고 가정하고 그대로 사용
-        //Vector3 dirN = moveDir.normalized; // 혹시 모를 부동소수 오차 정리
-        //lastDirN = dirN; // 기즈모용
-
-        //// PushableObjects.StartPushAttempt(Vector2Int dir)를 위해
-        //// 현재 방향을 격자 방향(Vector2Int)으로만 매핑
-        //int gx = Mathf.RoundToInt(Mathf.Clamp(dirN.x, -1f, 1f));
-        //int gz = Mathf.RoundToInt(Mathf.Clamp(dirN.z, -1f, 1f));
-        //Vector2Int dirGrid = new Vector2Int(gx, gz);
-        //if (Mathf.Abs(dirGrid.x) + Mathf.Abs(dirGrid.y) != 1)
-        //{
-        //    // 4방향 유효성 검사
-        //    // Push 시도 자체를 막기 위해 즉시 리턴
-        //    // 이동은 그대로 허용
-        //    return (moveDir, Vector3.zero);
-        //}
-        // ---
-
-        // ▼ 기존 코드
-        //먼저 4방향으로 고정 -> 조이스틱 미세한 각도 떨림으로 인한 홀드-리셋 방지
+        // 입력을 4방향으로 스냅하여
+        // 조이스틱의 미세한 각도 떨림으로 인한 홀드-리셋 반복 방지
         Vector2Int dir4 = player.To4Dir(moveDir); // up/right/left/down 중 하나로 스냅
         Vector3 dirCard = new Vector3(dir4.x, 0f, dir4.y); // 이걸로 캐스트/푸시 둘 다 수행
         Vector3 dirN = dirCard; // 이미 정규화됨 (x/z는 -1,0,1이라서)
         lastDirN = dirN; // 기즈모용
-        //NOTE: 강욱 - 1107 : 플레이어의 입장에서 보면, 스피어캐스트(레이캐스트)를 뿌려야 하는 위치는 다음과 같습니다.
-        //(플레이어의 로직상 위치(transform.position))보다 위로 0.5, 앞으로(dirN) 1.0지점을 원점으로 하여, 위쪽의 블록과 뒤쪽의 블록까지 감지되도록 해야 합니다.
-        //스피어캐스트 말고 레이캐스트 2번으로 끝내면 좋을 것같은데...
-        //그 후에 RaycastHit[] hits를 검사하는 과정에서 검출된 IPushHandler가 2개 이상인 경우 플레이어는 이를 밀 수 없도록 처리가 되어야 합니다.
-        //그리고 추가 조건으로, 맞은 hit와의 거리가 충분히 가까워야 밀 수 있도록 처리하면 멀리서 미는 일은 없어질 것입니다.
-        //
 
         // 앞 1칸 두께 있게 훑기 (레이어 제한 없이 -> IPushHandler로 필터)
         Vector3 halfExtents = new(.2f, .4f, .2f);
-        float front = Mathf.Max(0.9f, frontOffset); // KHJ - frontOffset은 밀기 위한 감지거리에 영향을 미치고 가변적일 수 있기 때문에, Max값으로 1번 인자를 갖기 위해서 0.9f로 변경
+        
+        // frontOffset은 감지 거리 조절용 파라미터로도 사용되어 가변적이므로
+        // Max 계산 값으로 1번 인자를 갖기 위해서 0.9f로 변경
         // front를 앞으로 뺀 이유는 수직 검사를 하되 내 머리 위는 검사대상에서 빼기 위해서임
-        float maxDist = tileSize * .8f; // front가 앞으로 나갔기 때문에 2칸 검사만 하기 위해 거리 줄임
+        float front = Mathf.Max(0.9f, frontOffset); 
+
+        // front를 전방으로 이동시킨 만큼 실제 검사 거리를 줄여 원격 푸시를 방지
+        float maxDist = tileSize * .8f;
 
         Vector3 origin = rb.position + Vector3.up * .8f + dirN * front;
 
@@ -91,12 +75,11 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
             dirN,
             Quaternion.identity,
             maxDist,
-            pushables, // 레이어 전부 허용. 최종은 컴포넌트로 필터
-            //NOTE: 강욱 - 1107 : 레이어는 pushables만 허용하도록 하고, 대신 아래쪽에서 검출된 거리의 크기에 따라 원격으로 미는 걸 막았습니다.
+            pushables, // 레이어 전부 허용. 실제 푸시 가능 여부는 IPushHandler로 필터링
             QueryTriggerInteraction.Ignore
         );
 
-        //레이어를 전부 허용했기때문에, 뭐든지 다 검출되게 됩니다. 여기서 거리순으로 정렬을 하는데, 원격 푸시 막는 처리는 아래에서 가능할 듯 합니다.
+        //레이어를 전부 허용했기때문에, 뭐든지 다 검출되게 됨. 여기서 거리순으로 정렬
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
         IPushHandler next = null;
@@ -107,26 +90,13 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
             {
 
                 float dist = Vector3.Distance(h.collider.transform.position, transform.position);
-                Debug.Log($"플레이어푸시: {h.collider.name}은 IPushHandler이므로 검출함. 나와의 거리: {dist}");
-                //foreach이기 때문에 일단 검출이 되면 모두 검사함. 만약 새롭게 검출된 핸들러가 기존의 것과 다르다면 할당 해제해줌.
-                //아래 코드 설명: next는 무조건 null로 시작함.
-                //처음 handler를 만나면 handler로 대입해 줌.
-                //하지만 다음 반복에서 또다른 handler가 검출되면 null;이 대입되고 break;함
-                //중복으로 검출된 경우에 대한 처리입니다.
+                // 여러 IPushHandler가 동시에 검출되면 원격 or 모호한 push로 판단하여 무효 처리
                 if (next != null) { next = null; break; }
                 next = (next == null && Mathf.Approximately(h.distance,0f)) ? handler : null;
-
-                //next = h.distance < .05f ? handler : null;
-
-                //if (handler == null) return (moveDir, Vector3.zero);
-
-                //테스트 2: break;하지 말고 계속 진행해보기. (여러 IPushHandler 객체의 검출 상황)
-                //break;
             }
-            //내 입력 기준 가까운 오브젝트 순으로 검사하다가 밀 수 있는 오브젝트가 아니면 즉시 무시(원격 푸시 막는 처리) - 테스트 결과 정상.
-            else // 이제 거리로 검사하는 대신 pushables 레이어만 열어줬기 때문에... 이 문은 영원히 실행되지 않을 것임.
+            //내 입력 기준 가까운 오브젝트 순으로 검사하다가 밀 수 있는 오브젝트가 아니면 즉시 무시(원격 푸시 막는 처리)
+            else
             {
-                Debug.LogWarning($"플레이어푸시: {h.collider.name}은 밀 수 있는 오브젝트가 아님.");
                 return (moveDir, Vector3.zero);
             }
         }
@@ -144,9 +114,6 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
                 currPushHandler.StartPushAttempt(dir4); // 고정 4방향
                 currCooltime = pushCooltime;
 
-                //NOTE: 테스트용. 밀고 있는 경우에는 클램프매그니튜드
-                //return (Vector3.ClampMagnitude(moveDir, .05f), Vector3.zero);
-                //NOTE: 밀고 있는 경우에 클램프매그니튜드 없이 바로 현재 방향대로 리턴하도록 해봄. 상자에 틱틱 걸리는 느낌이 든다고 함.
                 return (moveDir, Vector3.zero);
             }
         }
@@ -158,7 +125,6 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
                 currPushHandler = null;
             }
         }
-
         // 이동은 원래대로
         return (moveDir, Vector3.zero);
     }

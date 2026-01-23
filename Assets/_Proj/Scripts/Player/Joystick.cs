@@ -5,6 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
+/// <summary>
+/// 모바일 가상 조이스틱 입력을 처리하는 UI 컴포넌트.
+/// 한 손가락 입력은 플레이어 이동용 방향 벡터를 생성하고,
+/// 두 손가락 입력은 카메라 둘로보기(Look Around) 모드로 전환함.
+/// 입력 안정화를 위해 방향 스냅과 시각적 하이라이트를 포함함.
+/// </summary>
 public class Joystick : MonoBehaviour
 {
     [SerializeField] private Image bg;
@@ -60,54 +67,6 @@ public class Joystick : MonoBehaviour
 
     void Update()
     {
-        #region 주석처리된 긴 코드 부분
-        //#if UNITY_EDITOR
-        //        Touch touch = new();
-        //        Vector2 pos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-        //        if (Mouse.current.leftButton.wasPressedThisFrame)
-        //        {
-        //            touch.phase = TouchPhase.Began;
-        //            touch.position = pos;
-
-
-        //        }
-        //        if (Mouse.current.leftButton.isPressed)
-        //        {
-        //            touch.phase = TouchPhase.Moved;
-        //            touch.position = pos;
-        //        }
-        //        if (Mouse.current.leftButton.wasReleasedThisFrame)
-        //        {
-        //            touch.phase = TouchPhase.Ended;
-        //            touch.position = pos;
-        //        }
-
-
-        //        if (touch.phase == TouchPhase.Began) //터치가 시작될 때
-        //        {
-        //            //가상 조이스틱 전체를 터치 위치로 옮겨야 함.
-        //            transform.position = pos;
-        //            Drag(pos);
-        //        }
-        //        else if (touch.phase <= TouchPhase.Stationary) //를 제외하고 터치가 이동중/정지중일 때
-        //        {
-        //            //가상 조이스틱 핸들을 터치 위치로 옮기되, 범위를 넘어가지 않게 하면 됨.
-        //            Drag(pos);
-        //        }
-        //        else //까지 제외하고 터치가 종료/취소될 때
-        //        {
-        //            ResetJoystick();
-        //        }
-
-
-        //#elif UNITY_ANDROID
-        //if (Touchscreen.current == null || Touchscreen.current.touches.Count < 1)
-        //{
-        //    Debug.Log("터치 없음");
-        //    return;
-        //}
-        #endregion
-
         if (IsLocked)
         {
             ResetJoystick();
@@ -116,8 +75,7 @@ public class Joystick : MonoBehaviour
 
         if (Touchscreen.current == null) return;
 
-
-        // KHJ - Touch 모드 분기
+        // Touch 모드 분기
         int touchCnt = 0;
         var touches = Touchscreen.current.touches;
 
@@ -137,7 +95,6 @@ public class Joystick : MonoBehaviour
         if (touchCnt < 2 && IsTwoFingerMode == true)
         {
             ResetTwoFingerMode(); // IsTwoRingerMode = false <- 카메라 플레이어 추적 시작
-            //ResetJoystick(); // ResetJoystick은 각 분기에서 한 번씩 처리 하므로 불필요함.
         }
 
 
@@ -196,9 +153,8 @@ public class Joystick : MonoBehaviour
             }
             if (touch.press.isPressed) //를 제외하고 터치가 이동중/정지중일 때
             {
-                //터치 시작 위치로 레이를 쏴서, UI요소가 하나라도 검출되면 리턴
+                //터치 시작 위치에 UI 요소가 있을 경우 조이스틱 입력으로 처리하지 않고 무시
                 List<RaycastResult> results = new();
-
 
                 PointerEventData data = new(EventSystem.current);
                 data.position = touch.startPosition.ReadValue();
@@ -210,31 +166,15 @@ public class Joystick : MonoBehaviour
                         return;
                     }
                 }
-                // 자유 터치
+                // 조이스틱 기준 위치가 터치 시작 지점에서 멀 경우
+                // 새로운 터치 위치로 조이스틱 기준점 재설정
                 transform.position = Vector2.Distance(transform.position, touch.startPosition.ReadValue()) < 150 ? transform.position : touch.startPosition.ReadValue();
-
-                //여기까지 왔다면, 터치 시작 위치가 UI요소 위가 아닌 것임.
-                //transform.position = touch.startPosition.ReadValue();
-
 
                 //가상 조이스틱 핸들을 터치 위치로 옮기되, 범위를 넘어가지 않게 하면 됨.
                 Drag((Vector3)touch.position.ReadValue() - transform.position);
             }
         }
     }
-
-    //public void MoveToTouch(PointerEventData eventData)
-    //{
-    //    Vector2 pos;
-
-    //    var parent = rectTransform.parent as RectTransform;
-    //    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, eventData.position, eventData.pressEventCamera, out pos))
-    //    {
-    //        rectTransform.anchoredPosition = pos;
-    //    }
-    //    Drag(eventData);
-    //}
-
 
     // 터치가 드래그 될 때
     public void Drag(PointerEventData eventData)
@@ -247,8 +187,6 @@ public class Joystick : MonoBehaviour
         // 핸들 이동반경 제한
         Vector2 clamped = Vector2.ClampMagnitude(pos, moveRange);
         handle.rectTransform.anchoredPosition = clamped;
-
-        
 
         Vector2 inputNormal = clamped.sqrMagnitude > 0.0001f ? (clamped / moveRange) : Vector2.zero;
 
@@ -269,6 +207,9 @@ public class Joystick : MonoBehaviour
                     Vector2.left,
                     (Vector2.up + Vector2.left).normalized
     };
+
+    // 입력 벡터를 8방향 기준으로 스냅 처리.
+    // enhancedFourDir가 활성화된 경우 상화좌우 방향의 허용 각도를 확장하여 4방향 이동이 더 쉽게 선택되도록 보정.
     private Vector2 SnapDirection(Vector2 inputVector, bool enhanceFourdir)
     {
         {
@@ -290,14 +231,9 @@ public class Joystick : MonoBehaviour
         return inputVector;
     }
 
-    //HACK: 1028 - 강욱: Drag()메서드 오버로드합니다. Vector2를 매개변수로 갖게 하여 터치된 위치를 기준으로 작동하도록 합니다.
+    // 터치 위치 기반으로 조이스틱 입력을 처리하기 위한 Drag 오버로드
     public void Drag(Vector2 pos)
     {
-        //RectTransform bgRect = bg.rectTransform;
-        //Vector2 pos;
-        //if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(bgRect, eventData.position, eventData.pressEventCamera, out pos)) return;
-
-
         // 핸들 이동반경 제한
         Vector2 clamped = Vector2.ClampMagnitude(pos, moveRange);
         handle.rectTransform.anchoredPosition = clamped;
@@ -313,7 +249,9 @@ public class Joystick : MonoBehaviour
     }
 
 
-    // KHJ -  두 손가락으로 터치한 상태로 드래그 할 경우, 카메라가 드래그하는 방향, 드래그 하는 만큼의 -방향으로 이동돼야 함. 이때, 플레이어가 화면 밖으로 벗어날 정도로 움직이면 안 됨.(현재 플레이어는 카메라의 정중앙에 위치하도록 되어 있음.). CamControl.cs에서 두 손가락 터치가 입력될 경우 Cam의 타겟을 플레이어에서 끊고 주변을 둘러볼 수 있게 해야 함. 손가락이 하나라도 떨어지면 다시 코코두기를 타겟팅.
+    // 두 손가락 터치 모드 종료 처리
+    // 카메라 LookAround 모드 해제
+    // 다시 플레이어 추적 모드로 복귀
     public void ResetTwoFingerMode()
     {
         IsTwoFingerMode = false;
@@ -330,6 +268,7 @@ public class Joystick : MonoBehaviour
         for (int i = 0; i < fourSlices.Length; i++) fourSlices[i].enabled = false;
     }
 
+    // 현재 입력 방향에 따라 상/하/좌/우 하이라이트 UI 활성화
     private void FourDirHighlightUI(Vector3 dir)
     {
         if (dir.sqrMagnitude < 0.0001f)

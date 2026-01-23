@@ -57,7 +57,7 @@ public class StageUIManager : MonoBehaviour
     public Sprite[] ResultCoCoDoogySprite;
     public Action OnTreasureConfirm;
 
-    public TextMeshProUGUI CollecTreausreCountText;
+    public TextMeshProUGUI CollecTreasureCountText;
 
     public GameObject videoImage;
 

@@ -3,6 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 사용자 설정을 토글 형태로 제어하는 UI 스위치.
+/// 핸들 애니메이션과 색상 전환을 통해
+/// 현재 설정 상태를 직관적으로 표현한.
+/// 변경된 설정은 즉시 로컬 데이터에 저장됨.
+/// </summary>
+/// 
 public class ToggleSwitch : MonoBehaviour
 {
     [Header("UI")]
@@ -29,14 +36,11 @@ public class ToggleSwitch : MonoBehaviour
     {
         defaultPos = handle.anchoredPosition;
         isSkipOn = UserData.Local.preferences.skipDialogues;
-        //UpdateVisual(UserData.Local.preferences.skipDialogues);
         UpdateVisual(true); // 토글 상태 애니메이션 없이 즉시 반영
     }
 
-    public void Toggle() // 토글 버튼 이벤트에 추가
+    public void Toggle()
     {
-        //isSkipOn = !isSkipOn;
-        //UserData.Local.preferences.skipDialogues = isSkipOn;
         UserData.Local.preferences.skipDialogues = !UserData.Local.preferences.skipDialogues;
         isSkipOn = UserData.Local.preferences.skipDialogues;
         UserData.Local.preferences.Save();

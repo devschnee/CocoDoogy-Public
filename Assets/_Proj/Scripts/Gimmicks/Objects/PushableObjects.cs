@@ -83,19 +83,13 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     // 밀기 시도(경사로 / 낙하 포함)
     public bool TryPush(Vector2Int dir, bool isPassive = true)
     {
-        if (isMoving || isFalling)
-        {
-            // 수정: 밀기 시도 실패(이미 이동/낙하 중) 로그 추가
-            Debug.Log($"[PushableObjects] {name}: isMoving({isMoving}) 또는 isFalling({isFalling}) 상태. (체인에 묶인 경우 포함 가능성) 현재 isRiding: {isRiding}");
-            return false;
-        }
+        if (isMoving || isFalling) { return false; }
 
         Vector3 offset = new Vector3(dir.x, 0f, dir.y) * tileSize;
         // XZ로만 이동할 목표(1칸) 먼저 계산.
         Vector3 target = transform.position + offset;
 
-        // TODO : 경사로를 만나면 위로 1칸 -> 앞으로 2칸 이동하도록
-        // 경사로가 있다면 위로 1칸 추가 이동
+        // 경사로가 있다면 위로 1칸 추가 이동. 경사로 못 오르도록 설정하면 allowSlope가 꺼져 있을 것이기 때문에 이 로직은 지나칠 것.
         if (allowSlope && Physics.Raycast(target + Vector3.up * 0.5f, Vector3.down, 1f, slopeMask))
         {
             Vector3 up = target + Vector3.up * tileSize;
@@ -103,8 +97,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             if (!CheckBlocking(up) &&
                 Physics.Raycast(up + Vector3.up * 0.1f, Vector3.down, 1.5f, groundMask))
             {
-                // 수정: 경사로 이동 성공 로그 추가
-                Debug.Log($"[PushableObjects] {name}: 경사로 위로 이동 시작. Target: {up}");
                 StartCoroutine(MoveAndFall(up));
                 return true;
             }
@@ -150,11 +142,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
                 // 착지 y를 칸 단위로 정규화
                 Vector3 landing = new Vector3(target.x, Mathf.Floor(hit.point.y / tileSize) * tileSize, target.z);
 
-                if (CheckBlocking(landing))
-                {
-                    Debug.Log($"[PushableObjects] {name}: 낙하 착지 예정 위치 {landing}에 blocking 존재 -> 이동 금지");
-                    return false;
-                }
+                if (CheckBlocking(landing)) { return false; }
             }
             else
             {
@@ -165,11 +153,9 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         }
         if (isPassive)
         {
-            // LSH 추가 1201
             if (gameObject.layer == LayerMask.NameToLayer("WoodBox")) AudioEvents.Raise(SFXKey.InGameObject, 1, pooled: true, pos: transform.position);
             else if (gameObject.layer == LayerMask.NameToLayer("Ironball")) AudioEvents.Raise(SFXKey.InGameObject, 5, pooled: true, pos: transform.position);
         }
-        Debug.Log($"[PushableObjects] {name}: 일반 이동 시작. Target: {target}");
         // 이동 후 낙하여부까지 처리
         StartCoroutine(MoveAndFall(target));
         return true;
@@ -185,15 +171,8 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     // Push 시도 시작(방향 기억, 시간 누적)
     public void StartPushAttempt(Vector2Int dir)
     {
-        if (isRiding || isMoving || isFalling)
-        {
-            Debug.Log($"[PushableObjects] {name}: isRiding({isRiding}) 또는 isMoving({isMoving}) 또는 isFalling({isFalling}) 상태입니다. 밀 수 없습니다.");
-            return;
-        }
-        if (isHoling && dir != holdDir)
-        {
-            currHold = 0f;
-        }
+        if (isRiding || isMoving || isFalling) { return; }
+        if (isHoling && dir != holdDir) { currHold = 0f; }
 
         holdDir = dir;
         isHoling = true;
@@ -202,11 +181,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     // Push 중단 시 호출(시간 초기화)
     public void StopPushAttempt()
     {
-        if (isHoling)
-        {
-            // 수정: 푸시 시도 중단 로그 추가
-            Debug.Log($"[PushableObjects] {name}: 홀딩 중단 및 시간 초기화.");
-        }
+        if (isHoling){ }
         isHoling = false;
         currHold = 0f;
     }
@@ -216,7 +191,9 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     // 단순 이동(1칸 Lerp 이동)
     public IEnumerator MoveTo(Vector3 target, bool isFallingIntoWater = false)
     {
-        //이동 시작 순간 내 머리 위에 있는 콜라이더, 주변 콜라이더 전부 켜주기
+        /// <summary>
+        /// 이동 시작 시 상단 및 주변 객체와의 물리적 동기화를 위해 핸들러 캐싱 및 충돌체 설정
+        /// </summary>
 
         //이동 시작 전 내 주변 사방에 있는 타일들에게서 IEdgeColliderHandler 검출하여 캐싱
         List<IEdgeColliderHandler> startCache = new();
@@ -233,7 +210,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             var result = Physics.RaycastAll(ray, 1.4f, groundMask);
             foreach (var hit in result)
             {
-                Debug.Log($"PushableObj: {name} moving start. hitted {hit.collider.name}");
                 if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
                 {
                     startCache.Add(targetHandler);
@@ -241,7 +217,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             }
         }
 
-        // LSH 추가 1202 나무박스 물에 떨어지는 순간 소리추가
+        // 물에 떨어지는 순간 소리추가
         if (isFallingIntoWater && gameObject.layer == LayerMask.NameToLayer("WoodBox"))
         {
             RaycastHit hit;
@@ -269,6 +245,9 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
         Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize * 0.5f, halfExtents * .995f, transform.rotation, riderMask);
         Transform playerTransform = null;
+
+        // 적층 구조에서 상위 객체들을 자식으로 종속시켜 물리적 이동을 동기화함
+        // 이동 종료 시점에 다시 계층 구조를 해제하여 개별 연산 가능하도록 설계
         foreach (var hit in riderHits)
         {
             if (hit.gameObject != gameObject && hit.TryGetComponent<IRider>(out var rider))
@@ -284,7 +263,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             }
             if (hit.TryGetComponent<PlayerMovement>(out PlayerMovement player))
             {
-                print("########박스의 IRider로 playerMovement 검출했음.########");
                 playerTransform = player.transform;
             }
         }
@@ -310,7 +288,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         isMoving = false;
         if (!IsOnFlowWater() && isRiding)
         {
-            Debug.Log($"[PushableObjects] {name} : 물 밖으로 이동했으므로 OnStopRiding() 호출");
             OnStopRiding();
         }
 
@@ -336,22 +313,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             handler.DetectGrounds().ForEach(x => x.DetectAndApplyFourEdge());
         }
 
-        ////이동이 끝나고 나서 곧바로 내 주변 사방에 있는 타일에서 IEdgeColliderHandler 검출
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
-        //    Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
-        //    var result = Physics.RaycastAll(ray, 1.4f, groundMask);
-        //    foreach(var hit in result)
-        //    {
-        //        Debug.Log($"PushableObj: {name} moved. hitted {hit.collider.name}");
-        //        if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
-        //        {
-        //            targetHandler.DetectAndApplyFourEdge();
-        //        }
-        //    }
-        //}
-
         //이동이 끝나고 나서 캐싱해놨던 핸들러들도 Inspect(); 호출.
         foreach (var cached in startCache)
         {
@@ -374,6 +335,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     public IEnumerator CheckFall()
     {
+        // 중복 실행 방지 및 초기 상태 설정
         if (isFalling) yield break;
         
         isFalling = true;
@@ -381,15 +343,17 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         bool fell = false;
 
         // Pushable도 땅으로 인식
+        // 하단 0.3f 지점에서 아래로 tileSize만큼 검사하여 물리적 안정성 확보
         while (!Physics.BoxCast(
             currPos + Vector3.up * 0.3f,
-            new Vector3(0.4f, 0.05f, 0.4f),
+            new Vector3(0.4f, 0.05f, 0.4f), // 박스 크기(타일보다 약간 작게 설정 → 끼임 방지)
             Vector3.down,
             out _,
             Quaternion.identity,
             tileSize * 1.2f,
             groundMask))
         {
+            // 낙하 목표 지점 계산(타일 단위)
             Vector3 fallTarget = currPos + Vector3.down * tileSize;
             yield return StartCoroutine(MoveTo(fallTarget, true));
 
@@ -401,7 +365,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             currPos = transform.position;
             fell = true;
             
-            // LSH 추가 1202 나무박스 물이 아닌 땅에 떨어질 시 소리 추가
+            // 물이 아닌 땅에 떨어질 시 소리 추가
             RaycastHit hit;
             if (Physics.BoxCast(snapped, new Vector3(0.4f, 0.05f, 0.4f), Vector3.down, out hit, Quaternion.identity, 1.2f) && gameObject.layer == LayerMask.NameToLayer("WoodBox"))
             {
@@ -419,7 +383,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     // 모양에 맞는 충돌 검사 구현하도록
     //protected abstract bool CheckBlocking(Vector3 target);
-    // NOTE : 11/5 Orb가 BoxCollider를 갖게 되면서 PuhsableObjects에 통합됨.
+    // 11/5 Orb가 BoxCollider를 사용하게 되면서 PuhsableObjects에서 통합 관리함.
     protected virtual bool CheckBlocking(Vector3 target)
     {
         // Lifting중이면 TryPush 안 들어오기 때문에 굳이 여기서 isLifting 상태를 변경해줄 필요는 없을 것.
@@ -427,9 +391,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         Vector3 half = b.extents - Vector3.one * 0.005f;
         Vector3 center = new Vector3(target.x, target.y + b.extents.y, target.z);
 
-        // 규칙상 차단 (blocking)
-        //if (Physics.CheckBox(center, half, transform.rotation, blockingMask, QueryTriggerInteraction.Ignore))
-        //    return true;
         // 규칙상 차단 (blocking) -> 여기서 Lift상태인 객체는 차단하면 안 됨
         var blockingHits = Physics.OverlapBox(
             center, 
@@ -444,10 +405,12 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             float dy = Mathf.Abs(h.transform.position.y - transform.position.y);
             if (rb && h.attachedRigidbody == rb) continue; // 자기 자신
             if (h.transform.IsChildOf(transform)) continue; // 자식
+
+            // 현재 Lifting 상태인 객체는
+            // 충돌 판정에서 제외하여 충격파 시스템과의 논리적 충돌 방지
             if (h.TryGetComponent<PushableObjects>(out var po) && po.isLifting)
             {
-                Debug.Log($"[PO] 규칙 차단 제외 {h.name} Lifting 중.");
-                continue;
+                continue; // 공중에 떠 있는 객체는 이동 경로를 차단하지 않음
             }
             // 그 외엔 차단
             return true;
@@ -462,7 +425,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             if (c.transform.IsChildOf(transform)) continue; // 자식
             if (c.TryGetComponent<PushableObjects>(out var po) && po.isLifting)
             {
-                Debug.Log($"[PO] 점유 검사 제외 {c.name} Lifting 중.");
                 continue;
             }
             return true;
@@ -538,7 +500,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
         if (Physics.BoxCast(transform.position, checkSize, Vector3.down, out RaycastHit hit, Quaternion.identity, checkDist, landingLayer))
         {
-            Debug.Log($"[PO] {name} 하강 하려 했는데 {hit.collider.name} 감지 함. 하강 못함.");
             transform.position = target;
             isMoving = false;
             isFalling = false;
@@ -557,13 +518,11 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         isMoving = false;
         isFalling = false;
         isLifting = false;
-        // LSH 추가 1201
+
         if (gameObject.layer == LayerMask.NameToLayer("WoodBox"))
         {
             AudioEvents.Raise(SFXKey.InGameObject, 0, pooled: true, pos: gameObject.transform.position);
         }
-        Debug.Log($"[PO] {name} 충격파 영향 받음. 이제 떨어질 것임.");
-        //yield break;
         // NOTE : 혹시나 뭔가 다른 작업을 하다 여기에서 CheckFall()을 할 일이 생긴다면 차라리 다른 스크립트를 작성하는 것을 권장. 원위치 복귀 후 다시 낙하 검사하는 실수 생기면 안 됨.
         // pushables가 충격파 받은 이후로 적층된 물체들이 원위치 후 다시 낙하 검사를 하게 되면 한 번 더 낙하해서 원위치에서 -y로 더 내려가게 됨
         StartCoroutine(CallFallCheck());
@@ -596,12 +555,10 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     IEnumerator RidingCoroutine()
     {
-        Debug.Log($"PushableObj: 라이딩코루틴 실행");
         Transform originalParent = transform.parent; //null일 수도 있음. null이라면 부모 없도록 설정됨.
         List<IEdgeColliderHandler> myAdjHandlers = new();
         if (TryGetComponent<IEdgeColliderHandler>(out var myHandler))
         {
-            Debug.Log($"PushableObj: myHandler 할당함.");
             myAdjHandlers = myHandler.DetectGrounds();
             while (isRiding)
             {
@@ -627,7 +584,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     public void OnStopRiding()
     {
-        Debug.Log($"[OnStopRiding] called on {name}, parent = {(transform.parent ? transform.parent.name : "null")}");
         isRiding = false;
         Transform p = transform.parent;
         Transform stage = GameObject.Find(STAGE_NAME)?.transform;
@@ -704,14 +660,8 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     IEnumerator FlowChainMonitor()
     {
-        // Stack쌓듯이 반대로 내 부모의 부모의 부모 ... 를 찾아서 FlowWater를 감지하고 있지 않으면 chian을 끊어버리는 로직을 짜면 되지 않을까....
-        // 내 조상중에 flow water안에 있는 obj를 찾아서...
-        // if(flow water 찾았으면) Coroutine 실행 X
-        // if(flow water 찾았으면) Coroutine 실행해서 체인 끊기
-        // 아니면...지금 Flow에서 ImmediatePush를 호출해서 실행시켜주는데, flowInterval이 넘었는데도 ImmmidataPush가 호출이 안 되면 체인을 끊어주는 걸로...? <- 근데 이러면 그냥 가만히 두다가 다시 어떠한 방식으로 ImmediatePush가 호출되면 체인 이미 끊어져서 다시 안 따라갈 수도 있음.
-        // 물에 들어간 상태면 Update에서 실시간으로 계속 물에 있는지 없는지 감지하고 물이 아니라면 감지 정지..? <- 너무 메모리 많이 잡아먹는 비효율적 방법같음...
-        // 근데 원래 부모가 Stage임을 잊지 말자..
-        // 생각해보니 최종 부모는 Flow가 아님. 1층은 체인으로 묶이지 않기 때문. 2층이 자신의 발 밑에 Flow가 있는지 감지하게 해야 함. Flow 속에 있는 것이 아니라 Flwo 바로 위에 있는 것.
+        // 적층 체인의 최상단을 추적하여 흐르는 물에서의 이탈 여부를 실시간 모니터링
+        // 객체 분리 시 최상위 부모(Stage)로 계층 구조 복원 처리
         const float checkInterval = 0.1f;
         float timer = 0f;
         while (isRiding)
@@ -734,7 +684,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
                 // Flow Water 이동 속도 + 2f만큼 정지된 상태면 움직이지 않는 것이므로 체인 불필요하다 판단하고 해제
                 if (timer >= flow.flowInterval + 2f)
                 {
-                    Debug.Log($"[PushableObjects] {name}: 루트 객체({root.name}) 아래 물 감지 실패. 시간 초과로 체인 끊기 시도.");
                     Transform stage = GameObject.Find(STAGE_NAME)?.transform;
                     if (stage)
                     {

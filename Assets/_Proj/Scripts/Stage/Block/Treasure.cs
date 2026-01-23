@@ -2,6 +2,13 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// 스테이지 내에서 획득 가능한 보물 오브젝트.
+/// 플레이어 충돌 시 보물 타입에 따라 전용 UI를 표시하고, 획득 상태를 저장 및 반영.
+/// 이미 획득한 보물은 시각 효과만 변경하여 재획득을 방지하며,
+/// 파티클, 셰이더 색상, UI 흐름을 통해 획득 피드백을 제공.
+/// </summary>
+
 public class Treasure : MonoBehaviour
 {
     public int treasureIndex;
@@ -13,19 +20,17 @@ public class Treasure : MonoBehaviour
     private bool isCollected = false;
     private SpriteRenderer sprite;
     private int _glowColorID;
-    private int _baseColorID;
 
-    // KHJ - NOTE : 기존에는 aftifact타입이면 무조건 particle을 켜주게 되어 있었으나 기획팀 요청으로 파티클은 모두 끄고 sprite의 Color(Shader)를 변경해야 해서 전체적으로 수정함
     void Start()
     {
-        _baseColorID = Shader.PropertyToID("_BaseColor");
         _glowColorID = Shader.PropertyToID("_GlowColor");
 
+        // UserData는 보물 획득 여부 조회용(Read-Only), 저장/구조 책임은 UserData에 있음
         var progress = UserData.Local.progress.scores.TryGetValue(StageUIManager.Instance.stageManager.currentStageId, out var value) ? value : new();
         
         sprite = GetComponentInChildren<SpriteRenderer>();
 
-        // 획득 상태 확인 및 처리
+        // 스테이지 진행도 기준으로 보물 획득 여부 판별
         bool isAlreadyCollected = (treasureIndex == 0 && progress.star_1_rewarded) ||
                                   (treasureIndex == 1 && progress.star_2_rewarded) ||
                                   (treasureIndex == 2 && progress.star_3_rewarded);
@@ -60,14 +65,13 @@ public class Treasure : MonoBehaviour
 
     private void SetCollectedVisuals()
     {
-        // 파티클 끄기
+        // 이미 획득한 보물의 시각 효과 비활성화
         if (particle != null) particle.SetActive(false);
         if (artifactParticleSystem != null) artifactParticleSystem.SetActive(false);
 
-        // 셰이더 색상 변경
+        // 획득 완료 상태를 표현하기 위한 셰이더 색상 변경
         if (sprite != null)
         {
-            //sprite.material.SetColor(_baseColorID, new Color(0.5f, 0.5f, 0.5f, 1f));
             sprite.material.SetColor(_glowColorID, new Color(0.6f, 0.6f, 0.6f, 1f)); 
         }
          isCollected = true;
@@ -76,15 +80,12 @@ public class Treasure : MonoBehaviour
     public void Init(string id)
     {
         treasureId = id;
-
-        Debug.Log($"[Treasure] Init 완료 → ID: {treasureId}");
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (StageUIManager.Instance.stageManager.isTest) return;
 
-        // KHJ - 이미 먹은 보물의 패널 분기
         if (isCollected)
         {
             if (other.CompareTag("Player"))
@@ -98,7 +99,7 @@ public class Treasure : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 isCollected = true;
-                // LSH 추가 1128
+
                 AudioEvents.Raise(UIKey.Stage, 4);
                 StageUIManager.Instance.TreasurePanel.SetActive(true);
                 StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
@@ -128,7 +129,7 @@ public class Treasure : MonoBehaviour
                 Joystick joystick = FindAnyObjectByType<Joystick>();
                 if (joystick != null)
                 {
-                    // KHJ - Treasure Panel이 켜졌으니 조이스틱 입력 잠금
+                    // 보물 UI 노출 중 플레이어 입력 잠금
                     joystick.IsLocked = true;
                 }
                 // 플레이어 이동 막기
@@ -143,13 +144,9 @@ public class Treasure : MonoBehaviour
                     StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(true);
                     joystick.IsLocked = false;
                     other.GetComponent<PlayerMovement>().enabled = true;
-                    //sprite.color = new Color(1, 1, 1, 0);
                     this.gameObject.SetActive(false);
-                    //sprite.gameObject.SetActive(false);
-                    //particle.SetActive(false);
-                    //artifactParticleSystem.SetActive(false);
                     StageUIManager.Instance.stageGetTreasureCount++;
-                    StageUIManager.Instance.CollecTreausreCountText.text = $"{StageUIManager.Instance.stageGetTreasureCount} / 3";
+                    StageUIManager.Instance.CollecTreasureCountText.text = $"{StageUIManager.Instance.stageGetTreasureCount} / 3";
                 });
             }
         }
@@ -197,35 +194,20 @@ public class Treasure : MonoBehaviour
         action?.Invoke();
     }
 
-    // KHJ - 이미 획득한 보물은 팝업창 n초 후 자동으로 꺼지도록
     IEnumerator CollectedTreasureAS(Collider other)
     {
         AudioEvents.Raise(UIKey.Stage, 4);
         StageUIManager.Instance.TreasureCollectedPanel.SetActive(true);
         StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
 
-        //Joystick joystick = FindAnyObjectByType<Joystick>();
-        //if (joystick != null)
-        //{
-        //    joystick.IsLocked = true;
-        //}
-        // 플레이어 이동 막기
-        //other.GetComponent<PlayerMovement>().enabled = false;
-
         yield return new WaitForSeconds(1.3f);
 
         StageUIManager.Instance.stageManager.OnTreasureCollected(treasureIndex);
         StageUIManager.Instance.TreasureCollectedPanel.SetActive(false);
         StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(true);
-        //joystick.IsLocked = false;
-        //other.GetComponent<PlayerMovement>().enabled = true;
-        //sprite.color = new Color(1, 1, 1, 0);
         gameObject.SetActive(false);
-        //sprite.gameObject.SetActive(false);
-        //particle.SetActive(false);
-        //artifactParticleSystem.SetActive(false);
         StageUIManager.Instance.stageGetTreasureCount++;
-        StageUIManager.Instance.CollecTreausreCountText.text = $"{StageUIManager.Instance.stageGetTreasureCount} / 3";
+        StageUIManager.Instance.CollecTreasureCountText.text = $"{StageUIManager.Instance.stageGetTreasureCount} / 3";
     }
 
     private void DisableImmediate()
@@ -234,7 +216,6 @@ public class Treasure : MonoBehaviour
         col.enabled = false;
         if (sprite != null)
         {
-            //sprite.material.SetColor(_baseColorID, new Color(0.5f, 0.5f, 0.5f, 1f));
             sprite.material.SetColor(_glowColorID, new Color(0f, 0f, 0f, 0f));
         }
         if (particle != null) particle.SetActive(false);

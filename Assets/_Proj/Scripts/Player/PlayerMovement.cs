@@ -114,125 +114,6 @@ public class PlayerMovement : MonoBehaviour, IRider
         }
         Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
 
-        #region 주석처리 된 긴 코드 부분
-        //if (input.magnitude > 0)
-        //{
-        //    Vector3 input45Below = new(joystick.InputDir.x, -1, joystick.InputDir.z);
-
-
-        //    Vector3 offsetRbPos = transform.position + (Vector3.up * .5f);
-
-
-        //    Quaternion rotR = Quaternion.Euler(0, 45f, 0);
-        //    Quaternion rotL = Quaternion.Euler(0, -45f, 0);
-        //    Vector3 rotatedR = rotR * input45Below;
-        //    Vector3 rotatedL = rotL * input45Below;
-
-
-
-
-        //    Ray mainRay = new(offsetRbPos, input45Below);
-
-
-        //    RaycastHit[] mainRayHits = Physics.RaycastAll(mainRay, .71f, LayerMask.GetMask("Ground", "Wall", "Slope"));
-        //    bool isSlope = false;
-
-
-        //    for (int i = 0; i < mainRayHits.Length; i++)
-        //    {
-        //        print($"PlayerMovement: [{i}]: {mainRayHits[i].collider.name}");
-        //        isSlope = mainRayHits[i].collider.gameObject.layer == slopeMask;
-        //    }
-        //    if (mainRayHits. Length < 1)
-        //    {
-        //        input *= -.01f;
-
-
-        //    }
-        //    else
-        //    {
-        //        if (!isSlope)
-        //        {
-        //            Ray subRayL = new(offsetRbPos, rotatedL);
-        //            Ray subRayR = new(offsetRbPos, rotatedR);
-        //            if (!Physics.Raycast(subRayL, .71f, LayerMask.GetMask("Ground", "Wall", "Slope")) &&
-        //            !Physics.Raycast(subRayR, .71f, LayerMask.GetMask("Ground", "Wall", "Slope")))
-        //            {
-        //                input *= -.01f;
-        //            }
-        //        }
-        //    }
-
-
-        //}
-        //Vector3 inputOffset = new(joystick.InputDir.x, 0, joystick.InputDir.z);
-        //Ray ray = new(transform.position + (inputOffset * .3f), inputOffset);
-        //RaycastHit[] results = new RaycastHit[10];
-
-
-        //int hitnums = Physics.BoxCastNonAlloc(transform.position - Vector3.up * .3f + new Vector3(input.x, 0, input.y) * .2f, Vector3.one * .1f, Vector3.down, results);
-        //print(hitnums);
-
-
-        //if (hitnums < 2)
-
-
-
-
-
-
-
-
-
-
-
-
-        //    input = Vector2.zero;
-
-
-        //생각을 해봅시다...
-        //내가 갈 곳에 땅바닥이 있는가? 를 판단하려면
-        //내 발밑에서 내가 입력한 방향으로 조금 보낸 지점에서부터 입력 방향으로 0.5거리만큼 레이를 발사함.
-        //콜라이더가 검출되면 => 다음 땅이 있다는 뜻.
-        //다음 땅이 단순히 있다/없다를 떠나, 다음 땅의 x,z 인접 타일도 있는지 없는지 검사해야 함.
-
-
-
-
-        //TODO: 모르겠다;
-        //Vector3 roundPos = Vector3Int.RoundToInt(transform.position);
-        //Ray ray = new Ray(roundPos, new(input.x,0, input.y));
-        //if (!Physics.Raycast(ray, .5f, LayerMask.NameToLayer("Ground")))
-        //{
-        //    input = Vector2.zero;
-        //}
-        ////1. 이동할 방향의 땅 검사: 현재 나의 위치에서, 이동방향으로 .2f만큼 레이캐스트
-        ////Ray groundcheck = new(transform.position - new Vector3(0f,.1f,0f), new Vector3(input.x, -.1f, input.y));
-
-
-        ////if (!Physics.Raycast(groundcheck, .5f, 9))
-        ////    input = Vector2.zero;
-
-
-        //Ray ray = new(transform.position - Vector3.up * .1f, input);
-
-
-
-
-
-
-        //RaycastHit[] hits = new RaycastHit[3];
-        //if (Physics.RaycastNonAlloc(ray, hits, .2f, LayerMask.NameToLayer("Ground")) <= 2)
-        //{
-        //    if (Physics.BoxCastNonAlloc((transform.position - Vector3.up * .1f), Vector3.one * .05f, Vector3.down, hits) < 2)
-        //    {
-        //        input = Vector2.zero;
-        //    }
-        //}
-
-        #endregion
-
-
         if (input.sqrMagnitude < 0.01f)
         {
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
@@ -278,7 +159,6 @@ public class PlayerMovement : MonoBehaviour, IRider
 
                 (Vector3 newDir, Vector3 newOffset) = strategy.Execute(currentDir, rb, this);
 
-
                 // 경사 보정 전략은 finalDir를 변경 (ProjectOnPlane)
                 // 스텝 전략은 stepOffset을 변경
                 finalDir = newDir;
@@ -298,30 +178,7 @@ public class PlayerMovement : MonoBehaviour, IRider
         );
 
         Vector3 nextPos = rb.position + currVel * Time.fixedDeltaTime + stepOffset;
-        //Vector3 nextPos = rb.position + finalDir * (moveSpeed * Time.fixedDeltaTime) + stepOffset;
-
-
-        //// 같은 y층 오브젝트 감지
-        //float halfTile = 0.5f;
-        //Vector3 boxCenter = nextPos + Vector3.up * 0.5f; // 플레이어 중심
-        //Vector3 halfExt = new Vector3(0.4f, 0.45f, 0.4f);
-        //Collider[] sameYHits = Physics.OverlapBox(boxCenter, halfExt, Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
-
-
-        //foreach (var col in sameYHits)
-        //{
-        //    if (col.attachedRigidbody == rb) continue;
-        //    if (col.isTrigger) continue;
-
-
-        //    // 상대의 중심 y값이 같은 층에 있다면 이동 차단
-        //    float dy = Mathf.Abs(col.bounds.center.y - rb.position.y);
-        //    if (dy < halfTile && !Physics.Raycast(rb.position + Vector3.up * 0.1f, Vector3.down, 1.2f, slopeMask))
-        //    {
-        //        // 같은 높이 + 슬로프 아님 -> 이동 금지
-        //        return;
-        //    }
-        //}
+       
         rb.MovePosition(nextPos);
 
 
@@ -336,12 +193,6 @@ public class PlayerMovement : MonoBehaviour, IRider
             Quaternion smoothRot = Quaternion.Slerp(rb.rotation, targetRot, t);
             rb.MoveRotation(smoothRot);
         }
-
-        ////float rotSpeed = rotateLerp;
-        //Quaternion targetRot = Quaternion.LookRotation(new Vector3(joystick.InputDir.x, 0, joystick.InputDir.z), Vector3.up);
-        //Quaternion smoothRot = Quaternion.Slerp(rb.rotation, targetRot, rotateLerp * Time.fixedDeltaTime);
-        ////Quaternion smoothRot = Quaternion.RotateTowards(rb.rotation, targetRot, rotSpeed * Time.fixedDeltaTime * 60f);
-        //rb.MoveRotation(smoothRot);
     }
 
     // 인터랙션 이후 투명 콜라이더가 켜지기 전 넘어가버리는 특수 상황처리를 위한 움직임 잠금 메서드

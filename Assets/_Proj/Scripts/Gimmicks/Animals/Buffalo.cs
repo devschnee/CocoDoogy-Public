@@ -3,8 +3,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-// NOTE, TODO : 최종 시점(카메라) 변경 후 UI를 시점에 맞게 rotation 설정해줘야 함. 현재는 0,0,0. 라인 76
-[DisallowMultipleComponent]
+// NOTE: 카메라 시점 변경 하면 UI를 시점에 맞게 rotation 설정해줘야 함. (LateUpdate())
+
+/// <summary>
+/// 충격파를 발생시키는 버팔로 상호작용 기믹 오브젝트.
+/// 플레이어가 감지 범위 내에서 상호작용하면 대기 시간과 점프 연출 이후 Shockwave를 발동.
+/// 쿨타임 기반으로 반복 사용 제한.
+/// 버튼 UI, 쿨타임 표시, 범위 시각화를 함께 관리
+/// </summary>
+[DisallowMultipleComponent] 
 public class Buffalo : MonoBehaviour, IPlayerFinder
 {
     [Header("Timer & Jump")]
@@ -39,7 +46,6 @@ public class Buffalo : MonoBehaviour, IPlayerFinder
 
     Transform IPlayerFinder.Player { get => playerTrans; set => playerTrans = value; }
 
-    // LSH 추가 1126
     public event Action OnBombStart;
 
     void Awake()
@@ -80,7 +86,6 @@ public class Buffalo : MonoBehaviour, IPlayerFinder
 
     void LateUpdate()
     {
-        // NOTE, TODO : 최종 시점(카메라) 변경 후 UI를 시점에 맞게 rotation 설정해줘야 함. 현재는 0,0,0
         if (interactionBtn)
         {
             // World Rotation을 Quaternion.identity(X=0, Y=0, Z=0)로 설정
@@ -114,7 +119,7 @@ public class Buffalo : MonoBehaviour, IPlayerFinder
     public void Interact()
     {
         if (running || onCooldown) return;
-        // LSH 추가 1127 ETCEvent.Invoke... => 소리
+        // ETCEvent.Invoke... => 소리
         ETCEvent.InvokeCocoInteractSoundInGame();
         StartCoroutine(WaveRunCoroutine());
         StartCoroutine(CooldownCoroutine());
@@ -124,7 +129,6 @@ public class Buffalo : MonoBehaviour, IPlayerFinder
 
     IEnumerator WaveRunCoroutine()
     {
-        // LSH 추가 1126
         OnBombStart?.Invoke();
         running = true;
 
@@ -139,7 +143,6 @@ public class Buffalo : MonoBehaviour, IPlayerFinder
 
         // 충격파
         shockwave.Fire();
-        Debug.Log($"[Buffalo] Shockwave.Fire at {transform.position}", this);
         running = false;
     }
 

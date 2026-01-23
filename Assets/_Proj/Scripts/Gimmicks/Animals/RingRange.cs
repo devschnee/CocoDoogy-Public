@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 
-/// 게임플레이용 범위 시각화:
-// - 바닥에 깔리는 반투명 채워진 링(메시, 소프트 엣지)
-// - 외곽 라인(LineRenderer)
-
+/// <summary>
+/// 게임플레이 범위를 시각적으로 표현하는 링 형태의 범위 표시 클래스
+/// 링 메시와 외곽라인을 함께 사용해 스킬 범위, 감지 범위 등을 직관적으로 표시.
+/// 각도 제한, 내부 홀(inner gap), soft edge(fade)처리를 지원.
+/// </summary>
 [RequireComponent(typeof(LineRenderer), typeof(MeshFilter), typeof(MeshRenderer))]
 public class RingRange : MonoBehaviour
 {
@@ -128,40 +129,8 @@ public class RingRange : MonoBehaviour
         fillMesh.colors = colors;
         mr.material.color = Color.white; // vertex color 사용
     }
-
-    // rSoft/rOuter는 소프트엣지 영역, innerGap으로 가운데 구멍
-    //void BuildFilledRing(ref Mesh mesh, float rSoft, float rOuter, int seg, float inner)
-    //{
-    //    float rInner = Mathf.Clamp(rOuter * inner, 0f, rOuter * 0.999f);
-    //    int ringVerts = (seg + 1) * 2; // inner/outer
-    //    List<Vector3> v = new(ringVerts);
-    //    List<int> tri = new(seg * 6);
-    //    List<Vector2> uv = new(ringVerts);
-
-    //    for (int i = 0; i <= seg; i++)
-    //    {
-    //        float a = (i / (float)seg) * Mathf.PI * 2f;
-    //        float ca = Mathf.Cos(a), sa = Mathf.Sin(a);
-    //        Vector3 pOuter = new(ca * rOuter, 0f, sa * rOuter);
-    //        Vector3 pInner = new(ca * rInner, 0f, sa * rInner);
-    //        v.Add(pInner); uv.Add(new Vector2(0, i / (float)seg));
-    //        v.Add(pOuter); uv.Add(new Vector2(1, i / (float)seg));
-    //    }
-    //    for (int i = 0; i < seg; i++)
-    //    {
-    //        int i0 = i * 2;
-    //        tri.Add(i0); tri.Add(i0 + 1); tri.Add(i0 + 3);
-    //        tri.Add(i0); tri.Add(i0 + 3); tri.Add(i0 + 2);
-    //    }
-
-    //    mesh.Clear();
-    //    mesh.SetVertices(v);
-    //    mesh.SetUVs(0, uv);
-    //    mesh.SetTriangles(tri, 0);
-    //    mesh.RecalculateNormals();
-    //    mesh.RecalculateBounds();
-    //}
-
+    
+    // rSoft/rOuter는 소프트엣지 영역, innerGap 가운데 구멍
     void BuildFilledArc(ref Mesh mesh, float rSoft, float rOuter, int seg, float inner, float startRad, float endRad)
     {
         float rInner = Mathf.Clamp(rOuter * inner, 0f, rOuter * 0.999f);

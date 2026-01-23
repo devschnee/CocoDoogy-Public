@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 11/4
-// TODO : 버튼이 눌려서 거북이가 이동을 시작하면 플레이어의 움직임을 정지 시켜야 함. 그 외에는 자유롭게 넘나들 수 있도록 플레이어 이동 로직 막으면 안 됨.
+/// <summary>
+/// 빙판형 이동을 수행하는 거북이 기믹 오브젝트.
+/// 4방향 이동, 상단 탑승 객체(Ridable) 탐색 및 위치 동기화.
+/// IRider 콜백을 통해 탑승/하차 시점 통지 
+/// 가장자리 충돌 안정을 위해 IEdgeColliderHandler를 통한 지형 경계면(Edge) 보정 로직 사용
+/// </summary>
 
 [RequireComponent(typeof(Rigidbody))]
 public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
@@ -28,7 +32,6 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
     private bool isMoving = false;
 
-    //LSH 추가 1128
     public bool IsMoving => isMoving;
     private Vector3 targetPos;
     private Rigidbody rb; // 물리 처리용 (물살 영향 방지)
@@ -47,7 +50,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
     void Awake()
     {
-        // LSH 추가 1127 ETCEvent.Invoke... => 소리
+        // ETCEvent.Invoke... => 소리
         up.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(0, 1)); btnGroup.SetActive(false); });
         down.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(0, -1)); btnGroup.SetActive(false); });
         left.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(-1, 0)); btnGroup.SetActive(false); });
@@ -156,7 +159,6 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                 foreach (var hit in hits)
                 {
                     string layerName = LayerMask.LayerToName(hit.gameObject.layer);
-                    Debug.Log($"[Turtle] 충돌 객체: {hit.name}, Layer: {layerName} ({hit.gameObject.layer}), Tag: {hit.tag}");
                 }
 #endif
                 break;
@@ -169,7 +171,6 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
     }
 
     // 탑승 물체 이동
-    // HACK : 이 부분은 움직일 수 있는 물체가 Turtle에 안 막히게 하면 될 것 같기도 한데 어떤 부분이 효율적일지 고민해봐야 함. 둘 다 처리 하는 게 안전한 방법일 수도.
     IEnumerator MoveSlideCoroutine(Vector3 dir, Vector3 startPos, Vector3 endPos)
     {
         //아래 변수는 이동을 시작할 때 거북이 사방의 땅 블록 리스트임.
@@ -202,18 +203,12 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         List<Transform> ridableTrans = new List<Transform>();
         List<Vector3> ridableTargetPos = new List<Vector3>();
         List<Rigidbody> ridableRbs = new List<Rigidbody>();
+
         //거북이가 직접 플레이어무브먼트의 enabled상태 조작 금지(플레이어 단에서 조이스틱 해제만 함.)
-        //List<PlayerMovement> playerMovement = new List<PlayerMovement>();
-        List<PushableObjects> pushableObjs = new List<PushableObjects>(); // NOTE : Box만 탑승 가능하다면 PushableBox로 바꾸면 될 듯. 이하 모든 PushableObjects 동일.
-
-
+        List<PushableObjects> pushableObjs = new List<PushableObjects>();
 
         foreach (var col in ridables)
         {
-
-            Debug.Log($"[Turtle] {col.name} 탑승 감지됨.");
-
-
             if (col.transform == transform) continue;
 
             Rigidbody riderRb = col.attachedRigidbody;
@@ -234,13 +229,6 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                 ridableRbs.Add(riderRb); // Rigidbody가 있는 객체만 리스트에 추가
             }
 
-            // PlayerMovement 처리
-            //if (pm != null)
-            //{
-            //    pm.enabled = false;
-            //    playerMovement.Add(pm);
-            //}
-
             // PushableObjects 처리
             if (po != null)
             {
@@ -248,16 +236,14 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                 pushableObjs.Add(po);
             }
 
-            //NOTE: 강욱 - 1107: 탑승 감지와 동시에 콜백 실행하는 게 좋아보입니다. (여기서 코루틴 실행->IRider가 스스로 원래 부모 기억.)
+            // 탑승 감지 시 IRider 콜백을 즉시 호출하여
             col.GetComponent<IRider>()?.OnStartRiding();
-            // 거북이를 부모로 설정 - 이건 여기서 할 일이 맞음.
+            // 탑승 객체가 스스로 상태(부모, 위치 기준)를 초기화하도록 처리
             col.transform.SetParent(transform);
         }
 
 
-        //HACK: 1106 - 강욱: 터틀이 이동하는 동안, 머리 위에 타고 있는 객체의 위치를 동기화
-        //머리 위에 타고 있는 객체가 IEdgeColliderHandler인 경우도 감안하여 처리 => 해당 객체가 직접 처리하도록 하자. (콜백함수처럼)
-        // 터틀과 탑승 물체 동시 이동
+        // 터틀과 탑승 물체 이동 동기화
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -275,12 +261,12 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                 QueryTriggerInteraction.Ignore
             );
 
-            // ⭐ 앞 막힘 판단
+            // 앞 막힘 판단
             bool blocked = false;
 
             foreach (var h in midHits)
             {
-                // ⭐ 머리 위에 실려 있는 애들은 blockLayer라도 무시
+                // 머리 위에 실려 있는 애들은 blockLayer라도 무시
                 if (ridableTrans.Contains(h.transform))
                     continue;
 
@@ -291,8 +277,6 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
             if (blocked)
             {
-                Debug.Log("[Turtle] BLOCK 감지 → 현재 위치에서 정지");
-
                 // 타일 스냅
                 Vector3 snapped = new Vector3(
                     Mathf.Round(transform.position.x / tileSize) * tileSize,
@@ -313,19 +297,15 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
             //transform.position = Vector3.Lerp(startPos, endPos, t);
             if (dir.sqrMagnitude > 0.001f)
             {
-                //HACK: 1106 - 강욱: 터틀이 이동하는 동안, 머리 위에 타고 있는 객체의 위치를 동기화
+                // 터틀 이동 중 탑승 객체의 위치/회전을 동기화
+                // IEdgeColliderHandler를 구현한 객체는
+                // 자체 보정 로직을 통해 가장자리 충돌 처리를 수행하도록 위임
                 Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
                 transform.rotation = targetRot;
                 if (ridableTrans != null && ridableTrans.Count > 0)
                 {
                     foreach (var trans in ridableTrans)
                     {
-                        //NOTE: 이 코드 필요합니다. 다만, 적층된 물체의 포지션에 보정치를 추가합니다.(1단적 - 0, 2단적 - 1, 3단적 - 2 ...)
-                        //NOTE: 또, 플레이어의 경우 자식이 거북이 밑으로 변동되니 0.5f 공중으로 뜨는데, 플레이어무브먼트 검출로 판단시켜서 보정했지만
-                        //더 좋은 방법이 있을 겁니다...
-
-                        //여기서 처리하는 대신에, IRider의 탑승시작/끝 콜백 안에서의 RidingCoroutine 호출로 빼서 처리가 가능할 지도?
-
                         trans.SetPositionAndRotation(
                             trans.GetComponent<PlayerMovement>() == null ?
                             transform.position + (Vector3Int.up * ridableTrans.IndexOf(trans))
@@ -334,7 +314,9 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                             transform.rotation);
                     }
                 }
-                //0.5초 정도면 이미 첫 위치를 벗어났겠지
+                // 0.5초 정도면 이미 첫 위치를 벗어났을 것이라 가정
+                // 이동 초기 구간에서 Edge 상태 갱신하여 
+                // 위치 변화로 인한 투명 벽/경계 상태 붕괴 방지
                 if (elapsed < .5f)
                 {
                     GetComponent<IEdgeColliderHandler>().DetectAndApplyFourEdge();
@@ -347,31 +329,9 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         // 이동 완료 및 상태 정리
         transform.position = endPos;
 
-        //아래 
-        //ridableTrans.ForEach((x) => x.GetComponent<IRider>()?.OnStopRiding());
-
-        //for (int i = 0; i < ridableTrans.Count; i++)
-        //{
-        //    if (ridableTrans[i] == null) continue;
-
-        //    Vector3 finalPos = ridableTargetPos[i];
-
-        //    //// 부모가 아직 이 거북이(this.transform)인지 확인 후 해제
-        //    //if (ridableTrans[i].parent == transform)
-        //    //{
-        //    //    //TODO: 부모 해제(아님, 부모를 원래의 부모로 설정해야 함.)
-        //    //    ridableTrans[i].SetParent(null);
-
-        //        // 하차 후 타깃 위치 설정
-        //    ridableTrans[i].position = finalPos;
-        //    ridableTrans[i].GetComponent<IRider>()?.OnStopRiding();
-
-        //    //}
-        //    //else { }
-        //}
         transform.position = endPos;
 
-        // KHJ - IRider를 갖고 있는 박스가 적층됐을 때(부모가 Turtle이 아님) 처리를 위해 변경
+        // IRider를 갖고 있는 박스가 적층됐을 때(부모가 Turtle이 아님) 처리를 위해 변경
         // Rider 해제 처리 (1층만 하차)
         foreach (var trans in ridableTrans)
         {
@@ -397,15 +357,6 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                 rb.isKinematic = false;
             }
         }
-
-        //// PlayerMovement 재활성화
-        //foreach (var pm in playerMovement)
-        //{
-        //    if (pm != null)
-        //    {
-        //        pm.enabled = true;
-        //    }
-        //}
 
         // PushableObjects 재활성화 
         foreach (var po in pushableObjs)

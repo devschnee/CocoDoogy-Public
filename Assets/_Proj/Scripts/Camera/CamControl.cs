@@ -1,6 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// 플레이어 추적 카메라 및 연출용 카메라 워킹을 담당하는 컨트롤러.
+/// 기본 상태에서는 플레이어를 추적하며,
+/// 두 손가락 입력 시 주변 둘러보기 모드로 전환됨.
+/// 스테이지 진입 시 waypoint 기반 카메라 워킹 연출을 지원.
+/// </summary>
 public class CamControl : MonoBehaviour
 {
 
@@ -31,22 +37,17 @@ public class CamControl : MonoBehaviour
     [Tooltip("주변 둘러보기 모드에서 카메라 이동 속도")]
     [Range(0, 25f)] public float lookAroundSpeed = 25f;
 
-
-
-    //void Start()
-    //{
-    //    //offset = transform.position;//(4,9,-5)
-    //}
-
     void FixedUpdate()
     {
         if (!playerObj) return;
 
-        // KHJ - 드래그 기능 추가. 분기.
+        // 카메라 상태에 따라
+        // 플레이어 추적 모드 / 주변 둘러보기 모드 분기
         if (isFollowingPlayer)
         {
             // 평상시 : 플레이어 추적
             transform.position = Vector3.Lerp(transform.position, playerObj.transform.position + offset, Time.fixedDeltaTime > .02 ? 50 : (dampingStrength * Time.fixedDeltaTime));
+            // fixedDeltaTime이 비정상적으로 큰 경우 즉시 보정하여 카메라 지연 방지
         }
         else
         {
@@ -81,52 +82,12 @@ public class CamControl : MonoBehaviour
         }
     }
 
-    //public IEnumerator CameraWalking(float duration = 2f)
-    //{
-    //    if (wayPoint[0] == null || wayPoint[1] == null)
-    //    {
-    //        Debug.LogError("WayPoint null!");
-    //        yield break;
-    //    }
-
-    //    //Transform[] wayPoints = new Transform[wayPoint.Length];
-
-
-    //    //// 시작 / 끝 위치 설정
-    //    //Vector3 startPos = wayPoint[0].position + offset;
-    //    //Vector3 endPos = wayPoint[4].position + offset;
-
-
-
-    //    // duration 동안 천천히 이동
-
-    //    for (int i = 0; i < wayPoint.Length - 1; i++)
-    //    {
-    //        cam.transform.position = wayPoint[i].position + offset;
-    //        float t = 0f;
-    //        while (t < duration)
-    //        {
-
-    //            t += Time.deltaTime;
-    //            float lerpT = Mathf.Clamp01(t / duration);
-
-    //            cam.transform.position = 
-    //                Vector3.Lerp(wayPoint[i].position + offset, wayPoint[i + 1].position + offset, lerpT);
-
-    //            yield return null;
-    //        }
-    //    }
-    //}
-
-    // 속도가 높을수록 카메라 속도 빨라짐. 속도 일정하게 유지하면서 이동하는 카메라워킹
-    // KHJ - NOTE : 카메라의 속도는 이 함수를 호출하는 각 스크립트(StageManager.cs || TestOnly_StageManager.cs)에서 조절
+    // waypoint 간 거리를 기준으로 일정한 이동 속도를 유지하는 카메라 워킹 연출
+    // NOTE : 카메라의 이동 속도는 이 함수를 호출하는 각 스크립트(StageManager.cs || TestOnly_StageManager.cs)에서 조절
     public IEnumerator CameraWalking(float speed = 6f)
     {
-        if (wayPoint[0] == null || wayPoint[1] == null)
-        {
-            Debug.LogError("WayPoint null!");
-            yield break;
-        }
+        // 웨이포인트가 정상적으로 세팅되지 않은 경우 카메라 워킹 수행 X
+        if (wayPoint[0] == null || wayPoint[1] == null) { yield break; }
 
         // 각 웨이포인트 구간을 순서대로 이동
         for (int i = 0; i < wayPoint.Length - 1; i++)
@@ -154,22 +115,15 @@ public class CamControl : MonoBehaviour
 
             cam.transform.position = endPos;
 
-            // endPos에는 대기 없도록
+            // 마지막 웨이포인트에서는 대기하지 않음
             if (i < wayPoint.Length - 2 && waitTime > 0f)
                 yield return new WaitForSeconds(waitTime);
         }
-        // Joystick.cs에서 플레이어가 생성되면 SetFollowingPlayer를 호출함.
-        //SetFollowingPlayer(true);
     }
 
 
-    //카메라워킹 맵 로딩 후 end블록에서 start블록으로 offset 얼마?
-    //카메라워킹 끝나면 플레이어한테 가야한다
-    //웨이포인트 쓰는데 시작지점은 end블록 끝 지점은 start블록
-
-    // 11/21 KHJ - TODO : 이동이 끝나고 플레이어를 찾아서 연결해줬으면 이후에 터치가 두 손가락으로 들어왔을(<-Joystick.cs에서 처리) 때 캠의 타게팅을 플레이어에 고정시키던 것을 주변을 둘러볼 수 있도록 바꿔야 함. 터치가 손가락 하나 이하가 되면 다시 플레이어 타겟팅
-
-    // KHJ - 카메라 추적 상태 설정
+    
+    // 카메라의 플레이어 추적 상태를 설정.
     public void SetFollowingPlayer(bool follow)
     {
         isFollowingPlayer = follow;
@@ -181,7 +135,7 @@ public class CamControl : MonoBehaviour
     }
 
 
-    // KHJ - 두 손가락 드래그 입력에 따라 카메라 이동
+    // 두 손가락 드래그 입력에 따라 플레이어 주변을 둘러볼 수 있도록 카메라 offset 갱신
     // drageDelta : 터치 위치 변화량
     public void LookAroundUpdate(Vector3 dragDelta)
     {
@@ -206,7 +160,7 @@ public class CamControl : MonoBehaviour
 
 
         // 이동 offset 계산. dragDelta 크기를 이동 속도에 곱해서 이동량을 결정..
-        // NOTE : sensitivity는 픽셀값(dragDelta)을 월드 좌표계에 맞추기 위한 임의의 보정값. 테스트하면서 보정 필요.
+        // NOTE : sensitivity는 픽셀값(dragDelta)을 월드 좌표계 이동량으로 변환하기 위한 보정 계수.
         float sensitivityFactor = 0.1f;
         Vector3 moveAmount = worldMove * dragDelta.magnitude * lookAroundSpeed * Time.deltaTime * sensitivityFactor;
 

@@ -5,19 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// 11/20 TODO : 차폐범위 검토. 수정 필요 시 수정.
-// 충격파 발생
+/// <summary>
+///  충격파 발생 및 주변 객체 리프트 시스템
+/// </summary>
+
 [DisallowMultipleComponent]
 public class Shockwave : MonoBehaviour
 {
     [Header("Shockwave Settings")]
     [Min(1f)] public float tileHeight = 1f; // 타일 한 칸 높이
-    [Tooltip("충격파 반경 ==> 중요!! : 여기 바뀌면 RingRange 컴포넌트의 범위도 같이 바꿔줘야 함!!!")]
+    [Tooltip("충격파 반경 ==> 중요!! : 여기 바뀌면 RingRange 컴포넌트의 범위도 같이 바꿔줘야 함")]
     [Range(1f, 7f)] public float radiusShock = 5f;
     [Tooltip("충격파 영향 받는 Pushables가 포함된 레이어")]
     public LayerMask targetLayer = ~0;
 
-    // HACK : 이건 따로 빼서 차폐물 자체에 붙여 주는 형식으로 변경하는 것이 나을 지도
+    // 차폐물 시스템 - 추후 개별 객체 단위로 분리 검토 가능
     [Header("Occlusion")]
     [Tooltip("충격파 차폐 될 지 여부")]
     public bool useOcclusion = false;
@@ -74,14 +76,14 @@ public class Shockwave : MonoBehaviour
 
         // 반경 내 후보 수집
         var cols = Physics.OverlapSphere(origin, radiusWorld, targetLayer, QueryTriggerInteraction.Ignore);
-        Debug.Log($"[SW] OverlapSphere hits={cols?.Length ?? 0} radiusW={radiusWorld}", this);
+        
         if (cols == null || cols.Length == 0) return;
 
         var all = new List<(Collider col, Component pushable, int h, int gx, int gz, float ts)>();
         foreach (var c in cols)
         {
             if (c.transform == transform) continue;
-            // PushableObejcts.cs를 찾거나 상속 클래스 컴포넌트 찾음
+            // PushableObejcts.cs(리프트 대상)를 찾거나 상속 클래스 컴포넌트 찾음
             var p = (Component)c.GetComponent(typeof(PushableObjects));
             float ts = p != null ? GetTileSize(p, tile) : tile; // !pushables는 기본 타일 높이
             int h = Mathf.FloorToInt(c.transform.position.y / ts + 1e-4f);
@@ -90,7 +92,7 @@ public class Shockwave : MonoBehaviour
             all.Add((c, p, h, gx, gz, ts));
         }
 
-        // 기준층(centerH) 가시성 검사 (pushables도 occlude 가능)
+        // 기준층(centerH; 발사 원점)으로부터 가시선 기반 차폐 검사 (pushables도 occlude 가능)
         LayerMask blockMask = occluderMask | targetLayer;
         var baseHits = new List<(Collider col, Component pushable, int gx, int gz, float ts)>();
 
@@ -116,7 +118,7 @@ public class Shockwave : MonoBehaviour
             foreach (var e in columnObjs)
             {
                 // 기준층은 origin→타겟 검사
-                // 위층은 baseHit→타겟 검사 (중간 occlude 차단)
+                // 윗층은 baseHit→타겟 검사 (중간 occlude 차단)
                 Vector3 src = (e.h == centerH)
                     ? origin
                     : baseHit.col.transform.position + Vector3.up * (baseHit.ts * 0.5f);
@@ -141,6 +143,7 @@ public class Shockwave : MonoBehaviour
         }
     }
 
+    // 리플렉션을 사용하여 다양한 매개변수 형식을 가진 'WaveLift' 메서드를 동적으로 호출
         static bool TryCallLiftAny(Component target, float rise, float hang, float fall)
     {
         const string methodName = "WaveLift";

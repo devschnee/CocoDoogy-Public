@@ -9,7 +9,7 @@ public class ShockPing : MonoBehaviour
     [Tooltip("Tower Layer")]
     public LayerMask towerLayer;
     public bool useOcclusion = false;
-    [Tooltip("벽/지형 레이어")]
+    [Tooltip("차폐 확인 위한 벽/지형 레이어")]
     public LayerMask occludeLayer;
 
     private static long _seed = 1;
@@ -20,7 +20,9 @@ public class ShockPing : MonoBehaviour
         if (!shockwave) shockwave = GetComponent<Shockwave>();
     }
 
-    // Shockwave 원점 기준 반경 내 탑들에 신호 보냄
+    /// <summary>
+    /// 충격파 범위 내의 감지탑(ShockDetectionTower)을 탐색하고 신호를 전송
+    /// </summary>
     public void PingTowers(Vector3 origin)
     {
         if (!shockwave) shockwave = GetComponent<Shockwave>();
@@ -38,6 +40,7 @@ public class ShockPing : MonoBehaviour
 
             if (useOcclusion)
             {
+                // 오프셋을 적용한 발사 원점과 타겟 위치 계산(차폐 검사용)
                 Vector3 p0 = origin + Vector3.up * 0.1f;
                 Vector3 p1 = tower.transform.position + Vector3.up * 0.5f;
                 Vector3 dir = p1 - p0;
@@ -47,10 +50,8 @@ public class ShockPing : MonoBehaviour
                     continue;
             }
 
-            tower.ReceiveShock(origin); // 💥 새 시그니처
+            tower.ReceiveShock(origin); // 새 시그니처
             sentCnt++;
         }
-
-        Debug.Log($"[Ping] 감지탑 핑 전송 완료 ({sentCnt}개 감지)", this);
     }
 }

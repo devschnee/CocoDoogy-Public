@@ -1,12 +1,6 @@
 ﻿using UnityEngine;
 using System;
 
-// 콜라이더 뚫고 지나가는 문제 있음. -> 특정 조건일 때 Joystick의 input자체를 0으로 만들어버리는 방법 고려.
-// 이동O인 물체에 다 붙여줘야 할 듯?
-// HACK : 하면 할수록 비효율적인 방법 같음;
-// y+1에 콜라이더 설치하고 스크립트는 기준이 되는 box에 하나만 붙인 다음에 각 방향 콜라이더를 awake에서 할당한 후에 감지되는 방향의 콜라이더를 isTrigger로 해주는 방식이 더 낫지 않나?
-// 감지는 기준 box 위치에서 한 후, 감지하는 레이어가 Pushables, Ground, TransparentWall(필요 없어질 레이어이지 않을까...), Water, MovingWater, Animals(터틀, 보어만 해당(버팔로는 제자리에 있음))  <- 이 정도?
-
 public class EdgeGuard : MonoBehaviour
 {
     [Header("충돌 감지 설정")]

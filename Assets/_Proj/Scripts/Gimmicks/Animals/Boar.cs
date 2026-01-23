@@ -4,9 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 10/29 TODO : 카메라 세팅 후 팝업 UI 조정 76라인
-// NOTE : 추후 필요 시 -> Boar가 Turtle을 탑승할 수 있게 된다면, IRider를 구현해줘야 함.
-// 탑승하지 못하지만 위에 쌓인 박스는 밀게 하고 싶다면 돌진 로직에서 ground에 감지되는 것이 Turtle이라면 밀고 나서 Boar도 한 칸 이동하는 이동로직을 안 하도록 분기해줘야 함.
+/* DESIGN NOTE
+- Boar는 플랫폼이 아닌 돌진형 기믹으로, IRider를 구현하지 않음.(추후 기획 변경 시 추가 구현)
+- 돌진 전/후의 탑승 상태 전환은 안전 처리 목적의 트리거. 실제 탑승 규칙과 이동 동기화는 IRider 시스템의 책임.
+- UI 버튼은 카메라 회전에 영향을 받지 않도록 LateUpdate에서 보정.
+*/
+
+/// <summary>
+/// 돌진형 멧돼지 기믹 오브젝트.
+/// - 특징: 플레이어 상호작용을 통해 4방향 돌진을 수행. 
+/// - 전방의 PushableObjects 체인을 퍼즐 규칙에 따라 밀어냄.
+/// - 주요 로직: 레이캐스트 기반 지형 탐색, 적층 객체(Stack) 밀기 처리, 낙하 및 지형 경계 감지.
+/// </summary>
+
 public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 {
     [Header("Canvas")]
@@ -36,8 +46,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
     Transform IPlayerFinder.Player { get => playerTrans; set => playerTrans = value; }
 
-    //public ParticleSystem hitFx;
-
     private bool isCooldown = false;
 
     // LSH 추가 1126
@@ -48,13 +56,11 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         base.Awake();
 
         // 버튼 그룹의 방향 버튼에 돌진 로직 연결
-        // LSH 추가 1127 ETCEvent.Invoke... => 소리
+        // ETCEvent.Invoke... => 소리
         up.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(0, 1)); btnGroup.SetActive(false); });
         down.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(0, -1)); btnGroup.SetActive(false); });
         left.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(-1, 0)); btnGroup.SetActive(false); });
         right.onClick.AddListener(() => { ETCEvent.InvokeCocoInteractSoundInGame(); GetDirection(new Vector2Int(1, 0)); btnGroup.SetActive(false); });
-
-        //btnGroup.SetActive(false);
 
         // 플레이어 transform 찾기
         // NOTE : 플레이어 Tag를 Player로 설정
@@ -114,7 +120,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     {
         isCooldown = true;
 
-        //btnGroup.SetActive(false);
         up.enabled = false;
         down.enabled = false;
         left.enabled = false;
@@ -131,16 +136,10 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         // 쿨타임 종료
         isCooldown = false;
 
-        // 다시 플레이어가 가까우면 버튼 활성화
-        //if (!isMoving)
-        //{
-        Debug.Log($"[Boar] 버튼 활성화 isMoving : {isMoving}");
         up.enabled = true;
         down.enabled = true;
         left.enabled = true;
         right.enabled = true;
-        //btnGroup.SetActive(true);
-        //}
     }
 
     public void GetDirection(Vector2Int dashDir)
@@ -213,7 +212,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             Vector3 currentPos = transform.position;
             Vector3 nextPos = currentPos + moveDir * tileSize;
             Vector3 boxCenter = nextPos + Vector3.up * 0.5f;
-            //Vector3 halfExt = new Vector3(0.45f, 0.6f, 0.45f); // 충돌 검사용 박스 크기
             Vector3 halfExt = new Vector3(0.4f, 0.3f, 0.4f); // 충돌 검사용 박스 크기
 
             // blocking 우선 검사(다음 칸에 뭐 있는지)
@@ -233,7 +231,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             if (hasBlocking)
             {
                 string layerName = LayerMask.LayerToName(detectedLayerNumber);
-                Debug.Log($"[Boar.DashCoroutine] 다음 칸({nextPos})에 Blocking=>{layerName} 감지. 돌진 정지.");
                 transform.position = currentPos;
                 HitStop(gameObject);
                 isMoving = false;
@@ -266,13 +263,11 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 yield break;
             }
 
-            Debug.Log($"[Boar.DashCoroutine] Pushable 오브젝트 감지. 충돌 대상: {hit.collider.name}. 체인 밀기 로직 시작.");
             // Pushable 오브젝트 감지되면 밀기 실행
             PushableObjects headPush = hit.collider?.GetComponent<PushableObjects>();
 
             // 같은 층 기준 스택 수집
             List<PushableObjects> vstack = CollectVerticalStack(headPush.transform.position, baseY);
-            Debug.Log($"[Boar.DashCoroutine] 충돌 지점의 수직 스택 수: {vstack.Count}");
 
             if (!CollectChain(head.transform.position, dashDir, baseY, out var chainStacks, out Vector3 tailNextWorld))
             {
@@ -280,8 +275,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 isMoving = false;
                 yield break;
             }
-
-            Debug.Log($"[Boar.DashCoroutine] 체인 수집 성공. 체인 길이: {chainStacks.Count}개 스택.");
 
             Vector3 checkTailPos = tailNextWorld;
             float tailY = Mathf.Floor(tailNextWorld.y / tileSize + 1e-4f) * tileSize;
@@ -298,15 +291,12 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             if (tailBlocked)
             {
                 // 막히면 정지
-                Debug.Log($"[Boar.DashCoroutine] 체인 꼬리 다음 칸({tailNextWorld}) Blocking 감지. 돌진 정지.");
                 HitStop(vstack[0].gameObject);
                 isMoving = false;
                 break;
             }
 
-            Debug.Log("[Boar.DashCoroutine] 체인 밀기(ChainShiftOneCell) 시작.");
             // 밀기
-
             yield return StartCoroutine(ChainShiftOneCell(chainStacks, dashDir));
 
 
@@ -357,10 +347,8 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     List<PushableObjects> CollectVerticalStack(Vector3 baseWorldPos, float yFloor)
     {
         List<PushableObjects> stack = new List<PushableObjects>();
-        //Vector3 cursor = baseWorldPos;
 
         Vector3 startPos = new Vector3(baseWorldPos.x, yFloor * tileSize - 1, baseWorldPos.z);
-        Debug.Log($"[Boar.CollectVerticalStack] 호출. 기준 위치: {baseWorldPos}, Y층: {yFloor}");
 
         // 최대 높이(일단 10층)까지 탐색
         for (int i = 0; i < 10; i++)
@@ -487,14 +475,12 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         foreach (var stack in chainOfStacks)
             allChainObjects.AddRange(stack);
 
-        //HACK: 강욱 - 1110: 모인 모든 PushableObject 에서 IEdgeColliderHandler를 한곳에 모아 보관, 그리고 그 인접 블록도 보관.
+        //모인 모든 PushableObject 에서 IEdgeColliderHandler를 한곳에 모아 보관, 그리고 그 인접 블록도 보관.
         List<IEdgeColliderHandler> startingIEdgeColliderHandlers = new();
         foreach (var po in allChainObjects)
         {
-            //if (e is IEdgeColliderHandler startingHandler) //이러면 좋겠지만 따로 TryGetComponent<>해야 함.
             if (po.TryGetComponent<IEdgeColliderHandler>(out IEdgeColliderHandler startingHandler))
             {
-                //startingIEdgeColliderHandlers.Add(startingHandler); //검출된 핸들러를 넣고,
                 startingIEdgeColliderHandlers.AddRange(startingHandler.DetectGrounds()); //검출된 핸들러 사방의 핸들러를 추가로 넣음
             }
 
@@ -563,13 +549,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
     void HitStop(GameObject hit = null)
     {
-        // 나중에 이펙트도 넣으려나? 안 넣으면 이거 그냥 계속 주석처리 하면 됨.
-        //if (hitFx)
-        //{
-        //    // 이펙트 위치를 충돌지점 근처로
-        //    hitFx.transform.position = hit ? hit.transform.position : transform.position;
-        //    hitFx.Play();
-        //}
         StartCoroutine(HitStopCo());
     }
 
@@ -600,7 +579,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     {
         // 멧돼지 크기에 맞는 충돌체 검사
         bool isBlocked = Physics.CheckBox(target + Vector3.up * 0.5f, Vector3.one * 0.4f, Quaternion.identity, blockingMask, QueryTriggerInteraction.Collide);
-         Debug.Log($"[Boar.CheckBlocking] 위치 {target}에서 블로킹 검사 결과: {isBlocked}");
+
         return isBlocked;
     }
 
@@ -622,7 +601,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
           groundMask,
           QueryTriggerInteraction.Collide
         );
-         Debug.Log($"[Boar.HasGround] 위치 {worldPos}에서 바닥 검사 결과: {hasGround}");
+
         return hasGround;
     }
 

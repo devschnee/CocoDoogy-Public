@@ -24,7 +24,12 @@ public class Turret : MonoBehaviour
     private const float heightTolerance = 0.3f; // 층 오차 허용
     private bool doorShouldBeClosed; // 현재 문이 닫혀 있어야 하는지
 
-    #region LSH 사운드 추가
+    #region Turret Alert Sound
+    /// <summary>
+    /// 감지 상태 유지 중 반복 재생되는 경고 사운드
+    /// 감지 상태가 변경될 때만 처리 하여
+    /// 불필요한 시그널/사운드 반복 호출 방지
+    /// </summary>
     private Coroutine AudioCoroutine;
     private IEnumerator PlayTurretAlertSound()
     {
@@ -61,45 +66,6 @@ public class Turret : MonoBehaviour
         }
     }
 
-    //void ConnectReceiver()
-    //{
-    //    Vector3Int linkedPos = GetComponent<TurretBlock>().origin.property.linkedPos;
-    //    Collider[] cols = Physics.OverlapBox(linkedPos, new(.2f, .2f, .2f));
-    //    foreach (var c in cols)
-    //    {
-    //        if (c.transform.parent.name != "Stage") continue; //최상위 오브젝트만 감지
-    //        var receiver = c.GetComponent<ISignalReceiver>();
-    //        ConnectReceiver(receiver);
-    //        print($"[{this.GetType()}]:[{this.name}] - [{receiver.GetType()}]:[{c.name}]");
-    //        //if (receiver is DoorBlock door)
-    //        //{
-    //        //    Receiver = receiver;
-    //        //    Debug.Log($"[Turret] {name} → {door.name} 자동 연결 완료 (거리 {Vector3.Distance(transform.position, door.transform.position):F1})");
-    //        //    return;
-    //        //}
-    //    }
-    //}
-    //void AutoConnectReceiver()
-    //{
-    //    float searchRadius = 30f;
-    //    Collider[] cols = Physics.OverlapSphere(transform.position, searchRadius, ~0);
-
-    //    foreach (var c in cols)
-    //    {
-    //        var recv = c.GetComponentInParent<ISignalReceiver>();
-    //        if (recv == null) continue;
-
-    //        // DoorBlock만 연결 대상으로 필터링
-    //        if (recv is DoorBlock door)
-    //        {
-    //            Receiver = recv;
-    //            Debug.Log($"[Turret] {name} → {door.name} 자동 연결 완료 (거리 {Vector3.Distance(transform.position, door.transform.position):F1})");
-    //            return;
-    //        }
-    //    }
-
-    //    Debug.LogWarning($"[Turret] {name}: {searchRadius}m 안에 연결 가능한 Door를 찾지 못함");
-    //}
     void Update()
     {
         bool nowDetected = DetectTarget();
@@ -114,7 +80,6 @@ public class Turret : MonoBehaviour
             if (!doorShouldBeClosed)
             {
                 doorShouldBeClosed = true;
-                Debug.Log("[Turret] Target detected -> Send CLOSE signal");
                 GetComponent<ISignalSender>().SendSignal(); // Door 토글 -> 닫힘
             }
             UpdateRingColour(true);
@@ -123,13 +88,11 @@ public class Turret : MonoBehaviour
         else if (!nowDetected && targetInside)
         {
             targetInside = false;
-            // LSH 추가 1201
             if (targetInside == false && AudioCoroutine != null) StopTurretAlertSound();
-            //
+            
             if (doorShouldBeClosed)
             {
                 doorShouldBeClosed = false;
-                Debug.Log("[Turret] Target lost -> Send OPEN signal");
                 GetComponent<ISignalSender>().SendSignal(); // Door 토글 -> 열림
             }
             UpdateRingColour(false);

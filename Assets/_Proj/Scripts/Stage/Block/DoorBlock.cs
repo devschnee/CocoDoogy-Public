@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-//251031 - 연결 자체는 잘 되는 것 확인함.
-//문이 열리는 로직만 잘 구성하면 될 것같다.
-//ISignalSender를 구현한 다른 클래스(터렛, 충격감지탑)의 연결 처리도 같은 방식으로 연결하면 문제없이 작동할 것임.
+/// <summary>
+/// 신호 기반으로 개폐되는 문 기믹 오브젝트.
+/// ISignalReceiver를 구현하여 Switch, Tower, Turret 등
+/// 다양한 신호 발신 기믹으로부터 신호를 수신한다.
+/// 연결된 기믹 타입에 따라 초기 상태와 개폐 동작이 달라지며,
+/// ShockDetectionTower에 의해 영구 개방되는 상태도 지원한다.
+/// </summary>
 public class DoorBlock : Block, ISignalReceiver
 {
     public bool IsOn { get; set; }
 
-    private bool isPermanentlyOpen = false; // KHJ - 충격파 감지탑에서 한 번 감지되면 영구적으로 문을 열어야 하므로
+    private bool isPermanentlyOpen = false; // 충격파 감지탑에서 한 번 감지되면 영구적으로 문을 열어야 하므로
     [Tooltip("문이 여닫히는 속도")]
     public float openSpeed = 2f;
     Transform left;
@@ -28,28 +32,24 @@ public class DoorBlock : Block, ISignalReceiver
     {
         if (!initialized) return;
 
-        if (isPermanentlyOpen) // KHJ - Tower가 수정되면서 아마 더이상 호출되지 않을 것임
+        if (isPermanentlyOpen) // Tower가 수정되면서 더이상 호출되지 않을 것임
         {
-            // KHJ - Tower는 한 번 열면 닫지 않음.
-            Debug.Log($"[Door] 문은 영구적으로 열려 있는 상태임.");
+            // Tower는 한 번 열면 닫지 않음.
             return;
         }
 
-        // LSH 추가 1201
         AudioEvents.Raise(SFXKey.InGameObject,3, pooled: true, pos: gameObject.transform.position);
-        // KHJ - 기믹 타입에 따라 IsOn 조건을 달리 해줌.
+        // 기믹 타입에 따라 개폐 조건을 달리 해줌.
         if (connectedType == GimmickType.Turret)
         {
             // 터렛은 감지 -> 닫힘 / 감지 해제 -> 열림
             IsOn = !IsOn;
             ToggleDoor(IsOn);
-            Debug.Log($"[Door] (Turret) 문{(!IsOn ? "닫힘" : "열림")}");
         }
         else
         {
             IsOn = !IsOn;
             ToggleDoor(IsOn);
-            Debug.Log($"[Door] ({connectedType}) 문{(IsOn ? "열림" : "닫힘")}");
         }
     }
 
@@ -86,7 +86,7 @@ public class DoorBlock : Block, ISignalReceiver
         initialized = true;
     }
 
-    // KHJ - 근처에 있는 연결된 기믹을 찾아서 세팅 해줌.
+    // 근처에 있는 연결된 기믹을 찾아서 세팅 해줌.
     // (스테이지 별로 문을 열게 해주는 기믹이 다르고 동작 방식과 기본 세팅이 다르기 때문에)
     void DetectConnectedGimmick()
     {
@@ -107,32 +107,21 @@ public class DoorBlock : Block, ISignalReceiver
                 connectedType = GimmickType.Tower;
             else if (sender is Turret || sender is TurretBlock)
                 connectedType = GimmickType.Turret;
-
-            Debug.Log($"[Door] 연결된 기믹 감지됨: {connectedType} ({sender})");
             return;
         }
 
         // 연결 실패 시 기본 Switch로 취급
         connectedType = GimmickType.Switch;
-        Debug.LogWarning($"[Door] 연결된 기믹을 찾지 못함. 기본 Switch로 설정 ({name})");
     }
 
-    // KHJ - 초기 상태 세팅
+    // 연결된 기믹 타입에 따른 초기 상태 세팅
     void ApplyInitialState()
     {
         // Switch, Tower: 기본 닫힘 / Turret: 기본 열림
         bool open = (connectedType == GimmickType.Turret);
         IsOn = open;
         ToggleDoor(open);
-        Debug.Log($"[Door] 초기세팅 : {(open ? "열림" : "닫힘")} ({connectedType})");
     }
-
-    //void ToggleDoor(bool isOn)
-    //{
-    //    float xOffset = .75f;
-    //    left.Translate(isOn ? new(xOffset, 0, 0) : new(-xOffset, 0, 0));
-    //    right.Translate(isOn ? new(-xOffset, 0, 0) : new(xOffset, 0, 0));
-    //}
 
     void ToggleDoor(bool open)
     {
@@ -164,7 +153,7 @@ public class DoorBlock : Block, ISignalReceiver
         right.localPosition = rTarget;
     }
 
-    // KHJ - ShockDetectionTower를 위한 영구적으로 문 열기 메서드
+    // ShockDetectionTower를 위한 영구적으로 문 열기 메서드
     public void OpenPermanently()
     {
         if (isPermanentlyOpen) return;
@@ -174,7 +163,6 @@ public class DoorBlock : Block, ISignalReceiver
         if (!IsOn)
         {
             IsOn = true;
-            Debug.Log($"[Door] Tower의 충격파 감지함. 문 열림!");
             ToggleDoor(true);
         }
     }
@@ -184,10 +172,12 @@ public class DoorBlock : Block, ISignalReceiver
         base.OnEnable();
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         float searchRadius = 60f; // DetectConnectedGimmick에서 사용되는 searchRadius와 동일하게 설정
         Gizmos.DrawWireSphere(transform.position, searchRadius);
     }
+#endif
 }

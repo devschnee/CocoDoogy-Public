@@ -1,6 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Shockwave 발생을 감지하여
+/// 연결된 수신기(Door)에 신호를 전달하고
+/// 인근 Tower로 충격을 릴레이 하는 환경 반응 오브젝트
+/// </summary>
 [DisallowMultipleComponent]
 public class ShockDetectionTower : MonoBehaviour, ISignalSender, ISignalReceiver
 {
@@ -17,22 +22,6 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender, ISignalReceiver
 
     public bool IsOn { get; set; } // 그냥 ISignalReceiver 구현용
 
-    void Awake()
-    {
-        // 범위 안의 문 자동 탐색
-        //var cols = Physics.OverlapSphere(transform.position, relayRadius, ~0);
-        //foreach (var c in cols)
-        //{
-        //    var receiver = c.GetComponentInParent<ISignalReceiver>();
-        //    if (receiver != null)
-        //    {
-        //        Receiver = receiver;
-        //        Debug.Log($"[Tower] {name}: 자동으로 가까이에 있는 {receiver} 검색");
-        //        break;
-        //    }
-        //}
-    }
-
     // --- ISignalSender ---
     public ISignalReceiver Receiver { get; set; }
 
@@ -44,6 +33,8 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender, ISignalReceiver
         TryAutoConnect();
     }
 
+    // 초기화 시 주변 오브젝트 중 ISignalReceiver를 자동 탐색하여 연결
+    // 수동 연결이 없는 경우의 편의 기능. 기본적으로는 Map Editor에서 감지탑-문 쌍으로 지정 연결된 상태임.
     void TryAutoConnect()
     {
         if (Receiver != null) return;
@@ -55,34 +46,18 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender, ISignalReceiver
             if (receiver != null)
             {
                 Receiver = receiver;
-                Debug.Log($"[Tower] {name}: {receiver} 자동 연결 완료");
                 break;
             }
         }
     }
 
-    // 충격파 수신
+    // 충격파 수신 및 인근 Tower로 충격 릴레이
     public void ReceiveShock(Vector3 origin)
     {
-        if (isCooling)
-        {
-            Debug.Log($"[Tower] {name}: 쿨타임 중, 무시됨");
-            return;
-        }
+        if (isCooling) { return; }
 
         GetComponent<ISignalSender>().SendSignal();
-        //if (Receiver == null) TryAutoConnect();
-        //Debug.Log($"[Tower] {name}: 충격파 감지!");
-
-        //if (Receiver is DoorBlock door)
-        //{
-        //    door.OpenPermanently();
-        //}
-        //else
-        //{
-        //    // 다른 타워로 신호 릴레이(Door 아닌 경우)
-        //    SendSignal();
-        //}
+        
         // 쿨타임 진입
         StartCoroutine(CooldownTimer());
 
@@ -90,16 +65,16 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender, ISignalReceiver
         StartCoroutine(RelayToNearbyTowers(origin));
     }
 
-    // 쿨타임 코루틴
+    // 동일 Tower에서 연속 신호 전송을 방지하기 위한 쿨타임 코루틴
     private IEnumerator CooldownTimer()
     {
         isCooling = true;
         yield return new WaitForSeconds(towerCooldown);
         isCooling = false;
-        Debug.Log($"[Tower] {name}: 쿨타임 종료");
     }
 
-    // 충격파 릴레이
+    // 일정 시간 지연 후 반경 내 다른 Tower로 충격파 전달
+    // 차폐가 활성화된 경우 Raycast로 시야 차단 검사
     private IEnumerator RelayToNearbyTowers(Vector3 origin)
     {
         yield return new WaitForSeconds(relayDelay);
@@ -146,10 +121,11 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender, ISignalReceiver
         }
         else
         {
-            Debug.Log($"[Tower] {name}: 연결된 수신기가 없음");
+            Debug.LogWarning($"[Tower] {name}: 연결된 수신기가 없음");
         }
     }
 
+    // 다른 Tower로부터 전달된 신호를 Shock로 재처리
     public void ReceiveSignal()
     {
         // 다른 Tower가 나한테 신호 보낼 때

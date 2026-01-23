@@ -1,13 +1,19 @@
 ﻿using System.Collections;
 using UnityEngine;
+
+/// <summary>
+/// 물 타일 위에 위치한 PushableObjects를 일정 간격으로 흐름 방향으로 밀어내는 환경 기믹.
+/// 물 타일의 방향을 기준으로 흐름 벡터를 계산하며, 실제 이동 처리 로직은 IFlowStrategy에 위임.
+/// 낙하 중이거나 이동 중인 오브젝트는 제외하여 퍼즐 규칙의 안정성을 유지.
+/// </summary>
+
 namespace Water
 {
     public class Flow : MonoBehaviour
     {
         private Material waterMat;
-        //[SerializeField] float flowTime = 10f;
+        
         public float flowInterval; // 오브젝트 밀어내는 간격
-        // Boar에서 참조해서 flow water 속도보다 돌진 재사용 대기시간이 좀 더 있도록 조정해야 함.
 
         private IFlowStrategy flowStrategy = new FlowWaterStrategy();
 
@@ -20,12 +26,9 @@ namespace Water
 
         void Awake()
         {
-            // FlowWater 블록은 Water 레이어로 설정. 레이어 설정 실수 방지용.
-            if (gameObject.layer != LayerMask.NameToLayer("Water"))
-            {
-                Debug.LogWarning($"{gameObject.name}'s Layer is not 'Water'");
-            }
-            Debug.Log($"[{gameObject.name}] Awake() 시점 PushableMask 값: {pushableMask.value}");
+            // Flow 기믹은 Water 레이어로 설정되어야 함 (설정 오류 방지용)
+            if (gameObject.layer != LayerMask.NameToLayer("Water")) {}
+            
             MeshRenderer renderer = GetComponentInChildren<MeshRenderer>();
             if (renderer != null)
             {
@@ -36,25 +39,18 @@ namespace Water
         void Start()
         {
             SetFlowDir();
-            Debug.Log($"[{gameObject.name}] Start() 시점 PushableMask 값: {pushableMask.value}");
+
             if (flowCoroutine != null) StopCoroutine(flowCoroutine);
             flowCoroutine = StartCoroutine(FlowObjsCoroutine());
         }
 
-        //public float GetFlowTime()
-        //{
-        //    return flowTime;
-        //}
-
-
         public void SetFlowDir()
         {
-            // 부모의 Y축 회전값으로 흐름 방향을 계산
-            //Quaternion parentRot = transform.rotation;
+            // 오브젝트 forward 방향을 기준으로 흐름 방향 게산(XZ 평면)
             flowDir = transform.forward;
             flowDir.y = 0f;
             flowDir.Normalize();
-            // KHJ NOTE : 컴포넌트가 root에 붙으므로 transform.rotation으로 변경
+            
             if (waterMat != null)
             {
                 waterMat.SetVector("_FlowDir", new(-10, 0, 20, 0));
@@ -69,7 +65,7 @@ namespace Water
 
                 Vector3 centre = transform.position;
 
-                // 물타일 중앙에서 PushableMask 레이어를 가진 물체를 감지
+                // 물 타일 중앙 기준으로 밀려날 수 있는 PushableObjects 감지
                 float checkSize = 0.45f;
 
                 // 물 타일 높이의 중앙보다 살짝 위에서 검사
@@ -89,8 +85,8 @@ namespace Water
                         // 물체가 낙하 중이거나 이미 이동 중이라면 제외
                         if (pushable.IsFalling || pushable.IsMoving) continue;
 
-                        // PushableObjects.cs에서 탑승 로직을 처리하도록
-                        // flowDir를 Vector2Int로 변환하여 ImmediatePush를 호출
+                        // 실제 이동 및 탑승/적층 규칙은 PushableObjects.cs에 위임
+                        // 흐름 방향만 2D(Vector2Int)로 전달
                         Vector2Int flowDir2D = new Vector2Int(Mathf.RoundToInt(flowDir.x), Mathf.RoundToInt(flowDir.z));
 
                         flowStrategy.ExecuteFlow(pushable, flowDir2D);

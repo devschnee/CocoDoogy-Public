@@ -2,7 +2,11 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-// Dim 테스트 후 이 컴포넌트 없이도 문제 없이 잘 작동된다면 삭제 할 것임.
+/// <summary>
+/// 팝업 활성화 시 옵션 패널 입력을 차단하는 Dim 컨트롤러.
+/// 팝업 영역을 제외한 UI Selectable을 비활성화하여 입력 충돌을 방지.
+/// </summary>
+
 public class PopupDim : MonoBehaviour
 {
     [SerializeField] private GameObject optionPanelGroup; // OptionPanel 전체

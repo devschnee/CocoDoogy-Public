@@ -3,6 +3,11 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
+/// <summary>
+/// CSV 기반 매뉴얼 데이터를 탭 UI로 표시하는 게임 정보 팝업.
+/// 매뉴얼 목록을 동적으로 생성하고, 선택된 탭에 따라 이미지와 설명을 갱신.
+/// </summary>
+
 public class GameInfoPopup : MonoBehaviour
 {
     [Header("UI Targets")]
@@ -18,7 +23,7 @@ public class GameInfoPopup : MonoBehaviour
     [SerializeField] GameObject dim;
 
     private readonly List<Button> createdTabs = new(); // 생성된 버튼 저장
-    // 현재 선택된 탭 수동 저장
+    // 현재 선택된 매뉴얼 ID 저장
     private int currManualId = -1;
 
     void Start()
@@ -86,7 +91,6 @@ public class GameInfoPopup : MonoBehaviour
 
         // 소제목에서 따옴표 제거
         manualName.text = data.manual_name.Trim('"') ;
-        //tabName.text = data.manual_name;
 
         // 이미지
         Sprite sprite = DataManager.Instance.Manual.GetIcon(manualId);
@@ -98,7 +102,6 @@ public class GameInfoPopup : MonoBehaviour
         else
         {
             contentImage.enabled = false; // 이미지 없는 경우 숨김
-            Debug.Log("[GameInfoPopup] 이미지 없어서 숨김 처리");
         }
 
         // 설명 (개행 처리)

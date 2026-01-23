@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-// Shockwave 사용해서 버팔로와 같이 충격파 발생시킬 수 있어야 함.
-// 버팔로와 같이 낙하 시점에 충격파를 발생시켜야 함. -> 감지탑에 충격파 발생 여부 전달
-// 물체에 의해 막힐 수 있음.(차폐물 레이어 필요. 차폐 범위 계산 필요)
-// 수직으로 떨어질 때만 충격파 발생시켜야 함. 수평 이동 시 충격파 발생되면 안 됨.
-// 충격파 발생 shockwave.Fire();
+// PushableOrb(IronBall)는 낙하 착지 시 Shockwave를 발생시키는 특수 Pushable 오브젝트.
+// 수직 낙하로 착지했을 때만 충격파를 발생시킴
 
 [RequireComponent(typeof(Shockwave))]
 public class PushableOrb : PushableObjects
@@ -16,7 +13,6 @@ public class PushableOrb : PushableObjects
     [Tooltip("Orb 자신이 충격파 발생시킬 수 있는 쿨타임")]
     public float orbCoolTime = 6f;
     private float lastShockwaveTime = -float.MaxValue;
-    //private static Dictionary<int, float> floorCooldowns = new();
 
     [Header("Orb Fall Detection")]
     public float probeUp = 0.1f;
@@ -59,15 +55,14 @@ public class PushableOrb : PushableObjects
         // 이전에는 공중이었는데, 지금은 지상에 닿은 경우 = 착지 완료
         if (!wasGrounded && grounded)
         {
-            // LSH 추가 1201
             if (gameObject.layer == LayerMask.NameToLayer("Ironball")) AudioEvents.Raise(SFXKey.InGameObject, 4, pooled: true, pos: gameObject.transform.position);
             
-            Debug.Log($"[Orb] 충격파 발생 {name}", this);
             TryFireShockwave(); // 충격파 발생 시도
         }
         wasGrounded = grounded;
     }
 
+    // 중복 충격파 발생을 방지하기 위한 외부에 의한 충격파 리프트 면역 메서드(쿨타임)
     protected override bool IsImmuneToWaveLift()
     {
         return Time.time < lastShockwaveTime + orbCoolTime;
@@ -96,23 +91,18 @@ public class PushableOrb : PushableObjects
         TryFireShockwave();
     }
 
+    /// <summary>
+    /// 충격파 발생 및 주변 객체 통지
+    /// </summary>
     void TryFireShockwave()
     {
         if (shockwave == null) return;
-        //int yFloor = Mathf.RoundToInt(transform.position.y / tileSize);
 
         float now = Time.time;
 
-        //if (floorCooldowns.TryGetValue(yFloor, out var lastTime) && now - lastTime < orbCoolTime) return;
-
         if (now - lastShockwaveTime < orbCoolTime) return;
 
-        //floorCooldowns[yFloor] = now;
         lastShockwaveTime = now;
-
-        //Debug.Log($"[Orb] {yFloor}층 충격파 발생", this);
-        Debug.Log($"[Orb] {name} 충격파 발생", this);
-        //WaveLift(shockwave.riseSec, shockwave.hangSec, shockwave.fallSec);
 
         shockwave.Fire(
             origin: transform.position,
@@ -128,11 +118,10 @@ public class PushableOrb : PushableObjects
 
         StartCoroutine(ShowRingRange());
 
-        // 감지탑 통지
+        // 주변 감지탑에 통지
         if (shockPing)
         {
             shockPing.PingTowers(transform.position);
-            Debug.Log($"[Orb] 감지탑 Ping 전송 by {name}.", this);
         }
     }
 
