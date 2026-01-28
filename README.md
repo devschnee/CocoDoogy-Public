@@ -2,7 +2,7 @@
 
 # 🎮 CocoDoogy  
 ### 소코반 규칙을 기반으로 한 3D 모바일 퍼즐 게임
-<a href="https://youtu.be/UCx8Xok3t5I">
+<a href="https://youtu.be/HQ4drY2X7RI">
   <img width="100" height="100" alt="Youtube_logo"
     src="https://github.com/user-attachments/assets/2aa6f449-7ffa-4dd2-9086-232f5499456f" />
 </a>
